@@ -3038,7 +3038,7 @@ function _updateSDTWeatherMapIcon(self,widget,id,item)
 					if url then
 						self.configItems[id].url = url
 						self.referenceimages[self.mode.."item"..id] = id
-						self:_retrieveImage(url,self.mode.."item"..id,_getString(item.allowproxy,"true"),"true",_getNumber(width,nil),_getNumber(item.height,nil),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
+						self:_retrieveImage(url,self.mode.."item"..id,_getString(item.allowproxy,"true"),"true",_getNumber(item.width,nil),_getNumber(item.height,nil),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					end
 				end
 			end,
