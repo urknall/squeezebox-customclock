@@ -4181,14 +4181,14 @@ function _imageUpdate(self)
 			for attr,value in pairs(item) do
 				if attr == "url" then
 					if _getString(item.url,nil) then
-						self:_retrieveImage(item.url,self.mode.."item"..no,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
+						self:_retrieveImage(item.url,self.mode.."item"..no,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.width,nil),_getNumber(item.height),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					else
 						self.images[self.mode.."item"..no] = nil
 					end
 				elseif string.find(attr,"^url%.") then
 					local id = string.gsub(attr,"^url%.","")
 					if _getString(value,nil) then
-						self:_retrieveImage(value,self.mode.."item"..no.."."..id,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
+						self:_retrieveImage(value,self.mode.."item"..no.."."..id,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.width,nil),_getNumber(item.height),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					else
 						self.images[self.mode.."item"..no.."."..id] = nil
 					end
@@ -4198,14 +4198,14 @@ function _imageUpdate(self)
 			for attr,value in pairs(item) do
 				if attr == "url" then
 					if _getString(item.url,nil) then
-						self:_retrieveImage(item.url,self.mode.."item"..no,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
+						self:_retrieveImage(item.url,self.mode.."item"..no,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.width,nil),_getNumber(item.height),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					else
 						self.images[self.mode.."item"..no] = nil
 					end
 				elseif string.find(attr,"^url%.") then
 					local id = string.gsub(attr,"^url%.","")
 					if _getString(value,nil) then
-						self:_retrieveImage(value,self.mode.."item"..no.."."..id,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
+						self:_retrieveImage(value,self.mode.."item"..no.."."..id,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.width,nil),_getNumber(item.height),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					else
 						self.images[self.mode.."item"..no.."."..id] = nil
 					end
@@ -4216,7 +4216,7 @@ function _imageUpdate(self)
 				if attr == "url" then
 					self.vumeterimages[self.mode.."item"..no] = no
 					if _getString(item.url,nil) then
-						self:_retrieveImage(item.url,self.mode.."item"..no,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
+						self:_retrieveImage(item.url,self.mode.."item"..no,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.width,nil),_getNumber(item.height),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					else
 						self.images[self.mode.."item"..no] = nil
 					end
@@ -4224,7 +4224,7 @@ function _imageUpdate(self)
 					local id = string.gsub(attr,"^url%.","")
 					self.vumeterimages[self.mode.."item"..no.."."..id] = no
 					if _getString(value,nil) then
-						self:_retrieveImage(value,self.mode.."item"..no.."."..id,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
+						self:_retrieveImage(value,self.mode.."item"..no.."."..id,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.width,nil),_getNumber(item.height),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					else
 						self.images[self.mode.."item"..no.."."..id] = nil
 					end
