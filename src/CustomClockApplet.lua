@@ -1055,7 +1055,7 @@ function _installCustomNowPlaying(self)
 			if item then
 				log:debug("Setting custom callback to Now Playing menu")
 				item.callback = function(event, menuItem)
-					self:goNowPlaying(Window.transitionPushLeft)
+					appletManager:callService("goNowPlaying",Window.transitionPushLeft)
 				end
 			end
 		end,
