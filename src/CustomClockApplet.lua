@@ -1814,7 +1814,7 @@ function _replaceCustomTitleFormats(self,text)
 	return text
 end
 
-function _replaceTitleKeywords(self,_track, text, replaceNonTracks)
+function _replaceTitleKeywords(self,_track, text, replaceNoneTracks)
 	if _track.track then
 		text = string.gsub(text,"(%w+)", function(w) if w=="ARTIST" then return _track.artist else return w end end)
 		text = string.gsub(text,"(%w+)", function(w) if w=="ALBUM" then return _track.album else return w end end)
