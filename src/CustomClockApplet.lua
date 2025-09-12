@@ -2713,7 +2713,6 @@ function _changeSDTItem(self,category,item,widget,id,dynamic)
 			local player = appletManager:callService("getCurrentPlayer")
 			local server = player:getSlimServer()
 			local url = nil
-			local url = nil
 			if #results>=currentResult+_getNumber(item.offset,0) then
 				if string.find(item.logotype,"orlogoURL$") then
 					url = results[currentResult+_getNumber(item.offset,0)][string.gsub(item.logotype,"orlogoURL$","")]
