@@ -1594,7 +1594,7 @@ function _downloadFontZipFile(self, dir)
                                 fh = 'DIR'
                         elseif string.find(filename,"%.ttf") or string.find(filename,"%.TTF") then
                                 log:debug("Extracting font file: " .. filename)
-                                fh = io.open(filename, "w")
+                                fh = io.open(filename, "wb")
 			else
 				log:debug("ignoring file: "..filename)
                         end
@@ -1628,7 +1628,7 @@ function _downloadFontFile(self,dir,filename)
 
                 else
                         if fh == nil then
-	                        fh = io.open(dir .. filename, "w")
+	                        fh = io.open(dir .. filename, "wb")
                         end
 
                         fh:write(chunk)
@@ -4092,7 +4092,7 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 					if chunk then
 						if _getString(dynamic,"false") == "false" then
 							lfs.mkdir(appletdir.."CustomClock/images")
-					                local fh = io.open(appletdir.."CustomClock/images/"..cacheName, "w")
+					                local fh = io.open(appletdir.."CustomClock/images/"..cacheName, "wb")
 					                fh:write(chunk)
 							fh:close()
 						end
