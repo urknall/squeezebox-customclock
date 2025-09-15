@@ -1302,7 +1302,7 @@ function defineSettingStyleSink(self,title,mode,data)
 	local group = RadioGroup()
 	if mode == "confignowplaying" then
 		menu:addItem({
-			text = tostring(self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_NOWPLAYING_STYLE")).."\n(Logitech)",
+			text = tostring(self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_NOWPLAYING_STYLE")).."\n(Lyrion Music Server)",
 			style = 'item_no_icon',
 			weight = 1,
 			check = RadioButton(
@@ -1319,7 +1319,7 @@ function defineSettingStyleSink(self,title,mode,data)
 		})
 	elseif mode == "configalarmactive" then
 		menu:addItem({
-			text = tostring(self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_NONE")).."\n(Logitech)",
+			text = tostring(self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_NONE")).."\n(Lyrion Music Server)",
 			style = 'item_no_icon',
 			weight = 1,
 			check = RadioButton(
