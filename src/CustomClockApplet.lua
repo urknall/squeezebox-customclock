@@ -1110,7 +1110,7 @@ end
 
 function _updateCustomTitleFormatInfo(self,player)
 	local server = player:getSlimServer()
-	if server and not server:isSqueezeNetwork() then
+	if server then
 		local licensed = true
 		if not self:getSettings()['customClockHelperInstalled'] then
 			server:userRequest(function(chunk,err)
@@ -1185,7 +1185,7 @@ function defineSettingStyle(self,mode,menuItem)
 	local licensed = true
 	if player then
 		local server = player:getSlimServer()
-		if server and not server:isSqueezeNetwork() then
+		if server then
 			server:userRequest(function(chunk,err)
 					if err then
 						log:warn(err)
@@ -1859,7 +1859,7 @@ function _updateSDTText(self,widget,id,format,period)
 	local player = appletManager:callService("getCurrentPlayer")
 	period = _getString(period,nil) or "-1" 
 	local server = player:getSlimServer()
-	if not self.sdtMacroChecked and not self:getSettings()['sdtMacroInstalled'] and server and not server:isSqueezeNetwork() then
+	if not self.sdtMacroChecked and not self:getSettings()['sdtMacroInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
@@ -1877,7 +1877,7 @@ function _updateSDTText(self,widget,id,format,period)
 			nil,
 			{'can','sdtMacroString', '?'}
 		)
-	elseif self:getSettings()['sdtMacroInstalled'] and server and not server:isSqueezeNetwork() then
+	elseif self:getSettings()['sdtMacroInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
 				if err then
@@ -1904,7 +1904,7 @@ function _updateSDTSportItem(self,items)
 	local player = appletManager:callService("getCurrentPlayer")
 	local server = player:getSlimServer()
 
-	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server and not server:isSqueezeNetwork() then
+	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
@@ -1922,7 +1922,7 @@ function _updateSDTSportItem(self,items)
 			nil,
 			{'can','SuperDateTime', '?'}
 		)
-	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server and not server:isSqueezeNetwork() then
+	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
 				if err then
@@ -1976,7 +1976,7 @@ function _updateSDTWeatherItem(self,items)
 	local player = appletManager:callService("getCurrentPlayer")
 	local server = player:getSlimServer()
 
-	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server and not server:isSqueezeNetwork() then
+	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
@@ -1994,7 +1994,7 @@ function _updateSDTWeatherItem(self,items)
 			nil,
 			{'can','SuperDateTime', '?'}
 		)
-	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server and not server:isSqueezeNetwork() then
+	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
 				if err then
@@ -2031,7 +2031,7 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 	local player = appletManager:callService("getCurrentPlayer")
 	local server = player:getSlimServer()
 
-	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server and not server:isSqueezeNetwork() then
+	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
@@ -2049,7 +2049,7 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 			nil,
 			{'can','SuperDateTime', '?'}
 		)
-	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server and not server:isSqueezeNetwork() then
+	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
 				if err then
@@ -2105,7 +2105,7 @@ function _updatePluginItem(self,category,items)
 	local player = appletManager:callService("getCurrentPlayer")
 	local server = player:getSlimServer()
 
-	if not self.ccPluginItemsChecked and not self:getSettings()['ccPluginItemsInstalled'] and server and not server:isSqueezeNetwork() then
+	if not self.ccPluginItemsChecked and not self:getSettings()['ccPluginItemsInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
@@ -2123,7 +2123,7 @@ function _updatePluginItem(self,category,items)
 			nil,
 			{'can','customclock', 'customitems','?'}
 		)
-	elseif self:getSettings()['ccPluginItemsInstalled'] and server and not server:isSqueezeNetwork() then
+	elseif self:getSettings()['ccPluginItemsInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
 				if err then
@@ -3007,7 +3007,7 @@ end
 function _updateSDTWeatherMapIcon(self,widget,id,item)
 	local player = appletManager:callService("getCurrentPlayer")
 	local server = player:getSlimServer()
-	if not self.sdtVersionChecked and not self:getSettings()['sdtVersionInstalled'] and server and not server:isSqueezeNetwork() then
+	if not self.sdtVersionChecked and not self:getSettings()['sdtVersionInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
@@ -3025,7 +3025,7 @@ function _updateSDTWeatherMapIcon(self,widget,id,item)
 			nil,
 			{'can','sdtVersion', '?'}
 		)
-	elseif self:getSettings()['sdtVersionInstalled'] and server and not server:isSqueezeNetwork() then
+	elseif self:getSettings()['sdtVersionInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
@@ -3050,7 +3050,7 @@ end
 function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowproxy)
 	local player = appletManager:callService("getCurrentPlayer")
 	local server = player:getSlimServer()
-	if not self.sdtSongInfoChecked and not self:getSettings()['sdtSongInfoInstalled'] and server and not server:isSqueezeNetwork() then
+	if not self.sdtSongInfoChecked and not self:getSettings()['sdtSongInfoInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
@@ -3068,7 +3068,7 @@ function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowpro
 			nil,
 			{'can','songinfoitems', '?'}
 		)
-	elseif self:getSettings()['sdtSongInfoInstalled'] and _getString(module,nil) and server and not server:isSqueezeNetwork() then
+	elseif self:getSettings()['sdtSongInfoInstalled'] and _getString(module,nil) and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
@@ -3095,7 +3095,7 @@ end
 function _updateGalleryImage(self,widget,id,width,height,favorite)
 	local player = appletManager:callService("getCurrentPlayer")
 	local server = player:getSlimServer()
-	if server and not server:isSqueezeNetwork() then
+	if server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
