@@ -340,6 +340,7 @@ function openScreensaver(self,mode, transition)
 	local player = appletManager:callService("getCurrentPlayer")
 	local oldMode = self.mode
 	self.mode = mode
+	self:_getLMSInfo(mode, transition)
 	local licensed = true
 	if ((oldMode and self.mode != oldMode) or self.licensed~=licensed) and self.window then
 		self.window:hide()
@@ -4028,15 +4029,119 @@ function _reDrawAnalog(self,screen)
 	end
 end
 
+function _getLMSInfo(self, mode, transition)
+    local player = appletManager:callService("getCurrentPlayer")
+    local server = player and player.getSlimServer and player:getSlimServer()
+    self.lmsIP, self.lmsPort = server and server.getIpPort and server:getIpPort()
+    self.lmsIP = self.lmsIP or "127.0.0.1"
+    self.lmsPort = tonumber(self.lmsPort) or 9000
+    self.lmsName = server and server.getName and server:getName() or "unknown"
+    self.lmsVersion = server and server.getVersion and server:getVersion() or "unknown"
+	log:debug("LMS IP: " .. tostring(self.lmsIP))
+	log:debug("LMS Port: " .. tostring(self.lmsPort))
+	log:debug("LMS Name: " .. tostring(self.lmsName))
+	log:debug("LMS version: " .. tostring(self.lmsVersion))
+end
+
+local function _chooseProxyExt(srcUrl)
+    local u = (srcUrl or ""):lower()
+    log:debug("_chooseProxyExt: srcUrl=" .. tostring(srcUrl))
+
+    -- Supported extensions by LMS proxy
+    local validExt = {
+        png = true, jpg = true, jpeg = true, gif = true, svg = true
+    }
+
+    -- Try to extract from the last filename in the path
+    local last = u:match("/([^/?#]+)$") or ""
+    log:debug("_chooseProxyExt: last filename: " .. tostring(last))
+    local ext = last:match("%.([a-zA-Z0-9]+)$")
+    if ext then ext = ext:lower() end
+    log:debug("_chooseProxyExt: after last filename, ext=" .. tostring(ext))
+    if ext and validExt[ext] then
+        log:debug("_chooseProxyExt: returning from last filename: " .. ext)
+        return ext
+    end
+
+    log:debug("_chooseProxyExt: fallback to jpg")
+    return "jpg"
+end
+
+
+local function _buildImageProxyPath(srcUrl, w, h, clipX, clipY, clipWidth, clipHeight, lmsVersion)
+
+    -- Bucket logic
+    local bucket = CB_BUCKET_SECONDS or 10
+    local urlWithBucket = srcUrl
+    if bucket > 0 then
+        local sep = (urlWithBucket:find("%?") and "&") or "?"
+        local ts = math.floor(os.time() / bucket)
+        urlWithBucket = urlWithBucket .. sep .. "cb=" .. ts
+    end
+
+    -- Auto-detect mode
+	local nw = tonumber(w) or 0
+    local nh = tonumber(h) or 0
+    local mode = nil
+    if nw > 0 and nh > 0 then
+        if clipX or clipY or clipWidth or clipHeight then
+            mode = "p" -- pad
+        else
+            mode = "o" -- crop/fill (Resize & crop to fill (cover)) maybe we need to use here "m" Resize to max fit, no pad/crop, needs testing 
+        end
+    end
+
+    -- If neither width nor height is set, use /image (original)
+    local proxypath
+    if nw == 0 and nh == 0 then
+        log:debug("buildImageProxyPath: srcUrl=" .. tostring(urlWithBucket) .. " w=" .. tostring(w) .. " h=" ..
+                      tostring(h) .. " mode=nil (no resize)")
+        proxypath = "/imageproxy/" .. string.urlEncode(urlWithBucket) .. "/image"
+    else
+        local ext = _chooseProxyExt and _chooseProxyExt(srcUrl) or "jpg"
+        local suffix = "/image_" .. tostring(nw) .. "x" .. tostring(nh)
+        if mode then
+            suffix = suffix .. "_" .. mode
+        end
+        log:debug("buildImageProxyPath: srcUrl=" .. tostring(urlWithBucket) .. " w=" .. tostring(w) .. " h=" ..
+                      tostring(h) .. " mode=" .. tostring(mode) .. " ext=" .. tostring(ext))
+        proxypath = "/imageproxy/" .. string.urlEncode(urlWithBucket) .. suffix .. "." .. ext
+    end
+
+    -- Add nocache for LMS >= 9.1.0
+    if lmsVersion then
+        local major, minor, patch = tostring(lmsVersion):match("^(%d+)%.(%d+)%.?(%d*)")
+        major = tonumber(major)
+        minor = tonumber(minor)
+        patch = tonumber(patch) or 0
+        if major and minor and (major > 9 or (major == 9 and (minor > 1 or (minor == 1 and patch >= 0)))) then
+            if proxypath:find("%?") then
+                proxypath = proxypath .. "&nocache"
+            else
+                proxypath = proxypath .. "?nocache"
+            end
+        end
+    end
+
+    return proxypath
+end
+
+
 function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX,clipY,clipWidth,clipHeight)
 	local imagehost = ""
 	local imageport = tonumber("80")
 	local imagepath = ""
 
+	local lmsIP = self.lmsIP
+	local lmsPort = self.lmsPort
+	local lmsName = self.lmsName
+	local lmsVersion = self.lmsVersion
+
+
 	if not _getString(url,nil) then
 		return
 	end
-	local start,stop,value = string.find(url,"http://([^/]+)")
+	local start,stop,value = string.find(url,"^https?://([^/]+)")
 	if value and value != "" then
 		imagehost = value
 		local start, stop,value = string.find(imagehost,":(.+)$")
@@ -4045,30 +4150,25 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 			imagehost = string.gsub(imagehost,":"..imageport,"")
 		end
 	end
-	start,stop,value = string.find(url,"http://[^/]+(.+)")
+	start,stop,value = string.find(url,"^https?://[^/]+(.+)")
 	if value and value != "" then
 		imagepath = value
 	end
 
 	if imagepath != "" and imagehost != "" then
- 		if allowProxy == "false" or
-			string.find(url, "^http://192%.168") or
-			string.find(url, "^http://172%.16%.") or
-			string.find(url, "^http://10%.") then
-			-- Use direct url
-		else
-                        imagehost = jnt:getSNHostname()
-			imageport = tonumber(80)
-			imagepath = '/public/imageproxy?u=' .. string.urlEncode(url)
-			if width then
-				imagepath = imagepath.."&w="..width
-			end				
-			if height then
-				imagepath = imagepath.."&h="..height
-			end
-			if width or height then
-				imagepath = imagepath.."&m=p"
-			end				
+
+        	local nw, nh = tonumber(width), tonumber(height)
+        	local hasAnySize = (nw and nw > 0) or (nh and nh > 0)
+        	if allowProxy == "false" and not hasAnySize then
+			-- use direct URL
+    		else
+            		imagehost  = lmsIP
+            		imageport  = lmsPort
+            		imagepath = _buildImageProxyPath(
+                		url,
+                		(nw and nw > 0) and width  or nil,
+                		(nh and nh > 0) and height or nil,
+                		clipX, clipY, clipWidth, clipHeight) -- maybe implement "?nocache" in lmsimageproxy, then call function additional with last parameter "lmsVersion"
                 end
 		log:debug("Getting image for "..imageType.." from "..imagehost.." and "..imageport.." and "..imagepath)
 		local appletdir = _getAppletDir()
