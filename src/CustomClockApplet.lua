@@ -4157,11 +4157,13 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 
 	if imagepath != "" and imagehost != "" then
 
-        	local nw, nh = tonumber(width), tonumber(height)
+        	local nw, nh    = tonumber(width), tonumber(height)
+        	local isHttp    = (string.find(url, "^http://") ~= nil)
+        	local isHttps   = (string.find(url, "^https://") ~= nil)
         	local hasAnySize = (nw and nw > 0) or (nh and nh > 0)
-        	if allowProxy == "false" and not hasAnySize then
-			-- use direct URL
-    		else
+        	local isLMSProxy = (tostring(allowProxy or "false") == "true")
+        	local useLMSProxy = isHttps or (isHttp and hasAnySize and isLMSProxy)
+        	if useLMSProxy then
             		imagehost  = lmsIP
             		imageport  = lmsPort
             		imagepath = _buildImageProxyPath(
@@ -4169,6 +4171,9 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
                 		(nw and nw > 0) and width  or nil,
                 		(nh and nh > 0) and height or nil,
                 		clipX, clipY, clipWidth, clipHeight) -- maybe implement "?nocache" in lmsimageproxy, then call function additional with last parameter "lmsVersion"
+			
+    		else
+					-- use direct URL
                 end
 		log:debug("Getting image for "..imageType.." from "..imagehost.." and "..imageport.." and "..imagepath)
 		local appletdir = _getAppletDir()
