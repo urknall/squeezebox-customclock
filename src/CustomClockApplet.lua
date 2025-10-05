@@ -4070,17 +4070,29 @@ end
 
 local function _buildImageProxyPath(srcUrl, w, h, clipX, clipY, clipWidth, clipHeight, lmsVersion)
 
+    -- Compute once so we can decide whether to use the bucket cache
+    local lmsIsAtLeast910 = false
+    if lmsVersion then
+        local major, minor, patch = tostring(lmsVersion):match("^(%d+)%.(%d+)%.?(%d*)")
+        major = tonumber(major)
+        minor = tonumber(minor)
+        patch = tonumber(patch) or 0
+        if major and minor and (major > 9 or (major == 9 and (minor > 1 or (minor == 1 and patch >= 0)))) then
+            lmsIsAtLeast910 = true
+        end
+    end
+
     -- Bucket logic
     local bucket = CB_BUCKET_SECONDS or 10
     local urlWithBucket = srcUrl
-    if bucket > 0 then
+    if (not lmsIsAtLeast910) and bucket > 0 then
         local sep = (urlWithBucket:find("%?") and "&") or "?"
         local ts = math.floor(os.time() / bucket)
         urlWithBucket = urlWithBucket .. sep .. "cb=" .. ts
     end
 
     -- Auto-detect mode
-	local nw = tonumber(w) or 0
+    local nw = tonumber(w) or 0
     local nh = tonumber(h) or 0
     local mode = nil
     if nw > 0 and nh > 0 then
@@ -4109,17 +4121,11 @@ local function _buildImageProxyPath(srcUrl, w, h, clipX, clipY, clipWidth, clipH
     end
 
     -- Add nocache for LMS >= 9.1.0
-    if lmsVersion then
-        local major, minor, patch = tostring(lmsVersion):match("^(%d+)%.(%d+)%.?(%d*)")
-        major = tonumber(major)
-        minor = tonumber(minor)
-        patch = tonumber(patch) or 0
-        if major and minor and (major > 9 or (major == 9 and (minor > 1 or (minor == 1 and patch >= 0)))) then
-            if proxypath:find("%?") then
-                proxypath = proxypath .. "&nocache"
-            else
-                proxypath = proxypath .. "?nocache"
-            end
+    if lmsIsAtLeast910 then
+        if proxypath:find("%?") then
+            proxypath = proxypath .. "&nocache"
+        else
+            proxypath = proxypath .. "?nocache"
         end
     end
 
