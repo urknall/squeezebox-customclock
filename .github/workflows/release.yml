@@ -46,7 +46,7 @@ jobs:
         working-directory: ./gh-pages
         id: tag
         run: |
-          url="https://urknall.github.io/"
+          url="http://urknall.github.io"
           perl ../release.pl repo.xml ${{ steps.set-version.outputs.version }} CustomClock${{ steps.set-filename.outputs.fileversion }}.zip $url
 
       - name: Update pages Repository
