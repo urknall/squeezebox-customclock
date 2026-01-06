@@ -1,12 +1,12 @@
 <?xml version='1.0' standalone='yes'?>
 <extensions>
   <applets>
-    <applet target="jivelite" maxTarget="*" minTarget="0.1" version="2.26.001" name="CustomClock">
+    <applet name="CustomClock" target="jivelite" version="2.26.001" minTarget="0.1" maxTarget="*">
       <desc lang="EN">Custom Clock</desc>
       <title lang="EN">CustomClock</title>
+      <sha>d05ffc76bf37de36ba9b62a0922f4155f9d6c12d</sha>
       <creator>erland, tcutting</creator>
-      <url>http://urknall.github.io/CustomClock2_26_001.zip</url>
-      <sha>7552671e433d7cdd771bb921befbfc9fdc21c97e</sha>
+      <url>http://lms.hashsum.org/CustomClock2_26_001.zip</url>
     </applet>
   </applets>
   <details>
