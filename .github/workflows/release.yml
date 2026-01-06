@@ -67,7 +67,7 @@ jobs:
         with:
           tag_name: ${{ steps.set-version.outputs.version }}
           name: Version ${{ steps.set-version.outputs.version }}
-          body: Custom Clock for Release
+          body: Custom Clock Release
           draft: false
           prerelease: false
           files: CustomClock${{ steps.set-filename.outputs.fileversion }}.zip
