@@ -4,12 +4,12 @@
     <title lang="EN">CustomClock for Jivelite</title>
   </details>
   <applets>
-    <applet target="jivelite" version="2.26.001" maxTarget="*" minTarget="0.1" name="JLCustomClock">
-      <url>https://urknall.github.io//CustomClock2_26_001.zip</url>
+    <applet target="jivelite" version="2.26.001" name="JLCustomClock" minTarget="0.1" maxTarget="*">
       <creator>erland, tcutting</creator>
       <title lang="EN">CustomClock for Jivelite</title>
-      <sha>7aa8e75e25f2ce8fbcd130a81972258194e39bc5</sha>
       <desc lang="EN">Modified Custom Clock for Jivelite</desc>
+      <url>http://urknall.github.io/CustomClock2_26_001.zip</url>
+      <sha>b650d2f7dad6ee05c8a4f4dbc75942d0eb9106a3</sha>
     </applet>
   </applets>
 </extensions>
