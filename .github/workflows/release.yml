@@ -1,4 +1,4 @@
-name: Release
+name: Release Jive
 
 on:
   workflow_dispatch:
