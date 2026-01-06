@@ -4,12 +4,12 @@
     <title lang="EN">CustomClock for Jivelite</title>
   </details>
   <applets>
-    <applet name="JLCustomClock" version="2.26.001" maxTarget="*" target="jivelite" minTarget="0.1">
+    <applet version="2.25.166" name="JLCustomClock" maxTarget="*" target="jivelite" minTarget="0.1">
+      <creator>erland, tcutting</creator>
+      <url>http://jivelite.picoreplayer.org/JLCustomClock2_25_166.zip</url>
+      <sha>8483f39252a42cf4635961d8269398ff26a3bd3d</sha>
       <title lang="EN">CustomClock for Jivelite</title>
       <desc lang="EN">Modified Custom Clock for Jivelite</desc>
-      <sha>f5ec537cbc445281a2b4a918b2149da806ca7afa</sha>
-      <creator>erland, tcutting</creator>
-      <url>http://jivelite.picoreplayer.org/JLCustomClock2_26_001.zip</url>
     </applet>
   </applets>
 </extensions>
