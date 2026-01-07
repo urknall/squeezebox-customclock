@@ -5,21 +5,21 @@
 				"name": "Analog Clock (7.3)",
 				"contributors":"Logitech (Graphics)",
 				"models": ["controller"],
-				"background": "http://svn.slimdevices.com/repos/jive/7.3/trunk/squeezeplay/src/squeezeplay/share/applets/Clock/clock_analog_bkgrd.png",
+				"background": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.3/src/squeezeplay/share/applets/Clock/clock_analog_bkgrd.png",
 				"items": [
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://svn.slimdevices.com/repos/jive/7.3/trunk/squeezeplay/src/squeezeplay/share/applets/Clock/ClockFace.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.3/src/squeezeplay/share/applets/Clock/ClockFace.png"
 					},
 					{
 						"itemtype": "hourimage",
 						"free": 1,
-						"url": "http://svn.slimdevices.com/repos/jive/7.3/trunk/squeezeplay/src/squeezeplay/share/applets/Clock/HourHand.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.3/src/squeezeplay/share/applets/Clock/HourHand.png"
 					},
 					{
 						"itemtype": "minuteimage",
-						"url": "http://svn.slimdevices.com/repos/jive/7.3/trunk/squeezeplay/src/squeezeplay/share/applets/Clock/MinuteHand.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.3/src/squeezeplay/share/applets/Clock/MinuteHand.png"
 					},
 					{
 						"itemtype": "timetext",
@@ -40,25 +40,25 @@
 				"name": "Analog Clock (7.3) (with seconds)",
 				"contributors":"Logitech (Graphics)",
 				"models": ["controller"],
-				"background": "http://svn.slimdevices.com/repos/jive/7.3/trunk/squeezeplay/src/squeezeplay/share/applets/Clock/clock_analog_bkgrd.png",
+				"background": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.3/src/squeezeplay/share/applets/Clock/clock_analog_bkgrd.png",
 				"items": [
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://svn.slimdevices.com/repos/jive/7.3/trunk/squeezeplay/src/squeezeplay/share/applets/Clock/ClockFace.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.3/src/squeezeplay/share/applets/Clock/ClockFace.png"
 					},
 					{
 						"itemtype": "hourimage",
 						"free": 1,
-						"url": "http://svn.slimdevices.com/repos/jive/7.3/trunk/squeezeplay/src/squeezeplay/share/applets/Clock/HourHand.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.3/src/squeezeplay/share/applets/Clock/HourHand.png"
 					},
 					{
 						"itemtype": "minuteimage",
-						"url": "http://svn.slimdevices.com/repos/jive/7.3/trunk/squeezeplay/src/squeezeplay/share/applets/Clock/MinuteHand.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.3/src/squeezeplay/share/applets/Clock/MinuteHand.png"
 					},
 					{
 						"itemtype": "secondimage",
-						"url": "http://erland.github.io/squeezebox-customclock/images/SecondHand_controller.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/SecondHand_controller.png"
 
 					},
 					{
@@ -84,16 +84,16 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://svn.slimdevices.com/repos/jive/7.4/trunk/squeezeplay/src/squeezeplay/share/applets/QVGAportraitSkin/images/Clocks/Analog/jive_wallpaper_clock_analog.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.4/src/squeezeplay/share/applets/QVGAportraitSkin/images/Clocks/Analog/jive_wallpaper_clock_analog.png"
 					},
 					{
 						"itemtype": "hourimage",
 						"free": 1,
-						"url": "http://svn.slimdevices.com/repos/jive/7.4/trunk/squeezeplay/src/squeezeplay/share/applets/QVGAportraitSkin/images/Clocks/Analog/clock_analog_hr_hand.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.4/src/squeezeplay/share/applets/QVGAportraitSkin/images/Clocks/Analog/clock_analog_hr_hand.png"
 					},
 					{
 						"itemtype": "minuteimage",
-						"url": "http://svn.slimdevices.com/repos/jive/7.4/trunk/squeezeplay/src/squeezeplay/share/applets/QVGAportraitSkin/images/Clocks/Analog/clock_analog_min_hand.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.4/src/squeezeplay/share/applets/QVGAportraitSkin/images/Clocks/Analog/clock_analog_min_hand.png"
 					},
 					{
 						"itemtype": "timetext",
@@ -118,16 +118,16 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://svn.slimdevices.com/repos/jive/7.4/trunk/squeezeplay/src/squeezeplay/share/applets/QVGAlandscapeSkin/images/Clocks/Analog/bb_wallpaper_clock_analog.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.4/src/squeezeplay/share/applets/QVGAlandscapeSkin/images/Clocks/Analog/bb_wallpaper_clock_analog.png"
 					},
 					{
 						"itemtype": "hourimage",
 						"free": 1,
-						"url": "http://svn.slimdevices.com/repos/jive/7.4/trunk/squeezeplay/src/squeezeplay/share/applets/QVGAlandscapeSkin/images/Clocks/Analog/clock_analog_hr_hand.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.4/src/squeezeplay/share/applets/QVGAlandscapeSkin/images/Clocks/Analog/clock_analog_hr_hand.png"
 					},
 					{
 						"itemtype": "minuteimage",
-						"url": "http://svn.slimdevices.com/repos/jive/7.4/trunk/squeezeplay/src/squeezeplay/share/applets/QVGAlandscapeSkin/images/Clocks/Analog/clock_analog_min_hand.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.4/src/squeezeplay/share/applets/QVGAlandscapeSkin/images/Clocks/Analog/clock_analog_min_hand.png"
 					},
 					{
 						"itemtype": "timetext",
@@ -479,7 +479,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/black25_controller.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/black25_controller.png"
 					},
 					{
 						"itemtype": "coverplayingicon",
@@ -518,7 +518,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/black50_controller.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/black50_controller.png"
 					},
 					{
 						"itemtype": "coverplayingicon",
@@ -557,7 +557,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/black75_controller.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/black75_controller.png"
 					},
 					{
 						"itemtype": "coverplayingicon",
@@ -596,7 +596,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/black25_radio.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/black25_radio.png"
 					},
 					{
 						"itemtype": "coverplayingicon",
@@ -635,7 +635,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/black50_radio.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/black50_radio.png"
 					},
 					{
 						"itemtype": "coverplayingicon",
@@ -674,7 +674,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/black75_radio.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/black75_radio.png"
 					},
 					{
 						"itemtype": "coverplayingicon",
@@ -713,7 +713,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/black25_touch.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/black25_touch.png"
 					},
 					{
 						"itemtype": "coverplayingicon",
@@ -756,7 +756,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/black50_touch.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/black50_touch.png"
 					},
 					{
 						"itemtype": "coverplayingicon",
@@ -799,7 +799,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/black75_touch.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/black75_touch.png"
 					},
 					{
 						"itemtype": "coverplayingicon",
@@ -956,36 +956,36 @@
 						"width":"353",
 						"free": 1,
 						"itemtype":"elapsedimage",
-						"url.playingslidingx":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_slider_10ft.png",
-						"url.stoppedslidingx":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_slider_10ft.png",
+						"url.playingslidingx":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_slider_10ft.png",
+						"url.stoppedslidingx":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_slider_10ft.png",
 						"dynamic":"true",
 						"posx":"52"
 					},
 					{
-						"url.stop":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd.png",
+						"url.stop":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd.png",
 						"free": 1,
 						"itemtype":"playstatusicon",
-						"url.play":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd.png",
+						"url.play":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd.png",
 						"order":"0",
-						"url.pause":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd.png",
+						"url.pause":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd.png",
 						"posx":"75"
 					},
 					{
-						"url.stop":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_l.png",
+						"url.stop":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_l.png",
 						"free": 1,
 						"itemtype":"playstatusicon",
-						"url.play":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_l.png",
+						"url.play":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_l.png",
 						"order":"0",
-						"url.pause":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_l.png",
+						"url.pause":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_l.png",
 						"posx":"49"
 					},
 					{
-						"url.stop":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_r.png",
+						"url.stop":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_r.png",
 						"free": 1,
 						"itemtype":"playstatusicon",
-						"url.play":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_r.png",
+						"url.play":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_r.png",
 						"order":"0",
-						"url.pause":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_r.png",
+						"url.pause":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/NowPlaying/np_progressbar_bkgrd_r.png",
 						"framewidth":"",
 						"posx":"407"
 					}
@@ -993,10 +993,10 @@
 			},
                         {
 				"backgroundtype": "black",
-                                "name": "Daylight Clock (http://www.die.net/earth)",
+                                "name": "Daylight Clock (https://www.die.net/earth)",
 				"contributors":"Erland, www.die.net (Images)",
                                 "models": ["touch"],
-				"background": "http://static.die.net/earth/mercator-cloudless/480.jpg",
+				"background": "https://static.die.net/earth/mercator/480.jpg",
 				"backgrounddynamic": "true",
 				"items": [
 					{
@@ -1032,10 +1032,10 @@
                         },
                         {
 				"backgroundtype": "black",
-                                "name": "Daylight Clock (http://www.die.net/earth)",
+                                "name": "Daylight Clock (https://www.die.net/earth)",
 				"contributors":"Erland, www.die.net (Images)",
                                 "models": ["radio"],
-				"background": "http://static.die.net/earth/mercator-cloudless/480.jpg",
+				"background": "https://static.die.net/earth/mercator/480.jpg",
 				"backgrounddynamic": "true",
 				"items": [
 					{
@@ -1066,10 +1066,10 @@
                         },
                         {
 				"backgroundtype": "black",
-                                "name": "Moon Clock (http://www.die.net/moon)",
+                                "name": "Moon Clock (https://www.die.net/moon)",
 				"contributors":"Erland, www.die.net (Images)",
                                 "models": ["controller"],
-				"background": "http://static.die.net/moon/480.jpg",
+				"background": "https://static.die.net/moon/480.jpg",
 				"backgrounddynamic": "true",
 				"items": [
 					{
@@ -1101,10 +1101,10 @@
                         },
                         {
 				"backgroundtype": "black",
-                                "name": "Moon Clock (http://www.die.net/moon)",
+                                "name": "Moon Clock (https://www.die.net/moon)",
 				"contributors":"Erland, www.die.net (Images)",
                                 "models": ["radio"],
-				"background": "http://static.die.net/moon/480.jpg",
+				"background": "https://static.die.net/moon/480.jpg",
 				"backgrounddynamic": "true",
 				"items": [
 					{
@@ -1135,10 +1135,10 @@
                         },
                         {
 				"backgroundtype": "black",
-                                "name": "Moon Clock (http://www.die.net/moon)",
+                                "name": "Moon Clock (https://www.die.net/moon)",
 				"contributors":"Erland, www.die.net (Images)",
                                 "models": ["touch"],
-				"background": "http://static.die.net/moon/480.jpg",
+				"background": "https://static.die.net/moon/480.jpg",
 				"backgrounddynamic": "true",
 				"items": [
 					{
@@ -1180,7 +1180,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://svn.slimdevices.com/repos/jive/7.3/trunk/squeezeplay/src/squeezeplay/share/applets/Clock/clock_classic_bkgrd.png"
+						"url": "https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.3/src/squeezeplay/share/applets/Clock/clock_classic_bkgrd.png"
 					},
 					{
 						"itemtype": "timetext",
@@ -1216,7 +1216,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/clock_classic_bkgrd_radio.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/clock_classic_bkgrd_radio.png"
 					},
 					{
 						"itemtype": "timetext",
@@ -1251,7 +1251,7 @@
 					{
 						"itemtype": "clockimage",
 						"free": 1,
-						"url": "http://erland.github.io/squeezebox-customclock/images/clock_classic_bkgrd_touch.png"
+						"url": "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/clock_classic_bkgrd_touch.png"
 					},
 					{
 						"itemtype": "timetext",
@@ -1300,7 +1300,7 @@
 					{
 						"itemtype":"analogvumeter",
 						"free": 1,
-						"url":"http://svn.slimdevices.com/repos/jive/7.5/trunk/squeezeplay/src/squeezeplay/share/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png"
+						"url":"https://raw.githubusercontent.com/LMS-Community/squeezeplay/refs/heads/public/7.5/src/squeezeplay/share/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png"
 					},		
 					{
 						"itemtype":"trackplayingtext",
@@ -1335,7 +1335,7 @@
 					{
 						"itemtype":"analogvumeter",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-customclock/images/vu_analog_25seq_b_radio.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/vu_analog_25seq_b_radio.png"
 					},		
 					{
 						"itemtype":"trackplayingtext",
@@ -1370,7 +1370,7 @@
 					{
 						"itemtype":"analogvumeter",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-customclock/images/VUMeters/VintageTEAC.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/VUMeters/VintageTEAC.png"
 					},		
 					{
 						"itemtype":"trackplayingtext",
@@ -1408,7 +1408,7 @@
 					{
 						"itemtype":"analogvumeter",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-customclock/images/VUMeters/VintageDark.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/VUMeters/VintageDark.png"
 					},		
 					{
 						"itemtype":"trackplayingtext",
@@ -1443,7 +1443,7 @@
 					{
 						"itemtype":"analogvumeter",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-customclock/images/VUMeters/VintageDarkRevised.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/VUMeters/VintageDarkRevised.png"
 					},		
 					{
 						"itemtype":"trackplayingtext",
@@ -1478,7 +1478,8 @@
 					{
 						"itemtype":"analogvumeter",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-patchinstaller/patches/DarkBlueGlowVUMeter/share/jive/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png"
+						"url":"https://raw.githubusercontent.com/erland/squeezebox-patchinstaller/gh-pages/patches/DarkBlueGlowVUMeter/share/jive/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png
+"
 					},		
 					{
 						"itemtype":"trackplayingtext",
@@ -1516,7 +1517,7 @@
 					{
 						"itemtype":"analogvumeter",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-patchinstaller/patches/LightBlueGlowVUMeter/share/jive/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png"
+						"url":"https://raw.githubusercontent.com/erland/squeezebox-patchinstaller/gh-pages/patches/LightBlueGlowVUMeter/share/jive/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png"
 					},		
 					{
 						"itemtype":"trackplayingtext",
@@ -1554,7 +1555,7 @@
 					{
 						"itemtype":"analogvumeter",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-patchinstaller/patches/VintageDarkerGoldVUMeter/share/jive/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png"
+						"url":"https://raw.githubusercontent.com/erland/squeezebox-patchinstaller/gh-pages/patches/VintageDarkerGoldVUMeter/share/jive/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png"
 					},		
 					{
 						"itemtype":"trackplayingtext",
@@ -1666,7 +1667,7 @@
 				"backgroundtype":"black",
 				"name":"Cassetta Touch",
 				"contributors":"Rikk (Graphics)",
-				"background":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Touch/background.png",
+				"background":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Touch/background.png",
 				"clockposy":"163",
 				"items":[
 					{
@@ -1736,8 +1737,8 @@
 						"itemtype":"rotatingimage",
 						"free": 1,
 						"posy":"114",
-						"url.stopped":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Touch/wheel.png",
-						"url.playingrotating":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Touch/wheel.png",
+						"url.stopped":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Touch/wheel.png",
+						"url.playingrotating":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Touch/wheel.png",
 						"speed":"2",
 						"posx":"73"
 					},
@@ -1745,23 +1746,23 @@
 						"itemtype":"rotatingimage",
 						"free": 1,
 						"posy":"114",
-						"url.stopped":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Touch/wheel.png",
-						"url.playingrotating":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Touch/wheel.png",
+						"url.stopped":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Touch/wheel.png",
+						"url.playingrotating":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Touch/wheel.png",
 						"speed":"2",
 						"posx":"178"
 					},
 					{
 						"itemtype":"hourimage",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-customclock/images/Cassetta/hour.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/hour.png"
 					},
 					{
 						"itemtype":"minuteimage",
-						"url":"http://erland.github.io/squeezebox-customclock/images/Cassetta/minute.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/minute.png"
 					},
 					{
 						"itemtype":"secondimage",
-						"url":"http://erland.github.io/squeezebox-customclock/images/Cassetta/second.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/second.png"
 					}
 				]
 			},
@@ -1771,7 +1772,7 @@
 				"backgroundtype":"black",
 				"name":"Cassetta",
 				"contributors":"Rikk (Graphics)",
-				"background":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Radio/background.png",
+				"background":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Radio/background.png",
 				"clockposy":"123",
 				"items":[
 					{
@@ -1841,8 +1842,8 @@
 						"itemtype":"rotatingimage",
 						"free": 1,
 						"posy":"162",
-						"url.stopped":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Radio/wheel.png",
-						"url.playingrotating":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Radio/wheel.png",
+						"url.stopped":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Radio/wheel.png",
+						"url.playingrotating":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Radio/wheel.png",
 						"speed":"2",
 						"posx":"65"
 					},
@@ -1850,23 +1851,23 @@
 						"itemtype":"rotatingimage",
 						"free": 1,
 						"posy":"162",
-						"url.stopped":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Radio/wheel.png",
-						"url.playingrotating":"http://erland.github.io/squeezebox-customclock/images/Cassetta/Radio/wheel.png",
+						"url.stopped":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Radio/wheel.png",
+						"url.playingrotating":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/Radio/wheel.png",
 						"speed":"2",
 						"posx":"158"
 					},
 					{
 						"itemtype":"hourimage",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-customclock/images/Cassetta/hour.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/hour.png"
 					},
 					{
 						"itemtype":"minuteimage",
-						"url":"http://erland.github.io/squeezebox-customclock/images/Cassetta/minute.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/minute.png"
 					},
 					{
 						"itemtype":"secondimage",
-						"url":"http://erland.github.io/squeezebox-customclock/images/Cassetta/second.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Cassetta/second.png"
 					}
 				]
 			},
@@ -1874,7 +1875,7 @@
 				"models":["radio"],
 				"name":"SimpleGrayClock",
 				"contributors":"Rikk (Graphics), tcutting",
-				"background":"http://home.roadrunner.com/~tcutting/images/simple gray.png",
+				"background":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/simple%20gray.png/download",
 				"items":[
 					{
 						"itemtype":"timetext",
@@ -2000,13 +2001,13 @@
 						"posx":"-12"
 					},
 					{
-						"url.set":"http://home.roadrunner.com/~tcutting/images/AlarmIcon.png",
+						"url.set":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon.png/download",
 						"itemtype":"alarmicon",
 						"free": 1,
 						"posy":"198",
-						"url.active":"http://home.roadrunner.com/~tcutting/images/AlarmIcon_Active.png",
+						"url.active":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon_Active.png/download",
 						"posx":"210",
-						"url.snooze":"http://home.roadrunner.com/~tcutting/images/AlarmIconSnooze.png"
+						"url.snooze":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIconSnooze.png/download"
 					}
 				]
 			},
@@ -2014,12 +2015,12 @@
 				"models":["radio"],
 				"name":"Notturno",
 				"contributors":"Rikk (Graphics)",
-				"background":"http://erland.github.io/squeezebox-customclock/images/Notturno/face.png",
+				"background":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Notturno/face.png",
 				"items":[
 					{
 						"itemtype":"secondimage",
 						"free": 1,
-						"url":"http://erland.github.io/squeezebox-customclock/images/Notturno/second.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/Notturno/second.png"
 					},
 					{
 						"itemtype":"timetext",
@@ -2027,7 +2028,7 @@
 						"posy":"86",
 						"color":"white",
 						"fontsize":"65",
-						"fonturl":"http://www.fontfiles.com/Fonts/M/minisystem.zip",
+						"fonturl":"http://www.1001fonts.com/download/minisystem.zip",
 						"text":"%H1:%M",
 						"animate":"true",
 						"fontfile":"MINISYST.TTF",
@@ -2039,7 +2040,7 @@
 						"posy":"85",
 						"color":"darkred",
 						"fontsize":"65",
-						"fonturl":"http://www.fontfiles.com/Fonts/M/minisystem.zip",
+						"fonturl":"http://www.1001fonts.com/download/minisystem.zip",
 						"text":"%H1:%M",
 						"animate":"true",
 						"fontfile":"MINISYST.TTF",
@@ -2965,7 +2966,7 @@
 				"models":["radio"],
 				"name":"OffClockSaver",
 				"contributors":"tcutting",
-				"background":"http://home.roadrunner.com/~tcutting/images/Background1a.png",
+				"background":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/Background1a.png/download",
 				"items":[
 					{
 						"align":"center",
@@ -3018,13 +3019,13 @@
 						"posx":"-53"
 					},
 					{
-						"url.set":"http://home.roadrunner.com/~tcutting/images/AlarmIcon.png",
+						"url.set":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon.png/download",
 						"itemtype":"alarmicon",
 						"free": 1,
 						"posy":"171",
-						"url.active":"http://home.roadrunner.com/~tcutting/images/AlarmIcon_Active.png",
+						"url.active":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon_Active.png/download",
 						"posx":"227",
-						"url.snooze":"http://home.roadrunner.com/~tcutting/images/AlarmIconSnooze.png"
+						"url.snooze":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIconSnooze.png/download"
 					},
 					{
 						"align":"right",
@@ -3038,22 +3039,22 @@
 						"posx":"0"
 					},
 					{
-						"url.2":"http://home.roadrunner.com/~tcutting/images/icon_wireless_2.png",
+						"url.2":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_2.png/download",
 						"itemtype":"wirelessicon",
 						"free": 1,
 						"posy":"213",
-						"url.1":"http://home.roadrunner.com/~tcutting/images/icon_wireless_1.png",
-						"url.3":"http://home.roadrunner.com/~tcutting/images/icon_wireless_3.png",
-						"url":"http://home.roadrunner.com/~tcutting/images/icon_wireless_4.png",
+						"url.1":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_1.png/download",
+						"url.3":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_3.png/download",
+						"url":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_4.png/download",
 						"posx":"280"
 					},
 					{
-						"url.stop":"http://home.roadrunner.com/~tcutting/images/icon_mode_stop.png",
+						"url.stop":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_stop.png/download",
 						"itemtype":"playstatusicon",
 						"free": 1,
 						"posy":"213",
-						"url.play":"http://home.roadrunner.com/~tcutting/images/icon_mode_play.png",
-						"url.pause":"http://home.roadrunner.com/~tcutting/images/icon_mode_pause.png",
+						"url.play":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_play.png/download",
+						"url.pause":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_pause.png/download",
 						"posx":"10"
 					},
 					{
@@ -3071,17 +3072,17 @@
 						"posx":"15"
 					},
 					{
-						"url.2":"http://home.roadrunner.com/~tcutting/images/icon_battery_2.png",
-						"url.CHARGING":"http://home.roadrunner.com/~tcutting/images/icon_battery_charging.png",
+						"url.2":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_2.png/download",
+						"url.CHARGING":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_charging.png/download",
 						"itemtype":"batteryicon",
 						"free": 1,
 						"posy":"216",
-						"url.1":"http://home.roadrunner.com/~tcutting/images/icon_battery_1.png",
-						"url.4":"http://home.roadrunner.com/~tcutting/images/icon_battery_4.png",
-						"url.0":"http://home.roadrunner.com/~tcutting/images/icon_battery_0.png",
-						"url.3":"http://home.roadrunner.com/~tcutting/images/icon_battery_3.png",
-						"url.AC":"http://home.roadrunner.com/~tcutting/images/icon_battery_AC.png",
-						"url":"http://home.roadrunner.com/~tcutting/images/icon_wireless_0.png",
+						"url.1":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_1.png/download",
+						"url.4":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_4.png/download",
+						"url.0":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_0.png/download",
+						"url.3":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_3.png/download",
+						"url.AC":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_AC.png/download",
+						"url":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_0.png/download",
 						"posx":"145"
 					}
 				]
@@ -3131,12 +3132,12 @@
 						"posx":"2"
 					},
 					{
-						"url.set":"http://home.roadrunner.com/~tcutting/images/AlarmIcon.png",
+						"url.set":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon.png/download",
 						"itemtype":"alarmicon",
 						"free": 1,
 						"posy":"220",
-						"url.active":"http://home.roadrunner.com/~tcutting/images/AlarmIcon_Active.png",
-						"url.snooze":"http://home.roadrunner.com/~tcutting/images/AlarmIconSnooze.png",
+						"url.active":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon_Active.png/download",
+						"url.snooze":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIconSnooze.png/download",
 						"posx":"130"
 					},
 					{
@@ -3151,22 +3152,22 @@
 						"posx":"140"
 					},
 					{
-						"url.2":"http://home.roadrunner.com/~tcutting/images/icon_wireless_2.png",
+						"url.2":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_2.png/download",
 						"itemtype":"wirelessicon",
 						"free": 1,
 						"posy":"219",
-						"url.1":"http://home.roadrunner.com/~tcutting/images/icon_wireless_1.png",
-						"url.3":"http://home.roadrunner.com/~tcutting/images/icon_wireless_3.png",
-						"url":"http://home.roadrunner.com/~tcutting/images/icon_wireless_4.png",
+						"url.1":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_1.png/download",
+						"url.3":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_3.png/download",
+						"url":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_4.png/download",
 						"posx":"294"
 					},
 					{
-						"url.stop":"http://home.roadrunner.com/~tcutting/images/icon_mode_stop.png",
+						"url.stop":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_stop.png/download",
 						"itemtype":"playstatusicon",
 						"free": 1,
 						"posy":"219",
-						"url.play":"http://home.roadrunner.com/~tcutting/images/icon_mode_play.png",
-						"url.pause":"http://home.roadrunner.com/~tcutting/images/icon_mode_pause.png",
+						"url.play":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_play.png/download",
+						"url.pause":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_pause.png/download",
 						"posx":"10"
 					},
 					{
@@ -3184,18 +3185,18 @@
 						"posx":"15"
 					},
 					{
-						"url.2":"http://home.roadrunner.com/~tcutting/images/icon_battery_2.png",
-						"url.CHARGING":"http://home.roadrunner.com/~tcutting/images/icon_battery_charging.png",
+						"url.2":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_2.png/download",
+						"url.CHARGING":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_charging.png/download",
 						"itemtype":"batteryicon",
 						"free": 1,
 						"posy":"223",
-						"url.1":"http://home.roadrunner.com/~tcutting/images/icon_battery_1.png",
-						"url.4":"http://home.roadrunner.com/~tcutting/images/icon_battery_4.png",
+						"url.1":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_1.png/download",
+						"url.4":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_4.png/download",
 						"framerate":"1",
-						"url.0":"http://home.roadrunner.com/~tcutting/images/icon_battery_0.png",
-						"url.3":"http://home.roadrunner.com/~tcutting/images/icon_battery_3.png",
-						"url.AC":"http://home.roadrunner.com/~tcutting/images/icon_battery_AC.png",
-						"url":"http://home.roadrunner.com/~tcutting/images/icon_wireless_0.png",
+						"url.0":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_0.png/download",
+						"url.3":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_3.png/download",
+						"url.AC":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_AC.png/download",
+						"url":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_0.png/download",
 						"posx":"260",
 						"framewidth":"24"
 					},
@@ -3584,7 +3585,7 @@
 						"itemtype":"sleepicon",
 						"free": 1,
 						"posy":"220",
-						"url.ON":"http://home.roadrunner.com/~tcutting/images/icon_mode_sleep_on.png",
+						"url.ON":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_sleep_on.png/download",
 						"posx":"225"
 					}
 				]
@@ -3634,12 +3635,12 @@
 						"posx":"2"
 					},
 					{
-						"url.set":"http://home.roadrunner.com/~tcutting/images/AlarmIcon.png",
+						"url.set":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon.png/download",
 						"itemtype":"alarmicon",
 						"free": 1,
 						"posy":"220",
-						"url.active":"http://home.roadrunner.com/~tcutting/images/AlarmIcon_Active.png",
-						"url.snooze":"http://home.roadrunner.com/~tcutting/images/AlarmIconSnooze.png",
+						"url.active":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon_Active.png/download",
+						"url.snooze":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIconSnooze.png/download",
 						"posx":"130"
 					},
 					{
@@ -3654,22 +3655,22 @@
 						"posx":"140"
 					},
 					{
-						"url.2":"http://home.roadrunner.com/~tcutting/images/icon_wireless_2.png",
+						"url.2":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_2.png/download",
 						"itemtype":"wirelessicon",
 						"free": 1,
 						"posy":"219",
-						"url.1":"http://home.roadrunner.com/~tcutting/images/icon_wireless_1.png",
-						"url.3":"http://home.roadrunner.com/~tcutting/images/icon_wireless_3.png",
-						"url":"http://home.roadrunner.com/~tcutting/images/icon_wireless_4.png",
+						"url.1":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_1.png/download",
+						"url.3":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_3.png/download",
+						"url":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_4.png/download",
 						"posx":"294"
 					},
 					{
-						"url.stop":"http://home.roadrunner.com/~tcutting/images/icon_mode_stop.png",
+						"url.stop":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_stop.png/download",
 						"itemtype":"playstatusicon",
 						"free": 1,
 						"posy":"219",
-						"url.play":"http://home.roadrunner.com/~tcutting/images/icon_mode_play.png",
-						"url.pause":"http://home.roadrunner.com/~tcutting/images/icon_mode_pause.png",
+						"url.play":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_play.png/download",
+						"url.pause":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_pause.png/download",
 						"posx":"10"
 					},
 					{
@@ -3687,18 +3688,18 @@
 						"posx":"15"
 					},
 					{
-						"url.2":"http://home.roadrunner.com/~tcutting/images/icon_battery_2.png",
-						"url.CHARGING":"http://home.roadrunner.com/~tcutting/images/icon_battery_charging.png",
+						"url.2":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_2.png/download",
+						"url.CHARGING":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_charging.png/download",
 						"itemtype":"batteryicon",
 						"free": 1,
 						"posy":"223",
-						"url.1":"http://home.roadrunner.com/~tcutting/images/icon_battery_1.png",
-						"url.4":"http://home.roadrunner.com/~tcutting/images/icon_battery_4.png",
+						"url.1":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_1.png/download",
+						"url.4":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_4.png/download",
 						"framerate":"1",
-						"url.0":"http://home.roadrunner.com/~tcutting/images/icon_battery_0.png",
-						"url.3":"http://home.roadrunner.com/~tcutting/images/icon_battery_3.png",
-						"url.AC":"http://home.roadrunner.com/~tcutting/images/icon_battery_AC.png",
-						"url":"http://home.roadrunner.com/~tcutting/images/icon_wireless_0.png",
+						"url.0":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_0.png/download",
+						"url.3":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_3.png/download",
+						"url.AC":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_AC.png/download",
+						"url":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_0.png/download",
 						"posx":"260",
 						"framewidth":"24"
 					},
@@ -4087,7 +4088,7 @@
 						"itemtype":"sleepicon",
 						"free": 1,
 						"posy":"220",
-						"url.ON":"http://home.roadrunner.com/~tcutting/images/icon_mode_sleep_on.png",
+						"url.ON":"https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_sleep_on.png/download",
 						"posx":"225"
 					}
 				]
@@ -4492,25 +4493,25 @@
 						"itemtype":"clockimage",
 						"free": 1,
 						"dynamic":"false",
-						"url":"http://erland.github.io/squeezebox-customclock/images/ChildrenClock/clockface_jmk02.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/ChildrenClock/clockface_jmk02.png"
 					},
 					{
 						"itemtype":"hourimage",
 						"free": 1,
 						"dynamic":"false",
-						"url":"http://erland.github.io/squeezebox-customclock/images/ChildrenClock/hourhand_pen.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/ChildrenClock/hourhand_pen.png"
 					},
 					{
 						"itemtype":"minuteimage",
 						"free": 1,
 						"dynamic":"false",
-						"url":"http://erland.github.io/squeezebox-customclock/images/ChildrenClock/minutehand_pen.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/ChildrenClock/minutehand_pen.png"
 					},
 					{
 						"itemtype":"alarmicon",
 						"free": 1,
 						"posy":"20",
-						"url":"http://erland.github.io/squeezebox-customclock/images/ChildrenClock/Alarm_jmk.png",
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/ChildrenClock/Alarm_jmk.png",
 						"posx":"280"
 					}
 				]
@@ -4526,25 +4527,25 @@
 						"itemtype":"clockimage",
 						"free": 1,
 						"dynamic":"false",
-						"url":"http://erland.github.io/squeezebox-customclock/images/GrandfatherClock/Grandfather_cf.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/GrandfatherClock/Grandfather_cf.png"
 					},
 					{
 						"itemtype":"hourimage",
 						"free": 1,
 						"dynamic":"false",
-						"url":"http://erland.github.io/squeezebox-customclock/images/GrandfatherClock/Grandfather_hh.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/GrandfatherClock/Grandfather_hh.png"
 					},
 					{
 						"itemtype":"minuteimage",
 						"free": 1,
 						"dynamic":"false",
-						"url":"http://erland.github.io/squeezebox-customclock/images/GrandfatherClock/Grandfather_mh.png"
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/GrandfatherClock/Grandfather_mh.png"
 					},
 					{
 						"itemtype":"alarmicon",
 						"free": 1,
 						"posy":"140",
-						"url":"http://erland.github.io/squeezebox-customclock/images/GrandfatherClock/Grandfather_ai.png",
+						"url":"https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/GrandfatherClock/Grandfather_ai.png",
 						"posx":"150"
 					}
 				]
@@ -4782,7 +4783,7 @@
 			{
 				"models" :["touch"],
 				"name" : "Now Playing Alternative",
-				"background" : "http://erland.github.io/squeezebox-customclock/images/NowPlayingAlternative/background3f.png",
+				"background" : "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/NowPlayingAlternative/background3f.png",
 				"backgrounddynamic" : "false",
 				"contributors" : "ciarpame",
 				"items" :[
@@ -4837,18 +4838,18 @@
 					   "posx" : "146"
 					},
 					{
-					   "url.stop" : "http://erland.github.io/squeezebox-customclock/images/NowPlayingAlternative/stop-30.png",
+					   "url.stop" : "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/NowPlayingAlternative/stop-30.png",
 					   "itemtype" : "playstatusicon",
-					   "url.play" : "http://erland.github.io/squeezebox-customclock/images/NowPlayingAlternative/play-30.png",
+					   "url.play" : "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/NowPlayingAlternative/play-30.png",
 					   "posy" : "168",
-					   "url.pause" : "http://erland.github.io/squeezebox-customclock/images/NowPlayingAlternative/pause-30.png",
+					   "url.pause" : "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/NowPlayingAlternative/pause-30.png",
 					   "posx" : "10"
 					},
 					{
 					   "width" : "105",
 					   "itemtype" : "elapsedimage",
-					   "url.playingslidingx" : "http://erland.github.io/squeezebox-customclock/images/NowPlayingAlternative/progress.png",
-					   "url.stoppedslidingx" : "http://erland.github.io/squeezebox-customclock/images/NowPlayingAlternative/progress.png",
+					   "url.playingslidingx" : "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/NowPlayingAlternative/progress.png",
+					   "url.stoppedslidingx" : "https://raw.githubusercontent.com/erland/erlandplugins/master/CustomClock/trunk/images/NowPlayingAlternative/progress.png",
 					   "posy" : "233",
 					   "dynamic" : "false",
 					   "posx" : "69"
@@ -4951,12 +4952,12 @@
 					   "posx" : "255"
 					},
 					{
-					   "url.set" : "http://home.roadrunner.com/~tcutting/images/AlarmIcon.png",
-					   "url.active" : "http://home.roadrunner.com/~tcutting/images/AlarmIcon_Active.png",
+					   "url.set" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon.png/download",
+					   "url.active" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIcon_Active.png/download",
 					   "free" : "1",
 					   "itemtype" : "alarmicon",
 					   "posy" : "220",
-					   "url.snooze" : "http://home.roadrunner.com/~tcutting/images/AlarmIconSnooze.png",
+					   "url.snooze" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/AlarmIconSnooze.png/download",
 					   "posx" : "130"
 					},
 					{
@@ -4971,39 +4972,39 @@
 					   "posx" : "140"
 					},
 					{
-					   "url.2" : "http://home.roadrunner.com/~tcutting/images/icon_wireless_2.png",
+					   "url.2" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_2.png/download",
 					   "itemtype" : "wirelessicon",
 					   "posy" : "219",
-					   "url.1" : "http://home.roadrunner.com/~tcutting/images/icon_wireless_1.png",
+					   "url.1" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_1.png/download",
 					   "free" : "1",
-					   "url.3" : "http://home.roadrunner.com/~tcutting/images/icon_wireless_3.png",
-					   "url" : "http://home.roadrunner.com/~tcutting/images/icon_wireless_4.png",
+					   "url.3" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_3.png/download",
+					   "url" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_4.png/download",
 					   "posx" : "294"
 					},
 					{
-					   "url.stop" : "http://home.roadrunner.com/~tcutting/images/icon_mode_stop.png",
+					   "url.stop" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_stop.png/download",
 					   "free" : "1",
 					   "itemtype" : "playstatusicon",
-					   "url.play" : "http://home.roadrunner.com/~tcutting/images/icon_mode_play.png",
+					   "url.play" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_play.png/download",
 					   "posy" : "219",
-					   "url.pause" : "http://home.roadrunner.com/~tcutting/images/icon_mode_pause.png",
+					   "url.pause" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_pause.png/download",
 					   "posx" : "10"
 					},
 					{
-					   "url.2" : "http://home.roadrunner.com/~tcutting/images/icon_battery_2.png",
+					   "url.2" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_2.png/download",
 					   "itemtype" : "batteryicon",
-					   "url.3" : "http://home.roadrunner.com/~tcutting/images/icon_battery_3.png",
-					   "url" : "http://home.roadrunner.com/~tcutting/images/icon_wireless_0.png",
+					   "url.3" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_3.png/download",
+					   "url" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_wireless_0.png/download",
 					   "url.NONE" : "",
 					   "framewidth" : "24",
-					   "url.CHARGING" : "http://home.roadrunner.com/~tcutting/images/icon_battery_charging.png",
+					   "url.CHARGING" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_charging.png/download",
 					   "posy" : "223",
-					   "url.1" : "http://home.roadrunner.com/~tcutting/images/icon_battery_1.png",
+					   "url.1" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_1.png/download",
 					   "visibilityorder" : "",
-					   "url.4" : "http://home.roadrunner.com/~tcutting/images/icon_battery_4.png",
+					   "url.4" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_4.png/download",
 					   "framerate" : "1",
-					   "url.0" : "http://home.roadrunner.com/~tcutting/images/icon_battery_0.png",
-					   "url.AC" : "http://home.roadrunner.com/~tcutting/images/icon_battery_AC.png",
+					   "url.0" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_0.png/download",
+					   "url.AC" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_battery_AC.png/download",
 					   "posx" : "260"
 					},
 					{
@@ -5071,7 +5072,7 @@
 					   "itemtype" : "sleepicon",
 					   "url.OFF" : "",
 					   "posy" : "220",
-					   "url.ON" : "http://home.roadrunner.com/~tcutting/images/icon_mode_sleep_on.png",
+					   "url.ON" : "https://sourceforge.net/projects/superdatetimewu/files/CC_Icons/icon_mode_sleep_on.png/download",
 					   "posx" : "225"
 					}
 				]
@@ -5144,4 +5145,3 @@
 		]
 	}
 }
-
