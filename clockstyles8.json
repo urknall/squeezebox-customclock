@@ -1478,8 +1478,7 @@
 					{
 						"itemtype":"analogvumeter",
 						"free": 1,
-						"url":"https://raw.githubusercontent.com/erland/squeezebox-patchinstaller/gh-pages/patches/DarkBlueGlowVUMeter/share/jive/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png
-"
+						"url":"https://raw.githubusercontent.com/erland/squeezebox-patchinstaller/gh-pages/patches/DarkBlueGlowVUMeter/share/jive/applets/WQVGAsmallSkin/images/UNOFFICIAL/VUMeter/vu_analog_25seq_b.png"
 					},		
 					{
 						"itemtype":"trackplayingtext",
