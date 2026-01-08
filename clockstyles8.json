@@ -1757,7 +1757,7 @@
 					},
 					{
 						"itemtype":"minuteimage",
-						"url":"http://lms.hashsum.org/images/assetta/minute.png"
+						"url":"http://lms.hashsum.org/images/Cassetta/minute.png"
 					},
 					{
 						"itemtype":"secondimage",
@@ -2027,7 +2027,7 @@
 						"posy":"86",
 						"color":"white",
 						"fontsize":"65",
-						"fonturl":"http://www.1001fonts.com/download/minisystem.zip",
+						"fonturl":"http://lms.hashsum.org/fonts/minisystem.zip",
 						"text":"%H1:%M",
 						"animate":"true",
 						"fontfile":"MINISYST.TTF",
@@ -2039,7 +2039,7 @@
 						"posy":"85",
 						"color":"darkred",
 						"fontsize":"65",
-						"fonturl":"http://www.1001fonts.com/download/minisystem.zip",
+						"fonturl":"http://lms.hashsum.org/fonts/minisystem.zip",
 						"text":"%H1:%M",
 						"animate":"true",
 						"fontfile":"MINISYST.TTF",
