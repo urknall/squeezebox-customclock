@@ -3732,14 +3732,23 @@ function _tick(self,forcedUpdate)
 	self.lastsecond = second
 	
 
-	local hasImages = false
-	for key,image in pairs(self.images) do
-		if string.find(key,"image$") then
-			hasImages = true
+	-- Canvas needs an explicit redraw when we have any items that are rendered on the canvas
+	-- (analog clock hands, rotating/elapsed images, etc.). Otherwise the hands can appear "stuck"
+	-- unless some other widget changes and triggers a repaint.
+	local needsCanvasRedraw = false
+	for _,item in pairs(self.configItems or {}) do
+		if item.itemtype == "clockimage"
+			or item.itemtype == "hourimage"
+			or item.itemtype == "minuteimage"
+			or item.itemtype == "secondimage"
+			or string.find(item.itemtype or "", "^rotatingimage")
+			or string.find(item.itemtype or "", "^elapsedimage") then
+			needsCanvasRedraw = true
 			break
 		end
-	end	
-	if hasImages then
+	end
+
+	if needsCanvasRedraw and self.canvas then
 		self.canvas:reSkin()
 		self.canvas:reDraw()
 	end
@@ -3875,14 +3884,14 @@ function _reDrawAnalog(self,screen)
 			end
 			if self.images[self.mode.."item"..no..".minute"]  then
 				self:_blitImage(screen,
-					self.mode.."item"..no..".hour",
+					self.mode.."item"..no..".minute",
 					posx,
 					posy,
 					(360 / 60) * m)
 			end
 			if self.images[self.mode.."item"..no..".second"]  then
 				self:_blitImage(screen,
-					self.mode.."item"..no..".hour",
+					self.mode.."item"..no..".second",
 					posx,
 					posy,
 					(360 / 60) * s)
