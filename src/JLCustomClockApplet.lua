@@ -823,7 +823,7 @@ function _recalculateVisibilityTimes(self,items)
 			if string.find(self.configItems[item.item].itemtype,"^sdtsport") then
 				results = self:_getSDTCacheData("sport",self.configItems[item.item])
 			elseif string.find(self.configItems[item.item].itemtype,"^sdtweathericon") or string.find(self.configItems[item.item].itemtype,"^sdtweathertext") then
-				results = self:_getSDTCacheData("stocks",self.configItems[item.item])
+				results = self:_getSDTCacheData("weather",self.configItems[item.item])
 			elseif string.find(self.configItems[item.item].itemtype,"^sdtstock") then
 				results = self:_getSDTCacheData("stocks",self.configItems[item.item])
 			elseif string.find(self.configItems[item.item].itemtype,"^sdtmisc") and _getString(self.configItems[item.item].infotype,nil) then
