@@ -683,7 +683,7 @@ function openScreensaver(self,mode, transition)
 				function()
 					log:debug('Consuming this action')
 					Framework:playSound("BUMP")
-					window:bumpLeft()
+					self.window:bumpLeft()
 					return EVENT_CONSUME
 				end
 			)
