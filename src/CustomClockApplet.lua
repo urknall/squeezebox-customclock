@@ -1615,7 +1615,7 @@ function _downloadFontFile(self,dir,filename)
 
         return function(chunk)
                 if chunk == nil then
-                        if fh and fh ~= DIR then
+                        if fh and fh ~= 'DIR' then
                                 fh:close()
                                 fh = nil
 				log:debug("Downloaded "..dir..filename)
