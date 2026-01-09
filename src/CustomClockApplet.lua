@@ -1943,7 +1943,7 @@ function _updateSDTSportItem(self,items)
 						if not self.sdtcache["sport"][key].current then
 							if oldCache and oldCache[key] and oldCache[key].current then
 								if oldCache[key].data[oldCache[key].current].uniqueID then
-									local oldItemNo = 1
+									oldItemNo = 1
 									for _,item in ipairs(self.sdtcache["sport"][key].data) do
 										if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
 											break
