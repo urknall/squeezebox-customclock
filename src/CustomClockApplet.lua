@@ -1244,7 +1244,7 @@ function _getOnlineStylesSink(self,title,mode)
 
 		self.popup = popup
 	end
-	local http = SocketHttp(jnt, "http://erland.github.io", 80)
+	local http = SocketHttp(jnt, "http://lms.hashsum.org", 80)
 	local req = RequestHttp(function(chunk, err)
 			if err then
 				log:warn(err)
@@ -1253,7 +1253,7 @@ function _getOnlineStylesSink(self,title,mode)
 				self:defineSettingStyleSink(title,mode,chunk.data)
 			end
 		end,
-		'GET', "/squeezebox-customclock/clockstyles7.json")
+		'GET', "/clockstyles8.json")
 	http:fetch(req)
 end
 
