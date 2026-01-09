@@ -831,7 +831,7 @@ function _recalculateVisibilityTimes(self,items)
 				results = self:_getRSSItemCacheData(self.configItems[item.item].url,self.configItems[item.item])
 			end
 			if results then
-				recalculated = true
+				local recalculated = true
 				item.delay = tonumber(self.configItems[item.item].interval) * tonumber(#results)
 				if not maxdelay[item.order] or maxdelay[item.order]<item.delay then
 					log:debug("Recalculate visibility times order="..item.order..": "..tonumber(self.configItems[item.item].interval).."*"..tonumber(#results).."="..item.delay)
@@ -1943,7 +1943,7 @@ function _updateSDTSportItem(self,items)
 						if not self.sdtcache["sport"][key].current then
 							if oldCache and oldCache[key] and oldCache[key].current then
 								if oldCache[key].data[oldCache[key].current].uniqueID then
-									oldItemNo = 1
+									local oldItemNo = 1
 									for _,item in ipairs(self.sdtcache["sport"][key].data) do
 										if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
 											break
@@ -3755,7 +3755,7 @@ function _tick(self,forcedUpdate)
 end
 
 function _updateFromCache(self,no)		
-	item = self.configItems[no]
+	local item = self.configItems[no]
 	self:getSettings()['itemCache'..self.mode] = self:getSettings()['itemCache'..self.mode] or {}
 	local cachedItem = self:getSettings()['itemCache'..self.mode][no]
 	if cachedItem and cachedItem.value then
@@ -3815,14 +3815,14 @@ function _secondsToString(seconds)
 end
 
 function _blitImage(self,screen,id,posx,posy,angle)
-	log:debug("Updating "..tostring(id).." at "..tostring(angle)..", "..tostring(x)..", "..tostring(y))
 	local tmp = self.images[id]
 	if angle and angle!=0 then
 		tmp = tmp:rotozoom(-angle, 1, 5)
 	end
 	local facew, faceh = tmp:getSize()
-	x = math.floor(posx - (facew/2))
-	y = math.floor(posy - (faceh/2))
+	local x = math.floor(posx - (facew/2))
+	local y = math.floor(posy - (faceh/2))
+	log:debug("Updating "..tostring(id).." at "..tostring(angle)..", "..tostring(x)..", "..tostring(y))
 	tmp:blit(screen, x, y)
 	if angle and angle!=0 then
 		tmp:release()
@@ -4010,8 +4010,8 @@ function _reDrawAnalog(self,screen)
 			if self.images[self.mode.."item"..no..id] then
 				local tmp = self.images[self.mode.."item"..no..id]
 				local facew, faceh = tmp:getSize()
-				x = _getNumber(item.posx,0)
-				y = _getNumber(item.posy,0)
+				local x = _getNumber(item.posx,0)
+				local y = _getNumber(item.posy,0)
 				local clipwidth = math.floor(_getNumber(item.width,width) * elapsed / duration)
 				log:debug("Updating clipping elapsed image at "..x..", "..y.." with width "..clipwidth)
 				tmp:blitClip(0, 0,clipwidth,faceh,screen, x,y)
@@ -4029,8 +4029,8 @@ function _reDrawAnalog(self,screen)
 				local facew, faceh = tmp:getSize()
 				local posx = math.floor(_getNumber(item.width,width-facew) * elapsed / duration)
 				posx = _getNumber(item.posx,0) + posx
-				x = _getNumber(posx,0)
-				y = _getNumber(item.posy,0)
+				local x = _getNumber(posx,0)
+				local y = _getNumber(item.posy,0)
 				log:debug("Updating sliding elapsed image at "..x..", "..y)
 				tmp:blit(screen, x, y)
 			end
