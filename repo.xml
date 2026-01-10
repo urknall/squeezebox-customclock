@@ -1,6 +1,8 @@
 <?xml version='1.0' standalone='yes'?>
 <extensions>
-<<<<<<< HEAD
+  <details>
+    <title lang="EN">Urknall CustomClock + JLCustomClock</title>
+  </details>
   <applets>
     <applet name="CustomClock" minTarget="8.3.0" maxTarget="*" version="2.26.004">
       <url>http://lms.hashsum.org/CustomClock_2_26_004.zip</url>
@@ -17,11 +19,6 @@
       <title lang="EN">&gt;CustomClock for Jivelite</title>
     </applet>
   </applets>
-=======
->>>>>>> 394116f8839a6d432eb1a5be5797344d8b2d8700
-  <details>
-    <title lang="EN">Urknall CustomClock + JLCustomClock</title>
-  </details>
   <applets>
     <applet name="CustomClock" version="2.27.001" maxTarget="*" minTarget="8.3">
       <creator>erland, tcutting, urknall</creator>
