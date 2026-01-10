@@ -4,19 +4,19 @@
     <title lang="EN">Urknall CustomClock + JLCustomClock</title>
   </details>
   <applets>
-    <applet minTarget="8.3" maxTarget="*" name="CustomClock" version="2.26.001">
-      <creator>erland, tcutting, urknall</creator>
-      <url>http://lms.hashsum.org/CustomClock2_26_001.zip</url>
-      <title lang="EN">CustomClock</title>
-      <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
+    <applet version="2.26.001" minTarget="8.3" maxTarget="*" name="CustomClock">
       <sha>d05ffc76bf37de36ba9b62a0922f4155f9d6c12d</sha>
+      <title lang="EN">CustomClock</title>
+      <url>http://lms.hashsum.org/CustomClock2_26_001.zip</url>
+      <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
+      <creator>erland, tcutting, urknall</creator>
     </applet>
-    <applet version="2.26.004" target="jivelite" name="JLCustomClock" maxTarget="*" minTarget="8.3">
-      <sha>a331c5dec41d09495e2223fe10452d4dc95d85f1</sha>
+    <applet name="JLCustomClock" maxTarget="*" target="jivelite" minTarget="8.3" version="2.27.001">
       <desc lang="EN">Modified Custom Clock for Jivelite</desc>
       <creator>erland, tcutting, urknall</creator>
+      <url>http://lms.hashsum.org/JLCustomClock_2_27_001.zip</url>
       <title lang="EN">&gt;CustomClock for Jivelite</title>
-      <url>http://lms.hashsum.org/JLCustomClock_2_26_004.zip</url>
+      <sha>054c8ef3e00fe6f41318bec2fe03fe2446f54ecc</sha>
     </applet>
   </applets>
 </extensions>
