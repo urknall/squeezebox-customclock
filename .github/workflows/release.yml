@@ -28,14 +28,14 @@ jobs:
         id: set-filename
         run: |
           FNAME=${{ steps.set-version.outputs.version }}
-          echo "fileversion=${FNAME//_./_}" >>  $GITHUB_OUTPUT
+          echo "fileversion=${FNAME//./_}" >>  $GITHUB_OUTPUT
 
       - name: Zip Repository
         id: zip
         working-directory: ./src
         run: |
           zip ../JLCustomClock -9r *.lua *.txt
-          mv ../JLCustomClock.zip ../JLCustomClock${{ steps.set-filename.outputs.fileversion }}.zip
+          mv ../JLCustomClock.zip ../JLCustomClock_${{ steps.set-filename.outputs.fileversion }}.zip
           cp ../JLCustomClock*.zip ../gh-pages/
 
       - name: Setup Perl
@@ -47,7 +47,7 @@ jobs:
         id: tag
         run: |
           url="http://lms.hashsum.org"
-          perl ../release.pl repo.xml ${{ steps.set-version.outputs.version }} JLCustomClock${{ steps.set-filename.outputs.fileversion }}.zip $url JLCustomClock
+          perl ../release.pl repo.xml ${{ steps.set-version.outputs.version }} JLCustomClock_${{ steps.set-filename.outputs.fileversion }}.zip $url JLCustomClock
 
       - name: Update pages Repository
         working-directory: ./gh-pages
@@ -55,7 +55,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add repo.xml
-          git add JLCustomClock${{ steps.set-filename.outputs.fileversion }}.zip
+          git add JLCustomClock_${{ steps.set-filename.outputs.fileversion }}.zip
           git commit -m "Update JLCustomClock for Release ${{ steps.set-version.outputs.version }}"
           git push origin HEAD:gh-pages
 
@@ -70,4 +70,4 @@ jobs:
           body: Custom Clock for Jivelite Release
           draft: false
           prerelease: false
-          files: JLCustomClock${{ steps.set-filename.outputs.fileversion }}.zip
+          files: JLCustomClock_${{ steps.set-filename.outputs.fileversion }}.zip
