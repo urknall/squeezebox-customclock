@@ -47,7 +47,7 @@ jobs:
         id: tag
         run: |
           url="http://jivelite.picoreplayer.org"
-          perl ../release.pl repo.xml ${{ steps.set-version.outputs.version }} JLCustomClock${{ steps.set-filename.outputs.fileversion }}.zip $url
+          perl ../release.pl repo.xml ${{ steps.set-version.outputs.version }} JLCustomClock${{ steps.set-filename.outputs.fileversion }}.zip $url JLCustomClock
 
       - name: Update pages Repository
         working-directory: ./gh-pages
