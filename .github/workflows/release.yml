@@ -28,7 +28,7 @@ jobs:
         id: set-filename
         run: |
           FNAME=${{ steps.set-version.outputs.version }}
-          echo "fileversion=${FNAME//./_}" >>  $GITHUB_OUTPUT
+          echo "fileversion=${FNAME_//./_}" >>  $GITHUB_OUTPUT
 
       - name: Zip Repository
         id: zip
@@ -46,7 +46,7 @@ jobs:
         working-directory: ./gh-pages
         id: tag
         run: |
-          url="http://jivelite.picoreplayer.org"
+          url="http://lms.hashsum.org"
           perl ../release.pl repo.xml ${{ steps.set-version.outputs.version }} JLCustomClock${{ steps.set-filename.outputs.fileversion }}.zip $url JLCustomClock
 
       - name: Update pages Repository
