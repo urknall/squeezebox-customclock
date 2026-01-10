@@ -1,4 +1,4 @@
-name: Release Jive
+name: Release
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Repository Jive
         uses: actions/checkout@v4
         with:
            ref: jive
@@ -35,7 +35,7 @@ jobs:
         working-directory: ./src
         run: |
           zip ../CustomClock -9r *.lua *.txt
-          mv ../CustomClock.zip ../CustomClock${{ steps.set-filename.outputs.fileversion }}.zip
+          mv ../CustomClock.zip ../CustomClock_${{ steps.set-filename.outputs.fileversion }}.zip
           cp ../CustomClock*.zip ../gh-pages/
 
       - name: Setup Perl
@@ -47,7 +47,7 @@ jobs:
         id: tag
         run: |
           url="http://lms.hashsum.org"
-          perl ../release.pl repo.xml ${{ steps.set-version.outputs.version }} CustomClock${{ steps.set-filename.outputs.fileversion }}.zip $url
+          perl ../release.pl repo.xml ${{ steps.set-version.outputs.version }} CustomClock_${{ steps.set-filename.outputs.fileversion }}.zip $url CustomClock
 
       - name: Update pages Repository
         working-directory: ./gh-pages
@@ -55,7 +55,7 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add repo.xml
-          git add CustomClock${{ steps.set-filename.outputs.fileversion }}.zip
+          git add CustomClock_${{ steps.set-filename.outputs.fileversion }}.zip
           git commit -m "Update CustomClock for Release ${{ steps.set-version.outputs.version }}"
           git push origin HEAD:gh-pages
 
@@ -70,4 +70,4 @@ jobs:
           body: Custom Clock Release
           draft: false
           prerelease: false
-          files: CustomClock${{ steps.set-filename.outputs.fileversion }}.zip
+          files: CustomClock_${{ steps.set-filename.outputs.fileversion }}.zip
