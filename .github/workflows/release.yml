@@ -28,7 +28,7 @@ jobs:
         id: set-filename
         run: |
           FNAME=${{ steps.set-version.outputs.version }}
-          echo "fileversion=${FNAME_//./_}" >>  $GITHUB_OUTPUT
+          echo "fileversion=${FNAME//_./_}" >>  $GITHUB_OUTPUT
 
       - name: Zip Repository
         id: zip
