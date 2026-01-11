@@ -4,7 +4,7 @@
     <title lang="EN">Urknall CustomClock + JLCustomClock</title>
   </details>
   <applets>
-    <applet minTarget="8.3.0" maxTarget="*" name="CustomClock" version="2.28.001">
+    <applet name="CustomClock" version="2.28.001" minTarget="*" maxTarget="*" target="jive|fab4|baby">
       <creator>erland, tcutting, urknall</creator>
       <sha>5033cda0591a66df5a040855fe80f671f750703d</sha>
       <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
@@ -12,7 +12,7 @@
       <title lang="EN">CustomClock</title>
       <url>http://lms.hashsum.org/CustomClock_2_28_001.zip</url>
     </applet>
-    <applet version="2.28.001" minTarget="8.3.0" maxTarget="*" target="jivelite" name="JLCustomClock">
+    <applet name="JLCustomClock" version="2.28.001" minTarget="*" maxTarget="*" target="jivelite" >
       <changes lang="EN"> - various fixes and lms imageproxy support </changes>
       <creator>erland, tcutting, urknall</creator>
       <url>http://lms.hashsum.org/JLCustomClock_2_28_001.zip</url>
