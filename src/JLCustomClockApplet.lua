@@ -955,6 +955,7 @@ function openSettings(self)
 	local licensed = true
 
 	local menu = SimpleMenu("menu")
+	self.settingsMenu = menu
 	if not licensed then
 		menu:setHeaderWidget(Textarea("help_text", self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_UNLICENSED")))
 	end
@@ -1050,6 +1051,42 @@ function openSettings(self)
 	self.settingsWindow:addWidget(menu)
 	self:tieAndShowWindow(self.settingsWindow)
 	return self.settingsWindow
+end
+
+function _updateSettingsOverviewMenuItem(self,mode,menuItem)
+	-- Updates the text in the Custom Clock Settings overview menu to reflect the current selection
+	if not menuItem then
+		return
+	end
+	local name = self:getSettings()[mode.."style"]
+	local suffix = ""
+	if name then
+		suffix = ": " .. tostring(name)
+	end
+
+	local text = nil
+	if mode == "confignowplaying" then
+		text = tostring(self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_NOWPLAYING")) .. suffix
+	elseif mode == "configalarmactive" then
+		text = tostring(self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_ALARM_ACTIVE")) .. suffix
+	else
+		local no = string.gsub(mode,"^config","")
+		text = tostring(self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_CONFIG")) .. " #" .. tostring(no) .. suffix
+	end
+
+	if menuItem.setText then
+		menuItem:setText(text)
+	else
+		menuItem.text = text
+	end
+
+	-- Force a redraw so the updated text is visible when returning to the overview
+	if self.settingsMenu and self.settingsMenu.reDraw then
+		self.settingsMenu:reDraw()
+	end
+	if self.settingsWindow and self.settingsWindow.reDraw then
+		self.settingsWindow:reDraw()
+	end
 end
 
 function init(self)
@@ -1206,7 +1243,7 @@ function defineSettingStyle(self,mode,menuItem)
 									if err then
 										log:warn(err)
 									else
-										self:defineSettingStyleSink(menuItem.text,mode,chunk.data)
+										self:defineSettingStyleSink(menuItem,mode,chunk.data)
 									end
 								end,
 								player and player:getId(),
@@ -1214,7 +1251,7 @@ function defineSettingStyle(self,mode,menuItem)
 							)
 						else
 							log:debug("CustomClockHelper isn't installed retrieving online styles")
-							self:_getOnlineStylesSink(menuItem.text,mode)
+							self:_getOnlineStylesSink(menuItem,mode)
 						end
 					end
 				end,
@@ -1233,15 +1270,15 @@ function defineSettingStyle(self,mode,menuItem)
 			self.popup = popup
 		else
 			log:debug("Server not available retrieving online styles")
-			self:_getOnlineStylesSink(menuItem.text,mode)
+			self:_getOnlineStylesSink(menuItem,mode)
 		end
 	else
 		log:debug("Player not selected retrieving online styles")
-		self:_getOnlineStylesSink(menuItem.text,mode)
+		self:_getOnlineStylesSink(menuItem,mode)
 	end
 end
 
-function _getOnlineStylesSink(self,title,mode)
+function _getOnlineStylesSink(self,menuItem,mode)
 	if not self.popup then
 		-- create animiation to show while we get data from the server
 		local popup = Popup("waiting_popup")
@@ -1259,7 +1296,7 @@ function _getOnlineStylesSink(self,title,mode)
 				log:warn(err)
 			elseif chunk then
 				chunk = json.decode(chunk)
-				self:defineSettingStyleSink(title,mode,chunk.data)
+				self:defineSettingStyleSink(menuItem,mode,chunk.data)
 			end
 		end,
 		'GET', "/clockstyles8.json")
@@ -1284,8 +1321,13 @@ function _uses(parent, value)
         return style
 end
 
-function defineSettingStyleSink(self,title,mode,data)
-	self.popup:hide()
+function defineSettingStyleSink(self,settingsMenuItem,mode,data)
+	if self.popup then
+		self.popup:hide()
+		self.popup = nil
+	end
+
+	local title = (settingsMenuItem and settingsMenuItem.text) or ""
 	
 	local style = self:getSettings()[mode.."style"]
 	jive.ui.style.item_no_icon = _uses(jive.ui.style.item, {
@@ -1320,6 +1362,7 @@ function defineSettingStyleSink(self,title,mode,data)
 				function()
 					self:getSettings()[mode.."style"] = nil
 					self:_storeSettingsWithoutCache()
+					self:_updateSettingsOverviewMenuItem(mode, settingsMenuItem)
 					log:info("Changing to standard Now Playing applet")
 					appletManager:registerService("NowPlaying",'goNowPlaying')
 				end,
@@ -1337,6 +1380,7 @@ function defineSettingStyleSink(self,title,mode,data)
 				function()
 					self:getSettings()[mode.."style"] = nil
 					self:_storeSettingsWithoutCache()
+					self:_updateSettingsOverviewMenuItem(mode, settingsMenuItem)
 					appletManager:callService("registerAlternativeAlarmWindow",nil)
 				end,
 				style == nil
@@ -1368,6 +1412,7 @@ function defineSettingStyleSink(self,title,mode,data)
 						self.window=nil
 					end
 					self:_storeSettingsWithoutCache()
+					self:_updateSettingsOverviewMenuItem(mode, settingsMenuItem)
 					appletManager:callService("addScreenSaver", 
 						tostring(self:string("SCREENSAVER_CUSTOMCLOCK")).."#"..string.gsub(mode,"^config",""), 
 						"JLCustomClock",
@@ -1434,6 +1479,7 @@ function defineSettingStyleSink(self,title,mode,data)
 										self.window=nil
 									end
 									self:_storeSettingsWithoutCache()
+									self:_updateSettingsOverviewMenuItem(mode, settingsMenuItem)
 									if mode == "confignowplaying" then
 										log:info("Changing to custom Now Playing applet")
 										appletManager:registerService("JLCustomClock",'goNowPlaying')
