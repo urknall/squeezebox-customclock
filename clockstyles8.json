@@ -994,9 +994,9 @@
                         {
 				"backgroundtype": "black",
                                 "name": "Daylight Clock (https://www.die.net/earth)",
-				"contributors":"Erland, www.die.net (Images)",
+				"contributors":"Erland, www.opentopia.com (Images)",
                                 "models": ["touch"],
-				"background": "https://static.die.net/earth/mercator/480.jpg",
+				"background": "https://images.opentopia.com/sunlight/world_sunlight_map_rectangular.jpg",
 				"backgrounddynamic": "true",
 				"items": [
 					{
@@ -1032,10 +1032,10 @@
                         },
                         {
 				"backgroundtype": "black",
-                                "name": "Daylight Clock (https://www.die.net/earth)",
-				"contributors":"Erland, www.die.net (Images)",
+                                "name": "Daylight Clock (https://www.opentopia.com/)",
+				"contributors":"Erland, www.opentopia.com (Images)",
                                 "models": ["radio"],
-				"background": "https://static.die.net/earth/mercator/480.jpg",
+				"background": "https://images.opentopia.com/sunlight/world_sunlight_map_rectangular.jpg",
 				"backgrounddynamic": "true",
 				"items": [
 					{
