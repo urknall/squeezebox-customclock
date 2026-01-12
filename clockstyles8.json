@@ -994,7 +994,7 @@
                         {
 				"backgroundtype": "black",
                                 "name": "Daylight Clock (https://www.opentopia.com/sunlightmaprect.html)",
-				"contributors":"Erland, www.opentopia.com (Images)",
+				"contributors":"Erland, urknall, www.opentopia.com (Images)",
                                 "models": ["touch"],
 				"background": "https://images.opentopia.com/sunlight/world_sunlight_map_rectangular.jpg",
 				"backgrounddynamic": "true",
@@ -1033,7 +1033,7 @@
                         {
 				"backgroundtype": "black",
                                 "name": "Daylight Clock (https://www.opentopia.com/sunlightmaprect.html)",
-				"contributors":"Erland, www.opentopia.com (Images)",
+				"contributors":"Erland, urknall, www.opentopia.com (Images)",
                                 "models": ["radio"],
 				"background": "https://images.opentopia.com/sunlight/world_sunlight_map_rectangular.jpg",
 				"backgrounddynamic": "true",
