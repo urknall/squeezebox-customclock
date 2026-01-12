@@ -545,6 +545,8 @@ function openScreensaver(self,mode, transition)
 			self.model = "radio"
 		elseif width == 800 then
 			self.model = "jivelite800x480"
+		elseif width == 720 then
+			self.model = "jivelite720x1280"
 		else
 			self.model = "controller"
 		end
@@ -943,6 +945,8 @@ function openSettings(self)
 		self.model = "radio"
 	elseif width == 800 then
 		self.model = "jivelite800x480"
+	elseif width == 720 then
+		self.model = "jivelite720x1280"
 	else
 		self.model = "controller"
 	end
@@ -1862,6 +1866,8 @@ function _getCoverSize(self,size)
 			return 240
 		elseif self.model == "jivelite800x480" then
 			return 480
+		elseif self.model == "jivelite720x1280" then
+			return 720
 		elseif self.model == "touch" then
 			return 272
 		end
