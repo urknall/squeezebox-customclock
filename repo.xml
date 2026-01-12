@@ -8,7 +8,7 @@
       <creator>erland, tcutting, urknall</creator>
       <sha>5033cda0591a66df5a040855fe80f671f750703d</sha>
       <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
-      <changes lang="EN"> - various fixes and lms imageproxy support </changes>
+      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
       <title lang="EN">CustomClock</title>
       <url>http://lms.hashsum.org/CustomClock_2_28_001.zip</url>
     </applet>
