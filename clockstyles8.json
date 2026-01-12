@@ -2487,44 +2487,6 @@
 				]
 			},
 			{
-				"models":["touch"],
-				"name":"Random Gallery Image",
-				"contributors":"erland, mherger (Picture Gallery)",
-				"items":[
-					{
-						"width":"480",
-						"itemtype":"galleryicon",
-						"height":"230"
-					},
-					{
-						"itemtype":"switchingtrackplayingtext",
-						"free": 1,
-						"posy":"235",
-						"fontsize":"30",
-						"animate":"false"
-					}
-				]
-			},
-			{
-				"models":["radio"],
-				"name":"Random Gallery Image",
-				"contributors":"erland, mherger (Picture Gallery)",
-				"items":[
-					{
-						"width":"320",
-						"itemtype":"galleryicon",
-						"height":"200"
-					},
-					{
-						"itemtype":"switchingtrackplayingtext",
-						"free": 1,
-						"posy":"205",
-						"fontsize":"25",
-						"animate":"false"
-					}
-				]
-			},
-			{
 				"models":["radio"],
 				"name":"SDT LastFM Artist Images Celsius",
 				"contributors":"Erland, LastFM (Images)",
