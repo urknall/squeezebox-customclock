@@ -1,21 +1,21 @@
 <?xml version='1.0' standalone='yes'?>
 <extensions>
   <applets>
-    <applet minTarget="0.1" target="jive|fab4|baby" version="2.28.001" name="CustomClock" maxTarget="*">
-      <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
-      <creator>erland, tcutting, urknall</creator>
-      <title lang="EN">CustomClock</title>
+    <applet version="2.28.001" target="jive|fab4|baby" name="CustomClock" minTarget="0.1" maxTarget="*">
       <sha>5033cda0591a66df5a040855fe80f671f750703d</sha>
       <url>http://lms.hashsum.org/CustomClock_2_28_001.zip</url>
       <changes lang="EN"> - various fixes and lms imageproxy support</changes>
-    </applet>
-    <applet name="JLCustomClock" maxTarget="*" version="2.28.002" minTarget="0.1" target="jivelite">
-      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
-      <title lang="EN">CustomClock for Jivelite</title>
-      <url>http://lms.hashsum.org/JLCustomClock_2_28_002.zip</url>
       <creator>erland, tcutting, urknall</creator>
+      <title lang="EN">CustomClock</title>
+      <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
+    </applet>
+    <applet maxTarget="*" minTarget="0.1" name="JLCustomClock" target="jivelite" version="2.28.1">
+      <title lang="EN">CustomClock for Jivelite</title>
+      <creator>erland, tcutting, urknall</creator>
+      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
+      <url>http://lms.hashsum.org/JLCustomClock_2_28_1.zip</url>
       <desc lang="EN">Modified Custom Clock for Jivelite</desc>
-      <sha>6dddd9acf2f6373a1e4d7cfa7c9b5d9d9b60d318</sha>
+      <sha>47f42644f672e44d855b333fc579557a226ea1a4</sha>
     </applet>
   </applets>
   <details>
