@@ -1281,7 +1281,7 @@ function _getOnlineStylesSink(self,menuItem,mode)
 
 		self.popup = popup
 	end
-	local http = SocketHttp(jnt, "http://lms.hashsum.org", 80)
+	local http = SocketHttp(jnt, "lms.hashsum.org", 80)
 	local req = RequestHttp(function(chunk, err)
 			if err then
 				log:warn(err)
