@@ -4,21 +4,21 @@
     <title lang="EN">Urknall CustomClock + JLCustomClock</title>
   </details>
   <applets>
-    <applet name="CustomClock" version="2.28.3" minTarget="0.1" target="jive|fab4|baby" maxTarget="*">
-      <title lang="EN">CustomClock</title>
-      <creator>erland, tcutting, urknall</creator>
-      <url>http://lms.hashsum.org/CustomClock_2_28_3.zip</url>
-      <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
+    <applet target="jive|fab4|baby" version="2.28.3" minTarget="0.1" maxTarget="*" name="CustomClock">
       <sha>46fc0d7ba0ce01f13d2b94c7ac02f4bf4181bbc8</sha>
-      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
-    </applet>
-    <applet version="2.28.3" minTarget="0.1" target="jivelite" maxTarget="*" name="JLCustomClock">
-      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
+      <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
       <creator>erland, tcutting, urknall</creator>
-      <url>http://lms.hashsum.org/JLCustomClock_2_28_3.zip</url>
+      <title lang="EN">CustomClock</title>
+      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
+      <url>http://lms.hashsum.org/CustomClock_2_28_3.zip</url>
+    </applet>
+    <applet version="2.29.0" target="jivelite" name="JLCustomClock" maxTarget="*" minTarget="0.1">
       <desc lang="EN">Modified Custom Clock for Jivelite</desc>
+      <sha>610afb03c80cb62ae46fe597156ad02e0763ae84</sha>
+      <url>http://lms.hashsum.org/JLCustomClock_2_29_0.zip</url>
       <title lang="EN">CustomClock for Jivelite</title>
-      <sha>4c98cd92ea6ead6ff83dfb4aef6b5191462f47e7</sha>
+      <creator>erland, tcutting, urknall</creator>
+      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
     </applet>
   </applets>
 </extensions>
