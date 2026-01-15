@@ -2927,7 +2927,7 @@
 				"models":["radio"],
 				"name":"OffClockSaver",
 				"contributors":"tcutting",
-				"background":"",
+				"backgroundtype": "black",
 				"items":[
 					{
 						"align":"center",
