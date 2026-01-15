@@ -7533,8 +7533,6 @@
 				],
 				"contributors": "Paul Cosway",
 				"name": "Now Playing, Date, Time With Elapsed Time",
-				"style": "Now Playing, Date, Time With Elapsed Time",
-				"font": "http://lms.hashsum.org/fonts/FreeSans.zip",
 				"backgroundtype": "black",
 				"backgrounddynamic": "false",
 				"background": "",
