@@ -9907,7 +9907,7 @@
 				"backgrounddynamic": "false",
 				"contributors": "Karl, urknall",
 				"clockposy": "",
-				"name": "SDT Weather Clock - Alt Color, Temp Wunderground"
+				"name": "SDT Weather Clock - Custom - Temp Wunderground"
 			},
 			{
 				"name": "SDT Big Weather 4days Alarm Centigrade cb",
@@ -10781,7 +10781,7 @@
 				}
 			],
 			"backgroundtype": "black",
-			"name": "SDT Big Weather 4days Alarm Centigrade cb - Temp Wunderground",
+			"name": "SDT Big Weather 4days Alarm Centigrade cb - Custom - Temp Wunderground",
 			"models": [
 				"radio"
 			],
