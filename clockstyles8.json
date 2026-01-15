@@ -3546,7 +3546,7 @@
 						"itemtype":"sleepicon",
 						"free": 1,
 						"posy":"220",
-						"url.ON":"http://lms.hashsum.org/images/Superdatetimewu/icon_mode_sleep_on.png",
+						"url.ON":"applets/QVGAbaseSkin/images/Icons/icon_mode_sleep_on.png",
 						"posx":"225"
 					}
 				]
@@ -4049,7 +4049,7 @@
 						"itemtype":"sleepicon",
 						"free": 1,
 						"posy":"220",
-						"url.ON":"http://lms.hashsum.org/images/Superdatetimewu/icon_mode_sleep_on.png",
+						"url.ON":"applets/QVGAbaseSkin/images/Icons/icon_mode_sleep_on.png",
 						"posx":"225"
 					}
 				]
@@ -4933,39 +4933,39 @@
 					   "posx" : "140"
 					},
 					{
-					   "url.2" : "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_2.png",
+					   "url.2" : "applets/QVGAbaseSkin/images/Icons/icon_wireless_2.png",
 					   "itemtype" : "wirelessicon",
 					   "posy" : "219",
-					   "url.1" : "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_1.png",
+					   "url.1" : "applets/QVGAbaseSkin/images/Icons/icon_wireless_1.png",
 					   "free" : "1",
-					   "url.3" : "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_3.png",
-					   "url" : "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_4.png",
+					   "url.3" : "applets/QVGAbaseSkin/images/Icons/icon_wireless_3.png",
+					   "url" : "applets/QVGAbaseSkin/images/Icons/icon_wireless_4.png",
 					   "posx" : "294"
 					},
 					{
-					   "url.stop" : "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_stop.png",
+					   "url.stop" : "applets/QVGAbaseSkin/images/Icons/icon_mode_stop.png",
 					   "free" : "1",
 					   "itemtype" : "playstatusicon",
-					   "url.play" : "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_play.png",
+					   "url.play" : "applets/QVGAbaseSkin/images/Icons/icon_mode_play.png",
 					   "posy" : "219",
-					   "url.pause" : "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_pause.png",
+					   "url.pause" : "applets/QVGAbaseSkin/images/Icons/icon_mode_pause.png",
 					   "posx" : "10"
 					},
 					{
-					   "url.2" : "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_2.png",
+					   "url.2" : "applets/QVGAbaseSkin/images/Icons/icon_battery_2.png",
 					   "itemtype" : "batteryicon",
-					   "url.3" : "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_3.png",
-					   "url" : "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_0.png",
+					   "url.3" : "applets/QVGAbaseSkin/images/Icons/icon_battery_3.png",
+					   "url" : "applets/QVGAbaseSkin/images/Icons/icon_battery_0.png",
 					   "url.NONE" : "",
 					   "framewidth" : "24",
-					   "url.CHARGING" : "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_charging.png",
+					   "url.CHARGING" : "applets/QVGAbaseSkin/images/Icons/icon_battery_charging.png",
 					   "posy" : "223",
-					   "url.1" : "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_1.png",
+					   "url.1" : "applets/QVGAbaseSkin/images/Icons/icon_battery_1.png",
 					   "visibilityorder" : "",
-					   "url.4" : "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_4.png",
+					   "url.4" : "applets/QVGAbaseSkin/images/Icons/icon_battery_4.png",
 					   "framerate" : "1",
-					   "url.0" : "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_0.png",
-					   "url.AC" : "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_AC.png",
+					   "url.0" : "applets/QVGAbaseSkin/images/Icons/icon_battery_0.png",
+					   "url.AC" : "applets/QVGAbaseSkin/images/Icons/icon_battery_AC.png",
 					   "posx" : "260"
 					},
 					{
@@ -5033,7 +5033,7 @@
 					   "itemtype" : "sleepicon",
 					   "url.OFF" : "",
 					   "posy" : "220",
-					   "url.ON" : "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_sleep_on.png",
+					   "url.ON" : "applets/QVGAbaseSkin/images/Icons/icon_mode_sleep_on.png",
 					   "posx" : "225"
 					}
 				]
@@ -5230,12 +5230,12 @@
 					"order": ""
 				},
 				{
-					"url.stop": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_stop.png",
+					"url.stop": "applets/QVGAbaseSkin/images/Icons/icon_mode_stop.png",
 					"itemtype": "playstatusicon",
 					"posx": "10",
 					"order": "",
-					"url.pause": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_pause.png",
-					"url.play": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_play.png",
+					"url.pause": "applets/QVGAbaseSkin/images/Icons/icon_mode_pause.png",
+					"url.play": "applets/QVGAbaseSkin/images/Icons/icon_mode_play.png",
 					"posy": "219"
 				},
 				{
@@ -5268,11 +5268,11 @@
 					"posy": "219",
 					"url.NONE": "",
 					"order": "",
-					"url.2": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_2.png",
+					"url.2": "applets/QVGAbaseSkin/images/Icons/icon_wireless_2.png",
 					"url.SERVERERROR": "",
-					"url": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_4.png",
-					"url.1": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_1.png",
-					"url.3": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_3.png",
+					"url": "applets/QVGAbaseSkin/images/Icons/icon_wireless_4.png",
+					"url.1": "applets/QVGAbaseSkin/images/Icons/icon_wireless_1.png",
+					"url.3": "applets/QVGAbaseSkin/images/Icons/icon_wireless_3.png",
 					"itemtype": "wirelessicon",
 					"url.ERROR": ""
 				},
@@ -5292,7 +5292,7 @@
 					"color": "white"
 				},
 				{
-					"url.playingslidingx": "http://lms.hashsum.org/images/Superdatetimewu/progressbar_slider.png",
+					"url.playingslidingx": "applets/QVGAbaseSkin/images/Icons/progressbar_slider.png",
 					"url.stoppedclippingx": "",
 					"url.slidingx": "",
 					"url.clippingx": "",
@@ -5306,40 +5306,40 @@
 					"url.stoppedrotating": "",
 					"url.playingclippingx": "",
 					"finalangle": "",
-					"url.stoppedslidingx": "http://lms.hashsum.org/images/Superdatetimewu/tb_progressbar_slider.png"
+					"url.stoppedslidingx": "applets/QVGAbaseSkin/images/Icons/tb_progressbar_slider.png"
 				},
 				{
 					"posx": "45",
 					"itemtype": "repeatstatusicon",
 					"order": "",
-					"url.song": "http://lms.hashsum.org/images/Superdatetimewu/icon_repeat_song.png",
-					"url.playlist": "http://lms.hashsum.org/images/Superdatetimewu/icon_repeat_on.png",
+					"url.song": "applets/QVGAbaseSkin/images/Icons/icon_repeat_song.png",
+					"url.playlist": "applets/QVGAbaseSkin/images/Icons/icon_repeat_on.png",
 					"posy": "210"
 				},
 				{
 					"posx": "78",
 					"itemtype": "shufflestatusicon",
 					"order": "",
-					"url.albums": "http://lms.hashsum.org/images/Superdatetimewu/icon_shuffle_album.png",
-					"url.songs": "http://lms.hashsum.org/images/Superdatetimewu/icon_shuffle_on.png",
+					"url.albums": "applets/QVGAbaseSkin/images/Icons/icon_shuffle_album.png",
+					"url.songs": "applets/QVGAbaseSkin/images/Icons/icon_shuffle_on.png",
 					"posy": "219"
 				},
 				{
 					"posx": "260",
 					"posy": "223",
-					"url.4": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_4.png",
+					"url.4": "applets/QVGAbaseSkin/images/Icons/icon_battery_4.png",
 					"url.NONE": "",
 					"order": "",
-					"url.2": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_2.png",
-					"url.0": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_0.png",
+					"url.2": "applets/QVGAbaseSkin/images/Icons/icon_battery_2.png",
+					"url.0": "applets/QVGAbaseSkin/images/Icons/icon_battery_0.png",
 					"framewidth": "24",
 					"framerate": "1",
 					"url": "",
-					"url.3": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_3.png",
-					"url.1": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_1.png",
-					"url.AC": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_AC.png",
+					"url.3": "applets/QVGAbaseSkin/images/Icons/icon_battery_3.png",
+					"url.1": "applets/QVGAbaseSkin/images/Icons/icon_battery_1.png",
+					"url.AC": "applets/QVGAbaseSkin/images/Icons/icon_battery_AC.png",
 					"itemtype": "batteryicon",
-					"url.CHARGING": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_charging.png"
+					"url.CHARGING": "applets/QVGAbaseSkin/images/Icons/icon_battery_charging.png"
 				},
 				{
 					"posx": "5",
@@ -5463,10 +5463,10 @@
 					"posy": "219",
 					"url.NONE": "",
 					"order": "",
-					"url": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_4.png",
-					"url.1": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_1.png",
-					"url.2": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_2.png",
-					"url.3": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_3.png",
+					"url": "applets/QVGAbaseSkin/images/Icons/icon_wireless_4.png",
+					"url.1": "applets/QVGAbaseSkin/images/Icons/icon_wireless_1.png",
+					"url.2": "applets/QVGAbaseSkin/images/Icons/icon_wireless_2.png",
+					"url.3": "applets/QVGAbaseSkin/images/Icons/icon_wireless_3.png",
 					"framewidth": "",
 					"framerate": "",
 					"url.SERVERERROR": "",
@@ -5474,14 +5474,14 @@
 					"url.ERROR": ""
 				},
 				{
-					"url.stop": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_stop.png",
+					"url.stop": "applets/QVGAbaseSkin/images/Icons/icon_mode_stop.png",
 					"order": "",
 					"framerate": "",
 					"itemtype": "playstatusicon",
 					"posx": "10",
 					"posy": "219",
-					"url.pause": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_pause.png",
-					"url.play": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_play.png",
+					"url.pause": "applets/QVGAbaseSkin/images/Icons/icon_mode_pause.png",
+					"url.play": "applets/QVGAbaseSkin/images/Icons/icon_mode_play.png",
 					"framewidth": ""
 				},
 				{
@@ -5511,19 +5511,19 @@
 				{
 					"posx": "260",
 					"posy": "223",
-					"url.4": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_4.png",
+					"url.4": "applets/QVGAbaseSkin/images/Icons/icon_battery_4.png",
 					"url.NONE": "",
 					"order": "",
-					"url.2": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_2.png",
-					"url.0": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_0.png",
+					"url.2": "applets/QVGAbaseSkin/images/Icons/icon_battery_2.png",
+					"url.0": "applets/QVGAbaseSkin/images/Icons/icon_battery_0.png",
 					"framewidth": "24",
 					"framerate": "1",
 					"url": "",
-					"url.3": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_3.png",
-					"url.1": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_1.png",
-					"url.AC": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_AC.png",
+					"url.3": "applets/QVGAbaseSkin/images/Icons/icon_battery_3.png",
+					"url.1": "applets/QVGAbaseSkin/images/Icons/icon_battery_1.png",
+					"url.AC": "applets/QVGAbaseSkin/images/Icons/icon_battery_AC.png",
 					"itemtype": "batteryicon",
-					"url.CHARGING": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_charging.png"
+					"url.CHARGING": "applets/QVGAbaseSkin/images/Icons/icon_battery_charging.png"
 				},
 				{
 					"animate": "true",
@@ -5964,7 +5964,7 @@
 					"visibilitygroup": "",
 					"visibilityorder": "",
 					"posy": "220",
-					"url.ON": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_sleep_on.png",
+					"url.ON": "applets/QVGAbaseSkin/images/Icons/icon_mode_sleep_on.png",
 					"visibilitytime": "",
 					"posx": "225",
 					"framewidth": "",
@@ -6082,10 +6082,10 @@
 					"posy": "219",
 					"url.NONE": "",
 					"order": "",
-					"url": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_4.png",
-					"url.1": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_1.png",
-					"url.2": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_2.png",
-					"url.3": "http://lms.hashsum.org/images/Superdatetimewu/icon_wireless_3.png",
+					"url": "applets/QVGAbaseSkin/images/Icons/icon_wireless_4.png",
+					"url.1": "applets/QVGAbaseSkin/images/Icons/icon_wireless_1.png",
+					"url.2": "applets/QVGAbaseSkin/images/Icons/icon_wireless_2.png",
+					"url.3": "applets/QVGAbaseSkin/images/Icons/icon_wireless_3.png",
 					"framewidth": "",
 					"framerate": "",
 					"url.SERVERERROR": "",
@@ -6093,32 +6093,32 @@
 					"url.ERROR": ""
 				},
 				{
-					"url.stop": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_stop.png",
+					"url.stop": "applets/QVGAbaseSkin/images/Icons/icon_mode_stop.png",
 					"order": "",
 					"framerate": "",
 					"itemtype": "playstatusicon",
 					"posx": "10",
 					"posy": "219",
-					"url.pause": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_pause.png",
-					"url.play": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_play.png",
+					"url.pause": "applets/QVGAbaseSkin/images/Icons/icon_mode_pause.png",
+					"url.play": "applets/QVGAbaseSkin/images/Icons/icon_mode_play.png",
 					"framewidth": ""
 				},
 				{
 					"posx": "260",
 					"posy": "223",
-					"url.4": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_4.png",
+					"url.4": "applets/QVGAbaseSkin/images/Icons/icon_battery_4.png",
 					"url.NONE": "",
 					"order": "",
-					"url.2": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_2.png",
-					"url.0": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_0.png",
+					"url.2": "applets/QVGAbaseSkin/images/Icons/icon_battery_2.png",
+					"url.0": "applets/QVGAbaseSkin/images/Icons/icon_battery_0.png",
 					"framewidth": "24",
 					"framerate": "1",
 					"url": "",
-					"url.3": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_3.png",
-					"url.1": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_1.png",
-					"url.AC": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_AC.png",
+					"url.3": "applets/QVGAbaseSkin/images/Icons/icon_battery_3.png",
+					"url.1": "applets/QVGAbaseSkin/images/Icons/icon_battery_1.png",
+					"url.AC": "applets/QVGAbaseSkin/images/Icons/icon_battery_AC.png",
 					"itemtype": "batteryicon",
-					"url.CHARGING": "http://lms.hashsum.org/images/Superdatetimewu/icon_battery_charging.png"
+					"url.CHARGING": "applets/QVGAbaseSkin/images/Icons/icon_battery_charging.png"
 				},
 				{
 					"animate": "true",
@@ -6559,7 +6559,7 @@
 					"visibilitygroup": "",
 					"visibilityorder": "",
 					"posy": "220",
-					"url.ON": "http://lms.hashsum.org/images/Superdatetimewu/icon_mode_sleep_on.png",
+					"url.ON": "applets/QVGAbaseSkin/images/Icons/icon_mode_sleep_on.png",
 					"visibilitytime": "",
 					"posx": "225",
 					"framewidth": "",
