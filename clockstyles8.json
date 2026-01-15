@@ -7682,15 +7682,15 @@
 					{
 						"visibilityorder": "",
 						"framerate": "",
-						"url.pause": "http://lms.hashsum.org/images/QVGAbaseSkin/icon_mode_pause.png",
+						"url.pause": "applets/QVGAbaseSkin/images/Icons/icon_mode_pause.png",
 						"visibilitytime": "",
 						"visibilitygroup": "",
 						"itemtype": "playstatusicon",
 						"posy": "226",
 						"framewidth": "",
-						"url.stop": "http://lms.hashsum.org/images/QVGAbaseSkin/icon_mode_stop.png",
+						"url.stop": "applets/QVGAbaseSkin/images/Icons/icon_mode_stop.png",
 						"order": "",
-						"url.play": "http://lms.hashsum.org/images/QVGAbaseSkin/icon_mode_play.png",
+						"url.play": "applets/QVGAbaseSkin/images/Icons/icon_mode_play.png",
 						"posx": "6"
 					},
 					{
