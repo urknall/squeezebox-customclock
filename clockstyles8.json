@@ -10330,7 +10330,7 @@
 						"visibilitygroup": "",
 						"fonturl": "",
 						"itemtype": "sdttext",
-						"sdtformat": "~eTempA~Value~round~0~",
+						"sdtformat": "~eTempA~Value~round~0~°",
 						"margin": "",
 						"order": "",
 						"visibilitytime": "",
@@ -11601,7 +11601,7 @@
 					"fonturl": "",
 					"visibilitygroup": "",
 					"period": "-1",
-					"sdtformat": "~eTempA~Value~round~0~ / %!Z° %x%",
+					"sdtformat": "~eTempA~Value~round~0~° / %!Z° %x%",
 					"width": "240",
 					"itemtype": "sdttext"
 				},
