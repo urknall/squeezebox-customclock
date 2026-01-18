@@ -2250,7 +2250,7 @@ function _updateRSSItem(self,category,items)
 					StartElement = function (parser, name, attr)
 						if name == "media:content" and attr.url and (attr.type=="image/jpeg" or attr.type=="image/png" or string.find(attr.url,"jpeg$") or string.find(attr.url,"jpg$") or string.find(attr.url,"png$")) then
 							url = attr.url
-						elseif name == "enclusure" and attr.url and (attr.type=="image/jpeg" or attr.type=="image/png" or string.find(attr.url,"jpeg$") or string.find(attr.url,"jpg$") or string.find(attr.url,"png$")) then
+						elseif name == "enclosure" and attr.url and (attr.type=="image/jpeg" or attr.type=="image/png" or string.find(attr.url,"jpeg$") or string.find(attr.url,"jpg$") or string.find(attr.url,"png$")) then
 							url = attr.url
 						elseif name =="title" then
 							title = ""
