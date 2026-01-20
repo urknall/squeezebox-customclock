@@ -3012,9 +3012,9 @@ function _html2txt(s)
 	return s
 end
 
-function _explode ( str, seperator ) 
+function _explode ( str, separator ) 
  	local pos, arr = 0, {}
-	for st, sp in function() return string.find( str, seperator, pos, true ) end do -- for each divider found
+	for st, sp in function() return string.find( str, separator, pos, true ) end do -- for each divider found
 		table.insert( arr, string.sub( str, pos, st-1 ) ) -- Attach chars left of current divider
 		pos = sp + 1 -- Jump past current divider
 	end
