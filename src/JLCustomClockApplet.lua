@@ -475,7 +475,7 @@ function openScreensaver(self,mode, transition)
 				elseif chunk.data[3] and chunk.data[3]["state"] and chunk.data[3]["state"] == "Refreshing" then
 					log:debug("Ignoring SuperDateTime refresh start event")
 				else
-					log:warn("Uknown SuperDateTime event state="..tostring(chunk.data[3]["state"]))
+					log:warn("Unknown SuperDateTime event state="..tostring(chunk.data[3]["state"]))
 				end 
 			end,
 			player:getId(),
