@@ -1308,7 +1308,6 @@ function _getOnlineStylesSink(self,menuItem,mode)
 				local menu = SimpleMenu("menu")
 				menu:setHeaderWidget(Textarea("help_text", 
 					"Unable to fetch clock styles. Please check your network connection and try again.\n\n" ..
-					"If the LMS server is unavailable, ensure CustomClockHelper plugin is installed.\n\n" ..
 					"Error: " .. tostring(err)))
 				menu:addItem({
 					text = "Close",
@@ -1453,91 +1452,81 @@ function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 		})
 	end
 
-	local player = appletManager:callService("getCurrentPlayer")
-	if player then
-		local server = player:getSlimServer()
-		if server then
-			if data.item_loop then
-				for _,entry in pairs(data.item_loop) do
-					local isCompliant = true
-					if entry.models then
-						isCompliant = false
-						for _,model in pairs(entry.models) do
-							if model == self.model then
-								isCompliant = true
-							end
-						end
-					else
-						log:debug("Supported on all models")
-					end 
-			
-					if isCompliant and entry.name then
-						local name = entry.name.."\n"
-						if _getString(entry.contributors,nil) then
-							name = name.."("..entry.contributors..")"
-						end
-						menu:addItem({
-							text = name,
-							style = 'item_no_icon',
-							weight = 2,
-							check = RadioButton(
-								"radio",
-								group,
-								function()
-									for attribute,value in pairs(self:getSettings()) do
-										if string.find(attribute,"^"..mode) then
-											self:getSettings()[attribute] = nil
-										end
-									end
-									self:getSettings()[mode.."style"] = entry.name
-									for attribute,value in pairs(entry) do
-										self:getSettings()[mode..attribute] = value
-									end
-									if self.images then
-										for attribute,value in pairs(self.images) do
-											if string.find(attribute,"^"..mode) then
-												self.images[attribute] = nil
-											end
-										end
-									end
-									if self.window then
-										self.window:hide()
-										self.window=nil
-									end
-									self:_storeSettingsWithoutCache()
-									self:_updateSettingsOverviewMenuItem(mode, settingsMenuItem)
-									if mode == "confignowplaying" then
-										log:info("Changing to custom Now Playing applet")
-										appletManager:registerService("JLCustomClock",'goNowPlaying')
-										self:_installCustomNowPlaying()
-									elseif mode == "configalarmactive" then
-										appletManager:callService("registerAlternativeAlarmWindow","openCustomClockAlarmWindow")
-									else
-										appletManager:callService("addScreenSaver", 
-											tostring(self:string("SCREENSAVER_CUSTOMCLOCK")).."#"..string.gsub(mode,"^config","")..": "..self:getSettings()[mode.."style"], 
-											"JLCustomClock",
-											"openScreensaver"..string.gsub(mode,"^config",""), 
-											self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS"), 
-											"openSettings", 
-											nil,
-											"closeScreensaver")
-									end
-								end,
-								style == entry.name
-							),
-						})
-					elseif entry.name then
-						log:debug("Skipping "..entry.name..", isn't supported on "..self.model)
-					else
-						log:warn("Skipping style without name, styles without names aren't permitted")
+	if data.item_loop then
+		for _,entry in pairs(data.item_loop) do
+			local isCompliant = true
+			if entry.models then
+				isCompliant = false
+				for _,model in pairs(entry.models) do
+					if model == self.model then
+						isCompliant = true
 					end
 				end
+			else
+				log:debug("Supported on all models")
+			end 
+	
+			if isCompliant and entry.name then
+				local name = entry.name.."\n"
+				if _getString(entry.contributors,nil) then
+					name = name.."("..entry.contributors..")"
+				end
+				menu:addItem({
+					text = name,
+					style = 'item_no_icon',
+					weight = 2,
+					check = RadioButton(
+						"radio",
+						group,
+						function()
+							for attribute,value in pairs(self:getSettings()) do
+								if string.find(attribute,"^"..mode) then
+									self:getSettings()[attribute] = nil
+								end
+							end
+							self:getSettings()[mode.."style"] = entry.name
+							for attribute,value in pairs(entry) do
+								self:getSettings()[mode..attribute] = value
+							end
+							if self.images then
+								for attribute,value in pairs(self.images) do
+									if string.find(attribute,"^"..mode) then
+										self.images[attribute] = nil
+									end
+								end
+							end
+							if self.window then
+								self.window:hide()
+								self.window=nil
+							end
+							self:_storeSettingsWithoutCache()
+							self:_updateSettingsOverviewMenuItem(mode, settingsMenuItem)
+							if mode == "confignowplaying" then
+								log:info("Changing to custom Now Playing applet")
+								appletManager:registerService("JLCustomClock",'goNowPlaying')
+								self:_installCustomNowPlaying()
+							elseif mode == "configalarmactive" then
+								appletManager:callService("registerAlternativeAlarmWindow","openCustomClockAlarmWindow")
+							else
+								appletManager:callService("addScreenSaver", 
+									tostring(self:string("SCREENSAVER_CUSTOMCLOCK")).."#"..string.gsub(mode,"^config","")..": "..self:getSettings()[mode.."style"], 
+									"JLCustomClock",
+									"openScreensaver"..string.gsub(mode,"^config",""), 
+									self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS"), 
+									"openSettings", 
+									nil,
+									"closeScreensaver")
+							end
+						end,
+						style == entry.name
+					),
+				})
+			elseif entry.name then
+				log:debug("Skipping "..entry.name..", isn't supported on "..self.model)
+			else
+				log:warn("Skipping style without name, styles without names aren't permitted")
 			end
-		else
-			log:debug("Server not selected, ignoring Picture Gallyery styles")
 		end
-	else
-		log:debug("Player not selected, ignoring Picture Gallyery styles")
 	end
 
 	self:tieAndShowWindow(window)
