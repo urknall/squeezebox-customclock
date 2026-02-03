@@ -292,7 +292,7 @@ function goNowPlaying(self, transition)
 		self:openScreensaver("config1",transition)
 	end
 end
-function openCustomClockAlarmWindow(self)
+function openCustomClockAlarmWindow(self,transition)
 	local licensed = true
 	if licensed then
 		self:openScreensaver("configalarmactive")
