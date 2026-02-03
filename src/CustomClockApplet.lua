@@ -1226,13 +1226,17 @@ function defineSettingStyle(self,mode,menuItem)
 		if server then
 			server:userRequest(function(chunk,err)
 					if err then
-						log:warn(err)
+						log:warn("Error checking for CustomClockHelper: " .. tostring(err))
+						log:debug("Falling back to online styles due to LMS error")
+						self:_getOnlineStylesSink(menuItem,mode)
 					else
 						if licensed and tonumber(chunk.data._can) == 1 then
 							log:info("CustomClockHelper is installed retrieving local styles")
 							server:userRequest(function(chunk,err)
 									if err then
-										log:warn(err)
+										log:warn("Error fetching styles from LMS: " .. tostring(err))
+										log:debug("Falling back to online styles due to LMS error")
+										self:_getOnlineStylesSink(menuItem,mode)
 									else
 										self:defineSettingStyleSink(menuItem,mode,chunk.data)
 									end
@@ -1284,7 +1288,29 @@ function _getOnlineStylesSink(self,menuItem,mode)
 	local http = SocketHttp(jnt, "lms.hashsum.org", 80)
 	local req = RequestHttp(function(chunk, err)
 			if err then
-				log:warn(err)
+				log:warn("Error fetching styles from online server: " .. tostring(err))
+				-- Close the waiting popup
+				if self.popup then
+					self.popup:hide()
+					self.popup = nil
+				end
+				-- Show error message to user
+				local window = Window("text_list", self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS"), 'settingstitle')
+				local menu = SimpleMenu("menu")
+				menu:setHeaderWidget(Textarea("help_text", 
+					"Unable to fetch clock styles. Please check your network connection and try again.\n\n" ..
+					"If the LMS server is unavailable, ensure CustomClockHelper plugin is installed.\n\n" ..
+					"Error: " .. tostring(err)))
+				menu:addItem({
+					text = "Close",
+					sound = "WINDOWHIDE",
+					callback = function(event, menuItem)
+						window:hide()
+						return EVENT_CONSUME
+					end
+				})
+				window:addWidget(menu)
+				self:tieAndShowWindow(window)
 			elseif chunk then
 				chunk = json.decode(chunk)
 				self:defineSettingStyleSink(menuItem,mode,chunk.data)
