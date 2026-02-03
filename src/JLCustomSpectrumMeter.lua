@@ -25,7 +25,7 @@ if not _ok_vis or not vis then
         o.channels = channels
         return oo.rawnew(self, o)
     end
-    function JLNullVis:layout() end
+    function JLNullVis:_layout() end
     function JLNullVis:draw(surface) end
     -- Export a constructor compatible with callers: JLNullVis("itemX", "analog|digital", "left|right|mono")
     return function(name, mode, channels) return JLNullVis(name, mode, channels) end
