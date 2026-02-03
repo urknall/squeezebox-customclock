@@ -341,7 +341,7 @@ function openScreensaver(self,mode, transition)
 	local player = appletManager:callService("getCurrentPlayer")
 	local oldMode = self.mode
 	self.mode = mode
-	self:_getLMSInfo(mode, transition)
+	self:_getLMSInfo()
 	local licensed = true
 	if ((oldMode and self.mode != oldMode) or self.licensed~=licensed) and self.window then
 		self.window:hide()
@@ -4102,7 +4102,7 @@ function _reDrawAnalog(self,screen)
 	end
 end
 
-function _getLMSInfo(self, mode, transition)
+function _getLMSInfo(self)
     local player = appletManager:callService("getCurrentPlayer")
     local server = player and player.getSlimServer and player:getSlimServer()
     self.lmsIP, self.lmsPort = server and server.getIpPort and server:getIpPort()
