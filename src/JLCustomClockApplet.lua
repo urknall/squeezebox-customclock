@@ -49,9 +49,9 @@ local RadioGroup       = require("jive.ui.RadioGroup")
 local RadioButton      = require("jive.ui.RadioButton")
 local Timer            = require("jive.ui.Timer")
 
-local hasVisVUMeter, CustomVUMeter = pcall(require, "applets.JLCustomClock.JLCustomVUMeter")
-local hasVisSpectrumMeter, CustomSpectrumMeter = pcall(require, "applets.JLCustomClock.JLCustomSpectrumMeter")
-local hasVisSupport = hasVisVUMeter and hasVisSpectrumMeter and CustomVUMeter and CustomSpectrumMeter
+local hasVisVUMeter, JLCustomVUMeter = pcall(require, "applets.JLCustomClock.JLCustomVUMeter")
+local hasVisSpectrumMeter, JLCustomSpectrumMeter = pcall(require, "applets.JLCustomClock.JLCustomSpectrumMeter")
+local hasVisSupport = hasVisVUMeter and hasVisSpectrumMeter and JLCustomVUMeter and JLCustomSpectrumMeter
 
 local SocketHttp       = require("jive.net.SocketHttp")
 local RequestHttp      = require("jive.net.RequestHttp")
@@ -604,19 +604,19 @@ function openScreensaver(self,mode, transition)
 				self.window:addWidget(self.items[no])
 			elseif hasVisSupport and string.find(item.itemtype,"digitalvumeter$") then
 				local childItems = {
-					itemno = CustomVUMeter("item"..no,"digital",_getString(item.channels,nil))
+					itemno = JLCustomVUMeter("item"..no,"digital",_getString(item.channels,nil))
 				}
 				self.items[no] = Group("item"..no,childItems)
 				self.window:addWidget(self.items[no])
 			elseif hasVisSupport and string.find(item.itemtype,"analogvumeter$") then
 				local childItems = {
-					itemno = CustomVUMeter("item"..no,"analog",_getString(item.channels,nil))
+					itemno = JLCustomVUMeter("item"..no,"analog",_getString(item.channels,nil))
 				}
 				self.items[no] = Group("item"..no,childItems)
 				self.window:addWidget(self.items[no])
 			elseif hasVisSupport and string.find(item.itemtype,"spectrummeter$") then
 				local childItems = {
-					itemno = CustomSpectrumMeter("item"..no,_getString(item.channels,nil))
+					itemno = JLCustomSpectrumMeter("item"..no,_getString(item.channels,nil))
 				}
 				for attr,value in pairs(item) do
 					if string.find(attr,"color$") and _getString(value,nil) then
