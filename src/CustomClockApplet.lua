@@ -4455,7 +4455,7 @@ function _getColor(color)
 		return {0x00, 0xcc, 0x00}
 	elseif color == "darkgreen" then
 		return {0x00, 0x88, 0x00} 
-	elseif color and string.find(color, "^0x%x%x%x%x%x%x$") then
+	elseif color and (string.find(color, "^0x%x%x%x%x%x%x$") or string.find(color, "^0x%x%x%x%x%x%x%x%x$")) then
 		return {
 			tonumber(string.sub(color, 3, 4), 16),
 			tonumber(string.sub(color, 5, 6), 16),
