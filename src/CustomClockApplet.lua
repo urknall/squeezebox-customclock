@@ -4455,10 +4455,12 @@ function _getColor(color)
 		return {0x00, 0xcc, 0x00}
 	elseif color == "darkgreen" then
 		return {0x00, 0x88, 0x00} 
-	elseif color and string.find(color,"^0x") then
-		color = string.gsub(color,"^0x","")
-		local number = tonumber(color,16)
-		return {number/(256*256*256*256),number/(256*256*256),number/(256*256)}
+	elseif color and string.find(color, "^0x%x%x%x%x%x%x$") then
+		return {
+			tonumber(string.sub(color, 3, 4), 16),
+			tonumber(string.sub(color, 5, 6), 16),
+			tonumber(string.sub(color, 7, 8), 16)
+		}
 	else
 		return {0xcc, 0xcc, 0xcc}
 	end
