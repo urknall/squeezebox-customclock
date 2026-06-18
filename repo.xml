@@ -4,21 +4,21 @@
     <title lang="EN">Urknall CustomClock + JLCustomClock</title>
   </details>
   <applets>
-    <applet maxTarget="*" name="CustomClock" minTarget="0.1" target="jive|fab4|baby" version="2.29.1">
-      <sha>893b9a4758dd36ce498eb0a9dd01d1867ace7603</sha>
-      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
-      <url>http://lms.hashsum.org/CustomClock_2_29_1.zip</url>
-      <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
-      <creator>erland, tcutting, urknall</creator>
+    <applet target="jive|fab4|baby" version="2.29.2" maxTarget="*" name="CustomClock" minTarget="0.1">
       <title lang="EN">CustomClock</title>
-    </applet>
-    <applet version="2.29.2" target="jivelite" minTarget="0.1" name="JLCustomClock" maxTarget="*">
-      <title lang="EN">CustomClock for Jivelite</title>
       <creator>erland, tcutting, urknall</creator>
+      <url>http://lms.hashsum.org/CustomClock_2_29_2.zip</url>
+      <desc lang="EN">A screensaver for Squeezebox Controller/Touch/Radio devices that shows a clock. It is possible to select among a number of different styles and you can configure what kind of date/time information you like to show.</desc>
+      <sha>1bcea12b51ff2a1181789b9b92957420aeb39957</sha>
+      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
+    </applet>
+    <applet target="jivelite" minTarget="0.1" name="JLCustomClock" version="2.29.2" maxTarget="*">
+      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
+      <title lang="EN">CustomClock for Jivelite</title>
+      <sha>50d5fc6c46a7212910664b8050ff4894c5edb34c</sha>
       <desc lang="EN">Modified Custom Clock for Jivelite</desc>
       <url>http://lms.hashsum.org/JLCustomClock_2_29_2.zip</url>
-      <changes lang="EN"> - various fixes and lms imageproxy support</changes>
-      <sha>50d5fc6c46a7212910664b8050ff4894c5edb34c</sha>
+      <creator>erland, tcutting, urknall</creator>
     </applet>
   </applets>
 </extensions>
