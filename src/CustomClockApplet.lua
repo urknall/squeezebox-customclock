@@ -2004,7 +2004,7 @@ function _updateSDTSportItem(self,items)
 						if not self.sdtcache["sport"][key].current then
 							if oldCache and oldCache[key] and oldCache[key].current then
 								if oldCache[key].data[oldCache[key].current].uniqueID then
-									oldItemNo = 1
+									local oldItemNo = 1
 									for _,item in ipairs(self.sdtcache["sport"][key].data) do
 										if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
 											break
@@ -2132,7 +2132,7 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 							if not self.sdtcache[category][key].current then
 								if oldCache and oldCache[key] and oldCache[key].current then
 									if oldCache[key].data[oldCache[key].current].uniqueID then
-										oldItemNo = 1
+										local oldItemNo = 1
 										for _,item in ipairs(self.sdtcache[category][key].data) do
 											if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
 												break
@@ -2206,7 +2206,7 @@ function _updatePluginItem(self,category,items)
 							if not self.pluginitemcache[category][key].current then
 								if oldCache and oldCache[key] and oldCache[key].current then
 									if oldCache[key].data[oldCache[key].current].uniqueID then
-										oldItemNo = 1
+										local oldItemNo = 1
 										for _,item in ipairs(self.pluginitemcache[category][key].data) do
 											if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
 												break
@@ -2363,7 +2363,7 @@ function _updateRSSItem(self,category,items)
 					if not self.rssitemcache[category][key].current then
 						if oldCache and oldCache[key] and oldCache[key].current then
 							if oldCache[key].data[oldCache[key].current].uniqueID then
-								oldItemNo = 1
+								local oldItemNo = 1
 								for _,item in ipairs(self.rssitemcache[category][key].data) do
 									if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
 										break
