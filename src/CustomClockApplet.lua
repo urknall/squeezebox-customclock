@@ -3014,7 +3014,7 @@ function _html2txt(s)
 	s = string.gsub(s,"&#(%d-);", function(c)
 --	  log.dbg("html2txt &#(%d-); substitution: "..tostring(c))
       	  if tonumber(c) < 256 then
-	    return string.char(c)
+	    return string.char(tonumber(c))
 	  end
 	  return html_coded_numeric[c] or "?"
 	end)
