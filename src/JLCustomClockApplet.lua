@@ -2609,6 +2609,12 @@ end
 function _getPluginItemData(self,item,totalResults)
 	local results = {}
 	local no = 1
+	local icons = {}
+	for key,value in pairs(totalResults) do
+		if type(value) == 'string' then
+			icons[key] = value
+		end
+	end
 	if _getString(item.selected,nil) then
 		if totalResults[item.selected] then
 			results[no] = totalResults[item.selected]
@@ -2633,6 +2639,12 @@ end
 function _getRSSItemData(self,item,totalResults)
 	local results = {}
 	local no = 1
+	local icons = {}
+	for key,value in pairs(totalResults) do
+		if type(value) == 'string' then
+			icons[key] = value
+		end
+	end
 	if _getString(item.selected,nil) then
 		if totalResults[item.selected] then
 			results[no] = totalResults[item.selected]
