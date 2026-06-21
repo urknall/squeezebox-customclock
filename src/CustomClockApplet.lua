@@ -3220,7 +3220,7 @@ function _updateAlbumCover(self,widget,id,size,mode,index,free)
 							server:fetchArtwork(playerStatus.item_loop[index]["params"]["track_id"],Icon("artwork"),size)
 						end
 					elseif widget then
-						widget:setWidgetValue(nil)
+						widget:setWidgetValue(id,nil)
 					end
 				else
 					if iconId then
@@ -3236,7 +3236,7 @@ function _updateAlbumCover(self,widget,id,size,mode,index,free)
 							server:fetchArtwork(playerStatus.item_loop[index]["params"]["track_id"],Icon("artwork"),self:_getCoverSize(size),'png')
 						end
 					elseif widget then
-						widget:setWidgetValue(nil)
+						widget:setWidgetValue(id,nil)
 					end
 				end
 			elseif widget then
