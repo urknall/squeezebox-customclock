@@ -10,7 +10,6 @@ local Timer         = require("jive.ui.Timer")
 local Widget        = require("jive.ui.Widget")
 
 local string           = require("jive.utils.string")
-local vis        = require("jive.vis")
 
 local debug         = require("jive.utils.debug")
 local log           = require("jive.utils.log").logger("jivelite.vis")
