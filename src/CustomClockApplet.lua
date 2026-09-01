@@ -1147,7 +1147,7 @@ function _checkAndUpdateTitleFormatInfo(self,player)
 end
 
 function _updateCustomTitleFormatInfo(self,player)
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 	if server then
 		local licensed = true
 		if not self:getSettings()['customClockHelperInstalled'] then
@@ -1188,7 +1188,7 @@ function _updateCustomTitleFormatInfo(self,player)
 end
 
 function _updateTitleFormatInfo(self,player)
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 	if server then
 		server:userRequest(function(chunk,err)
 				if err then
@@ -1920,7 +1920,7 @@ end
 function _updateSDTText(self,widget,id,format,period)
 	local player = appletManager:callService("getCurrentPlayer")
 	period = _getString(period,nil) or "-1" 
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 	if not self.sdtMacroChecked and not self:getSettings()['sdtMacroInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
@@ -1964,14 +1964,14 @@ end
 
 function _updateSDTSportItem(self,items)
 	local player = appletManager:callService("getCurrentPlayer")
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 
 	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
 				else
-					self.ccPluginItemsChecked = true
+					self.sdtSuperDateTimeChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['sdtSuperDateTimeInstalled'] = true
 						self:_updateSDTSportItem(items)
@@ -2036,7 +2036,7 @@ end
 
 function _updateSDTWeatherItem(self,items)
 	local player = appletManager:callService("getCurrentPlayer")
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 
 	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(function(chunk,err)
@@ -2091,7 +2091,7 @@ end
 
 function _updateSDTMiscItem(self,category,items,selectionattribute)
 	local player = appletManager:callService("getCurrentPlayer")
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 
 	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(function(chunk,err)
@@ -2165,14 +2165,14 @@ end
 
 function _updatePluginItem(self,category,items)
 	local player = appletManager:callService("getCurrentPlayer")
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 
 	if not self.ccPluginItemsChecked and not self:getSettings()['ccPluginItemsInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
 				else
-					self.sdtSuperDateTimeChecked = true
+					self.ccPluginItemsChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['ccPluginItemsInstalled'] = true
 						self:_updatePluginItem(category,items)
@@ -2239,7 +2239,7 @@ end
 
 function _updateRSSItem(self,category,items)
 	local player = appletManager:callService("getCurrentPlayer")
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 	local licensed = true
 
 	local req = RequestHttp(function(chunk, err)
@@ -2785,7 +2785,7 @@ function _changeSDTItem(self,category,item,widget,id,dynamic)
 			end
 		elseif string.find(item.itemtype,'icon$') then
 			local player = appletManager:callService("getCurrentPlayer")
-			local server = player:getSlimServer()
+			local server = player and player:getSlimServer()
 			local url = nil
 			if #results>=currentResult+_getNumber(item.offset,0) then
 				if string.find(item.logotype,"orlogoURL$") then
@@ -2844,7 +2844,7 @@ function _changePluginItem(self,category,item,widget,id,dynamic)
 			end
 		elseif string.find(item.itemtype,'icon$') then
 			local player = appletManager:callService("getCurrentPlayer")
-			local server = player:getSlimServer()
+			local server = player and player:getSlimServer()
 			local url = nil
 			if #results>=(currentResult+_getNumber(item.offset,0)) then
 				url = results[currentResult+_getNumber(item.offset,0)][item.logotype]
@@ -2896,7 +2896,7 @@ function _changeRSSItem(self,category,item,widget,id,dynamic)
 			end
 		elseif string.find(item.itemtype,'icon$') then
 			local player = appletManager:callService("getCurrentPlayer")
-			local server = player:getSlimServer()
+			local server = player and player:getSlimServer()
 			local url = nil
 			if #results>=(currentResult+_getNumber(item.offset,0)) then
 				url = results[currentResult+_getNumber(item.offset,0)].url
@@ -3080,7 +3080,7 @@ end
 
 function _updateSDTWeatherMapIcon(self,widget,id,item)
 	local player = appletManager:callService("getCurrentPlayer")
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 	if not self.sdtVersionChecked and not self:getSettings()['sdtVersionInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
@@ -3123,7 +3123,7 @@ end
 
 function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowproxy)
 	local player = appletManager:callService("getCurrentPlayer")
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 	if not self.sdtSongInfoChecked and not self:getSettings()['sdtSongInfoInstalled'] and server then
 		server:userRequest(function(chunk,err)
 				if err then
@@ -3168,7 +3168,7 @@ end
 
 function _updateGalleryImage(self,widget,id,width,height,favorite)
 	local player = appletManager:callService("getCurrentPlayer")
-	local server = player:getSlimServer()
+	local server = player and player:getSlimServer()
 	if server then
 		server:userRequest(function(chunk,err)
 				if err then
