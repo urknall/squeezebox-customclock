@@ -4028,6 +4028,9 @@ end
 
 function _blitImage(self,screen,id,posx,posy,angle)
 	local tmp = self.images[id]
+	if not tmp then
+		return
+	end
 	if angle and angle!=0 then
 		tmp = tmp:rotozoom(-angle, 1, 5)
 	end
