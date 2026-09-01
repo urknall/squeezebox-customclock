@@ -4416,6 +4416,9 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 		if height then
 			cacheName = cacheName.."-h"..height
 		end
+		if clipX and clipY and clipWidth and clipHeight then
+			cacheName = cacheName.."-x"..clipX.."-y"..clipY.."-cw"..clipWidth.."-ch"..clipHeight
+		end
 		local cachedImage = false
 		if _getString(dynamic,"false") == "false" and lfs.attributes(appletdir.."JLCustomClock/images/"..cacheName) then
 			log:debug("Image found in cache: "..cacheName)
