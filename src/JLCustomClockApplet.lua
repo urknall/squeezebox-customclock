@@ -3400,6 +3400,7 @@ end
 -- Update the time and if needed also the wallpaper
 function _tick(self,forcedUpdate)
 	log:debug("Updating time")
+	local screenGeneration = self.screenGeneration
 
 	local second = os.date("%S")
 	if tonumber(second)<tonumber(self.lastsecond) then
@@ -3847,7 +3848,9 @@ function _tick(self,forcedUpdate)
 					if instance and instance[self.customItemTypes[item.icontype.."icon"].method] then
 						log:debug("Getting image for appleticon of type: "..item.icontype.. " and image: "..tostring(item.image))
 						instance[self.customItemTypes[item.icontype.."icon"].method](instance,instance[self.customItemTypes[item.icontype.."icon"].data],no,_getString(item.image,nil),_getString(item.width,nil),_getString(item.height,nil),function (no,image)
-							self.items[no]:setWidgetValue("itemno",image)
+							if screenGeneration == self.screenGeneration and self.items[no] then
+								self.items[no]:setWidgetValue("itemno",image)
+							end
 						end)
 					end
 				end
@@ -3861,7 +3864,7 @@ function _tick(self,forcedUpdate)
 					if instance and instance[self.customItemTypes[item.texttype.."text"].method] then
 						log:debug("Getting text for applettext of type: "..item.texttype.. " and text: "..tostring(item.text))
 						instance[self.customItemTypes[item.texttype.."text"].method](instance,instance[self.customItemTypes[item.texttype.."text"].data],no,_getString(item.text,nil),function (no,text)
-							if self.items[no]:getWidgetValue("itemno") ~= text then
+							if screenGeneration == self.screenGeneration and self.items[no] and self.items[no]:getWidgetValue("itemno") ~= text then
 								self.items[no]:setWidgetValue("itemno",text)
 							end
 						end)
