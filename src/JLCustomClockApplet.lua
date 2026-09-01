@@ -335,6 +335,16 @@ function openMenu(self,transition)
 	self:tieAndShowWindow(window)
 end
 
+function _unsubscribePlayerEvents(self)
+	if self.subscribedPlayer then
+		self.subscribedPlayer:unsubscribe('/slim/customclocktitleformatsupdated')
+		self.subscribedPlayer:unsubscribe('/slim/customclockchangedstyles')
+		self.subscribedPlayer:unsubscribe('/slim/SuperDateTimeState/dataRefreshState')
+		self.subscribedPlayer:unsubscribe('/slim/customclockchangedcustomitems')
+		self.subscribedPlayer = nil
+	end
+end
+
 function openScreensaver(self,mode, transition)
 
 	log:debug("Open screensaver "..tostring(mode))
@@ -354,11 +364,8 @@ function openScreensaver(self,mode, transition)
 	end
 	self.titleformats = {}
 	self.customtitleformats = {}
+	self:_unsubscribePlayerEvents()
 	if player then
-		player:unsubscribe('/slim/customclocktitleformatsupdated')
-		player:unsubscribe('/slim/customclockchangedstyles')
-		player:unsubscribe('/slim/SuperDateTimeState/dataRefreshState')
-		player:unsubscribe('/slim/customclockchangedcustomitems')
 		player:subscribe(
 			'/slim/customclockchangedstyles',
 			function(chunk)
@@ -534,6 +541,7 @@ function openScreensaver(self,mode, transition)
 			player:getId(),
 			{'customclocktitleformatsupdated'}
 		)
+		self.subscribedPlayer = player
 	end
         -- Create the main window if it doesn't already exist
 	if not self.window then
@@ -875,6 +883,7 @@ function _resortItems(self,items)
 end
 
 function closeScreensaver(self)
+	self:_unsubscribePlayerEvents()
 	if self.window then
 		self.window:hide()
 		self.window = nil
