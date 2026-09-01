@@ -1673,7 +1673,11 @@ function _downloadFontZipFile(self, dir)
                                 fh = 'DIR'
                         elseif string.find(filename,"%.ttf") or string.find(filename,"%.TTF") then
                                 log:debug("Extracting font file: " .. filename)
-                                fh = io.open(filename, "wb")
+				local openError
+                                fh, openError = io.open(filename, "wb")
+				if not fh then
+					log:warn("Unable to extract font file "..filename..": "..tostring(openError))
+				end
 			else
 				log:debug("ignoring file: "..filename)
                         end
@@ -1690,6 +1694,7 @@ end
 
 function _downloadFontFile(self,dir,filename)
         local fh = nil
+	local openFailed = false
 
         return function(chunk)
                 if chunk == nil then
@@ -1706,11 +1711,18 @@ function _downloadFontFile(self,dir,filename)
                         end
 
                 else
-                        if fh == nil then
-	                        fh = io.open(dir .. filename, "wb")
+			if fh == nil and not openFailed then
+				local openError
+	                        fh, openError = io.open(dir .. filename, "wb")
+				if not fh then
+					openFailed = true
+					log:warn("Unable to save font file "..dir..filename..": "..tostring(openError))
+				end
                         end
 
-                        fh:write(chunk)
+			if fh then
+				fh:write(chunk)
+			end
                 end
 
                 return 1
