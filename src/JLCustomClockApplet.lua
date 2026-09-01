@@ -4468,8 +4468,18 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 end
 
 function _retrieveImageData(self,url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
+	if type(chunk) ~= 'string' or #chunk == 0 then
+		log:warn("Unable to load empty image data for "..imageType)
+		return
+	end
 	local width,height = self:_getUsableWallpaperArea()
-	local image = Surface:loadImageData(chunk, #chunk)
+	local success, image = pcall(function()
+		return Surface:loadImageData(chunk, #chunk)
+	end)
+	if not success or not image then
+		log:warn("Unable to decode image data for "..imageType..": "..tostring(image))
+		return
+	end
 	if clipWidth and clipHeight and clipX and clipY then
 		local newImg = Surface:newRGBA(clipWidth, clipHeight)
         newImg:filledRectangle(0, 0, clipWidth, clipHeight, 0x000000FF)
