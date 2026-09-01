@@ -4402,13 +4402,25 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 		if height then
 			cacheName = cacheName.."-h"..height
 		end
+		local cachedImage = false
 		if _getString(dynamic,"false") == "false" and lfs.attributes(appletdir.."JLCustomClock/images/"..cacheName) then
 			log:debug("Image found in cache: "..cacheName)
-			local fh = io.open(appletdir.."JLCustomClock/images/"..cacheName, "rb")
-			local chunk = fh:read("*all")
-			fh:close()
-			self:_retrieveImageData(url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
-		else
+			local cachePath = appletdir.."JLCustomClock/images/"..cacheName
+			local fh, openError = io.open(cachePath, "rb")
+			if fh then
+				local chunk = fh:read("*all")
+				fh:close()
+				if chunk and #chunk > 0 then
+					self:_retrieveImageData(url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
+					cachedImage = true
+				else
+					log:warn("Unable to read cached image "..cachePath)
+				end
+			else
+				log:warn("Unable to open cached image "..cachePath..": "..tostring(openError))
+			end
+		end
+		if not cachedImage then
 			log:debug("Image not found in cache, getting from source: "..url)
 			local http = SocketHttp(jnt, imagehost, imageport)
 			local req = RequestHttp(function(chunk, err)
@@ -4418,9 +4430,14 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 					if chunk then
 						if _getString(dynamic,"false") == "false" then
 							lfs.mkdir(appletdir.."JLCustomClock/images")
-					                local fh = io.open(appletdir.."JLCustomClock/images/"..cacheName, "wb")
-					                fh:write(chunk)
-							fh:close()
+							local cachePath = appletdir.."JLCustomClock/images/"..cacheName
+							local fh, openError = io.open(cachePath, "wb")
+							if fh then
+								fh:write(chunk)
+								fh:close()
+							else
+								log:warn("Unable to cache image "..cachePath..": "..tostring(openError))
+							end
 						end
 						self:_retrieveImageData(url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
 					elseif err then
@@ -4433,10 +4450,15 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 	else
 		local luadir = _getLuaDir()
 		if lfs.attributes(luadir..url) ~= nil then
-			local fh = io.open(luadir..url, "rb")
-			local chunk = fh:read("*all")
-			fh:close()
-			self:_retrieveImageData(url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
+			local imagePath = luadir..url
+			local fh, openError = io.open(imagePath, "rb")
+			if fh then
+				local chunk = fh:read("*all")
+				fh:close()
+				self:_retrieveImageData(url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
+			else
+				log:warn("Unable to open image "..imagePath..": "..tostring(openError))
+			end
 		else 
 			log:warn("Unable to parse url "..url..", got: "..imagehost..", "..imagepath)
 		end
