@@ -1346,11 +1346,11 @@ function _getOnlineStylesSink(self,menuItem,mode)
 				window:addWidget(menu)
 				self:tieAndShowWindow(window)
 			elseif chunk then
-				chunk = json.decode(chunk)
-				if chunk and chunk.data then
-					self:defineSettingStyleSink(menuItem,mode,chunk.data)
+				local decoded, styleData = pcall(json.decode, chunk)
+				if decoded and styleData and styleData.data then
+					self:defineSettingStyleSink(menuItem,mode,styleData.data)
 				else
-					log:warn("Invalid online style response")
+					log:warn("Invalid online style response: "..tostring(styleData))
 				end
 			end
 		end,
