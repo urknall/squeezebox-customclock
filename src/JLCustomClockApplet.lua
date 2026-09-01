@@ -1576,7 +1576,7 @@ function _getMode(self)
 	local player = appletManager:callService("getCurrentPlayer")
 	local mode = "off"
 	if player then
-		local playerStatus = player:getPlayerStatus()
+		local playerStatus = self:_getPlayerStatus(player)
 		local alarmstate = playerStatus["alarm_state"]
 		if alarmstate == "active" then
 			mode = "alarm"
@@ -1776,6 +1776,10 @@ function _getUsableWallpaperArea(self)
 	return width,height
 end
 
+function _getPlayerStatus(self,player)
+	return player and player:getPlayerStatus() or {}
+end
+
 function _extractTrackInfo(_track, _itemType)
         if _track.track then
 		if _itemType == 1 then
@@ -1794,7 +1798,7 @@ function _updateRatingIcon(self,widget,id,mode,free)
 	local player = appletManager:callService("getCurrentPlayer")
 	if player then
 		local licensed = true
-		local playerStatus = player:getPlayerStatus()
+		local playerStatus = self:_getPlayerStatus(player)
 		if not mode or (mode == 'play' and playerStatus.mode == 'play') or (mode != 'play' and playerStatus.mode != 'play') then
 			local rating = self.titleformats["RATING"]
 			local trackstatrating = self.customtitleformats["TRACKSTATRATINGNUMBER"]
@@ -1827,7 +1831,7 @@ function _updateNowPlaying(self,itemType,widget,id,mode,free)
 	local player = appletManager:callService("getCurrentPlayer")
 	local licensed = true
 	if player then
-		local playerStatus = player:getPlayerStatus()
+		local playerStatus = self:_getPlayerStatus(player)
 		if not mode or (mode == 'play' and playerStatus.mode == 'play') or (mode != 'play' and playerStatus.mode != 'play') then
 			if playerStatus.item_loop then
 				local trackInfo = _extractTrackInfo(playerStatus.item_loop[1],itemType)
@@ -1851,7 +1855,7 @@ function _updateStaticNowPlaying(self,widget,id,format,mode,free)
 	local player = appletManager:callService("getCurrentPlayer")
 	local licensed = true
 	if player then
-		local playerStatus = player:getPlayerStatus()
+		local playerStatus = self:_getPlayerStatus(player)
 		if not mode or (mode == 'play' and playerStatus.mode == 'play') or (mode != 'play' and playerStatus.mode != 'play') then
 			if playerStatus.item_loop then
 				local text
@@ -3339,7 +3343,7 @@ function _updateAlbumCover(self,widget,id,size,mode,index,free)
 	local player = appletManager:callService("getCurrentPlayer")
 	local licensed = true
 	if player then
-		local playerStatus = player:getPlayerStatus()
+		local playerStatus = self:_getPlayerStatus(player)
 		if not mode or (mode == 'play' and playerStatus.mode == 'play') or (mode != 'play' and playerStatus.mode != 'play') then
 			if playerStatus.item_loop and (licensed or free) then
 				local iconId = nil
@@ -3411,7 +3415,7 @@ function _tick(self,forcedUpdate)
 
 	local player = appletManager:callService("getCurrentPlayer")
 	if self.mode == "configalarmactive" and player then
-		local alarmstate = player:getPlayerStatus()["alarm_state"]
+		local alarmstate = self:_getPlayerStatus(player)["alarm_state"]
 		if not alarmstate or alarmstate != "active" then
 			self:closeScreensaver()
 		end
@@ -3446,8 +3450,9 @@ function _tick(self,forcedUpdate)
 			end
 		elseif item.itemtype == "alarmtimetext" then
 			if (licensed or item.free) and player then
-				local alarmtime = player:getPlayerStatus()["alarm_next"]
-				local alarmstate = player:getPlayerStatus()["alarm_state"]
+				local playerStatus = self:_getPlayerStatus(player)
+				local alarmtime = playerStatus["alarm_next"]
+				local alarmstate = playerStatus["alarm_state"]
 
 				if alarmstate=="set" then
 					self.items[no]:setWidgetValue("itemno",self:_getLocalizedDateInfo(alarmtime,_getString(item.text,"%H:%M")))
@@ -3500,7 +3505,7 @@ function _tick(self,forcedUpdate)
 		elseif item.itemtype == "alarmicon" then
 			if licensed or item.free then
 				if player then
-					local alarmstate = player:getPlayerStatus()["alarm_state"]
+					local alarmstate = self:_getPlayerStatus(player)["alarm_state"]
 
 					log:debug("Alarm state is "..tostring(alarmstate))
 					if alarmstate=="active" or alarmstate=="snooze" or alarmstate=="set" then
@@ -3519,7 +3524,7 @@ function _tick(self,forcedUpdate)
 		elseif item.itemtype == "shufflestatusicon" then
 			if licensed or item.free then
 				if player then
-					local status = tonumber(player:getPlayerStatus()["playlist shuffle"])
+					local status = tonumber(self:_getPlayerStatus(player)["playlist shuffle"])
 					if status == 1 then
 						status = "songs"
 					elseif status == 2 then
@@ -3540,7 +3545,7 @@ function _tick(self,forcedUpdate)
 		elseif item.itemtype == "repeatstatusicon" then
 			if licensed or item.free then
 				if player then
-					local status = tonumber(player:getPlayerStatus()["playlist repeat"])
+					local status = tonumber(self:_getPlayerStatus(player)["playlist repeat"])
 					if status == 1 then
 						status = "song"
 					elseif status == 2 then
@@ -3561,7 +3566,7 @@ function _tick(self,forcedUpdate)
 		elseif item.itemtype == "playstatusicon" then
 			if licensed or item.free then
 				if player then
-					local mode = player:getPlayerStatus()["mode"]
+					local mode = self:_getPlayerStatus(player)["mode"]
 					log:debug("Play state is "..tostring(mode))
 					if mode and self.images[self.mode.."item"..no.."."..mode] then
 						self.items[no]:setWidgetValue("itemno",self.images[self.mode.."item"..no.."."..mode])
@@ -4042,9 +4047,10 @@ function _reDrawAnalog(self,screen)
 	
 	local player = appletManager:callService("getCurrentPlayer")
 	if player then
-		local alarmstate = player:getPlayerStatus()["alarm_state"]
+		local playerStatus = self:_getPlayerStatus(player)
+		local alarmstate = playerStatus["alarm_state"]
 		if alarmstate and alarmstate == "set" then
-			local alarmtime = player:getPlayerStatus()["alarm_next"]
+			local alarmtime = playerStatus["alarm_next"]
 			ah = os.date("%I",alarmtime)
 			am = os.date("%M",alarmtime)
 		end
@@ -4147,7 +4153,7 @@ function _reDrawAnalog(self,screen)
 
 	local imageType = "stopped"
 	if player then
-		local playerStatus = player:getPlayerStatus()
+		local playerStatus = self:_getPlayerStatus(player)
 		if playerStatus.mode == 'play' then
 			imageType = "playing"
 		end
