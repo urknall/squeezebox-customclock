@@ -325,7 +325,7 @@ function openMenu(self,transition)
 	end
         if licensed and menu:numItems() == 0 then
                 menu:addItem( {
-                        text = "No styles configured", 
+							text = self:string("SCREENSAVER_CUSTOMCLOCK_NO_STYLES_CONFIGURED"), 
                         iconStyle = 'item_no_arrow',
                         weight = 2
                 })
