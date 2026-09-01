@@ -437,7 +437,7 @@ function openScreensaver(self,mode, transition)
 				if chunk.data[3] and chunk.data[3]["state"] and (chunk.data[3]["state"] == "Success" or chunk.data[3]["state"] == "Errors") then
 					local updatesdtitems = {}
 					local no = 1
-					for _,item in ipairs(self.configItems) do
+					for _,item in pairs(self.configItems) do
 						local category = nil
 						local selectionattribute = nil
 						if string.find(item.itemtype,"^sdtsport") then
@@ -502,7 +502,7 @@ function openScreensaver(self,mode, transition)
 				if categories then
 					local updatepluginitems = {}
 					local no = 1
-					for _,item in ipairs(self.configItems) do
+					for _,item in pairs(self.configItems) do
 						local category = nil
 						if string.find(item.itemtype,"^plugin") and item.infotype and categories[item.infotype] then
 							category = item.infotype
@@ -583,7 +583,7 @@ function openScreensaver(self,mode, transition)
 		self.sdtcache = {}
 		self.pluginitemcache = {}
 		self.rssitemcache = {}
-		for _,item in ipairs(self.configItems) do
+		for _,item in pairs(self.configItems) do
 			if _getString(item.visibilitygroup,nil) then
 				if not self.visibilityGroups[item.visibilitygroup] then
 					self.visibilityGroups[item.visibilitygroup] = {}
@@ -764,7 +764,7 @@ function openScreensaver(self,mode, transition)
 	if self.window then
 		-- Show the window
 		self.window:show(transition)
-		for no,item in ipairs(self.configItems) do
+		for no,item in pairs(self.configItems) do
 			if string.find(item.itemtype,"text$") and _getString(item.animate,"true") == "true" then
 				self.items[no]:getWidget("itemno"):animate(true)
 			elseif not licensed and not item.free and (item.itemtype == "text" or string.find(item.itemtype,"timetext$") or string.find(item.itemtype,"track.*text$")) then
@@ -828,7 +828,7 @@ end
 function _recalculateVisibilityTimes(self,items)
 	local maxdelay = {}
 	local nodelay = {}
-	for no,item in ipairs(items) do
+	for no,item in pairs(items) do
 		if not _getString(self.configItems[item.item].visibilitytime,nil) and _getString(self.configItems[item.item].interval,nil) then
 			local results = nil
 			if string.find(self.configItems[item.item].itemtype,"^sdtsport") then
@@ -858,7 +858,7 @@ function _recalculateVisibilityTimes(self,items)
 			end
 		end
 	end
-	for no,item in ipairs(items) do
+	for no,item in pairs(items) do
 		if maxdelay[item.order] then
 			item.delay = maxdelay[item.order]
 		elseif nodelay[item.order] then
@@ -869,7 +869,7 @@ end
 
 function _resortItems(self,items)
 	local sortedItems = {}
-	for no,item in ipairs(items) do
+	for no,item in pairs(items) do
 		table.insert(sortedItems,item)
 	end
 	table.sort(sortedItems, function(a,b) 
@@ -1138,7 +1138,7 @@ end
 function _updateSongInfoIcons(self,player)
 	if self.configItems then
 		local width,height = Framework.getScreenSize()
-		for no,item in ipairs(self.configItems) do
+		for no,item in pairs(self.configItems) do
 			if item.itemtype == "songinfoicon" then
 				self:_updateSongInfoIcon(self.items[no],no,_getNumber(item.width,width),_getNumber(item.height,height),item.songinfomodule,"true",_getString(item.allowproxy,"true"))
 			end
@@ -1149,7 +1149,7 @@ end
 function _checkAndUpdateTitleFormatInfo(self,player)
 	local requestData = false
 	if self.configItems then
-		for _,item in ipairs(self.configItems) do
+		for _,item in pairs(self.configItems) do
 			if string.find(item.itemtype,"^track") and string.find(item.itemtype,"text$") then
 				if string.find(item.text,"BAND") or string.find(item.text,"COMPOSER") or string.find(item.text,"CONDUCTOR") or string.find(item.text,"ALBUMARTIST") or string.find(item.text,"TRACKARTIST") or string.find(item.text,"TRACKNUM") or string.find(item.text,"DISC") or string.find(item.text,"DISCCOUNT") or string.find(item.text,"RATING")then
 					requestData = true
@@ -3152,7 +3152,7 @@ function _wordwrap(strText,intMaxLength)
     local strBuffer = ""
     local tblLines = _explode(strText,"\n")
 
-	for k,strLine in ipairs(tblLines) do
+	for k,strLine in pairs(tblLines) do
         local tblWords = _explode(strLine," ")
         
         if (#tblWords > 0) then
@@ -3436,7 +3436,7 @@ function _tick(self,forcedUpdate)
 	local refreshCustomItemTypes = self.refreshCustomItemTypes
 	local licensed = true
 	self.refreshCustomItemTypes = {}
-	for _,item in ipairs(self.configItems) do
+	for _,item in pairs(self.configItems) do
 		if item.itemtype == "timetext" then
 			if licensed or item.free then
 				self.items[no]:setWidgetValue("itemno",self:_getLocalizedDateInfo(nil,_getString(item.text,"%H:%M")))
@@ -4067,7 +4067,7 @@ function _reDrawAnalog(self,screen)
 	local defaultposx = (width/2)
 	local defaultposy = (height/2)
 
-	for no,item in ipairs(self.configItems) do
+	for no,item in pairs(self.configItems) do
 		if item.itemtype == "clockimage" then
 			local posx = _getNumber(_getNumber(item.posx,self:getSettings()[self.mode.."clockposx"]),defaultposx)
 			local posy = _getNumber(_getNumber(item.posy,self:getSettings()[self.mode.."clockposy"]),defaultposy)
@@ -4115,7 +4115,7 @@ function _reDrawAnalog(self,screen)
 		end
 	end
 
-	for no,item in ipairs(self.configItems) do
+	for no,item in pairs(self.configItems) do
 		if item.itemtype == "hourimage" then
 			local posx = _getNumber(_getNumber(item.posx,self:getSettings()[self.mode.."clockposx"]),defaultposx)
 			local posy = _getNumber(_getNumber(item.posy,self:getSettings()[self.mode.."clockposy"]),defaultposy)
@@ -4129,7 +4129,7 @@ function _reDrawAnalog(self,screen)
 		end
 	end
 
-	for no,item in ipairs(self.configItems) do
+	for no,item in pairs(self.configItems) do
 		if item.itemtype == "minuteimage" then
 			local posx = _getNumber(_getNumber(item.posx,self:getSettings()[self.mode.."clockposx"]),defaultposx)
 			local posy = _getNumber(_getNumber(item.posy,self:getSettings()[self.mode.."clockposy"]),defaultposy)
@@ -4143,7 +4143,7 @@ function _reDrawAnalog(self,screen)
 		end
 	end
 
-	for no,item in ipairs(self.configItems) do
+	for no,item in pairs(self.configItems) do
 		if item.itemtype == "secondimage" then
 			local posx = _getNumber(_getNumber(item.posx,self:getSettings()[self.mode.."clockposx"]),defaultposx)
 			local posy = _getNumber(_getNumber(item.posy,self:getSettings()[self.mode.."clockposy"]),defaultposy)
@@ -4173,7 +4173,7 @@ function _reDrawAnalog(self,screen)
 		duration = 1
 		elapsed = 0
 	end
-	for no,item in ipairs(self.configItems) do
+	for no,item in pairs(self.configItems) do
 		if string.find(item.itemtype,"^rotatingimage") then
 			local id = ""
 			local rotating = 1
@@ -4483,18 +4483,8 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 end
 
 function _retrieveImageData(self,url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
-	if type(chunk) ~= 'string' or #chunk == 0 then
-		log:warn("Unable to load empty image data for "..imageType)
-		return
-	end
 	local width,height = self:_getUsableWallpaperArea()
-	local success, image = pcall(function()
-		return Surface:loadImageData(chunk, #chunk)
-	end)
-	if not success or not image then
-		log:warn("Unable to decode image data for "..imageType..": "..tostring(image))
-		return
-	end
+	local image = Surface:loadImageData(chunk, #chunk)
 	if clipWidth and clipHeight and clipX and clipY then
 		local newImg = Surface:newRGBA(clipWidth, clipHeight)
         newImg:filledRectangle(0, 0, clipWidth, clipHeight, 0x000000FF)
@@ -4550,7 +4540,7 @@ function _imageUpdate(self)
 
 	local licensed = true
 	local no = 1
-	for _,item in ipairs(self.configItems) do
+	for _,item in pairs(self.configItems) do
 		if string.find(item.itemtype,"icon$") and item.itemtype ~= "imageicon" and item.itemtype ~= "rssicon" then
 			for attr,value in pairs(item) do
 				if attr == "url" then
@@ -4746,7 +4736,7 @@ function _getClockSkin(self,skin)
 	
 	local licensed = true
 	local no = 1
-	for _,item in ipairs(self.configItems) do
+	for _,item in pairs(self.configItems) do
 		if string.find(item.itemtype,"text$") then
 			s.window["item"..no] = {
 				position = LAYOUT_NONE,
