@@ -1840,12 +1840,13 @@ function _updateStaticNowPlaying(self,widget,id,format,mode,free)
 		local playerStatus = player:getPlayerStatus()
 		if not mode or (mode == 'play' and playerStatus.mode == 'play') or (mode != 'play' and playerStatus.mode != 'play') then
 			if playerStatus.item_loop then
+				local text
 				if playerStatus.item_loop[2] and playerStatus.item_loop[2].track then
 					text = self:_replaceNextTitleKeywords(playerStatus.item_loop[2], format)
 				else
 					text = self:_replaceNextTitleKeywords(nil, format)
 				end
-				local text = self:_replaceTitleKeywords(playerStatus.item_loop[1], text ,playerStatus.item_loop[1].track)
+				text = self:_replaceTitleKeywords(playerStatus.item_loop[1], text ,playerStatus.item_loop[1].track)
 				text = self:_replaceCustomTitleFormats(text)
 				text = self:_replaceTitleFormatKeyword(text,"BAND")
 				text = self:_replaceTitleFormatKeyword(text,"CONDUCTOR")
