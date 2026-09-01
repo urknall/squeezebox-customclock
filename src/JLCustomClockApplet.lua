@@ -1989,7 +1989,7 @@ function _updateSDTSportItem(self,items)
 				if err then
 					log:warn(err)
 				else
-					self.sdtSuperDateTimeChecked = true
+					self.ccPluginItemsChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['sdtSuperDateTimeInstalled'] = true
 						self:_updateSDTSportItem(items)
