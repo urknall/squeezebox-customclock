@@ -1163,13 +1163,15 @@ function _updateCustomTitleFormatInfo(self,player)
 			server:userRequest(function(chunk,err)
 					if err then
 						log:warn(err)
-					else
+					elseif chunk and chunk.data then
 						if tonumber(chunk.data._can) == 1 then
 							self:getSettings()['customClockHelperInstalled'] = true
 							self:_updateCustomTitleFormatInfo(player)
 						else
 							self:getSettings()['customClockHelperInstalled'] = false
 						end
+					else
+						log:warn("Invalid response checking for CustomClockHelper")
 					end
 				end,
 				player and player:getId(),
@@ -1179,14 +1181,16 @@ function _updateCustomTitleFormatInfo(self,player)
 				server:userRequest(function(chunk,err)
 						if err then
 							log:warn(err)
-						else
+						elseif chunk and chunk.data then
 							self.customtitleformats = chunk.data.titleformats
-							for attribute,value in pairs(self.customtitleformats) do
+							for attribute,value in pairs(self.customtitleformats or {}) do
 								log:debug("Title format: "..tostring(attribute).."="..tostring(value))
 								if not licensed then
 									self.customtitleformats[attribute] = tostring(self:string("SCREENSAVER_CUSTOMCLOCK_NEEDS_LICENSE"))
 								end
 							end
+						else
+							log:warn("Invalid CustomClockHelper title format response")
 						end
 					end,
 					player and player:getId(),
@@ -1202,7 +1206,7 @@ function _updateTitleFormatInfo(self,player)
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					local index = chunk.data.playlist_cur_index
 					local licensed = true
 					if index and chunk.data.playlist_loop[index+1] and licensed then
@@ -1218,6 +1222,9 @@ function _updateTitleFormatInfo(self,player)
 					else
 						self.titleformats = {}
 					end
+				else
+					log:warn("Invalid player status response")
+					self.titleformats = {}
 				end
 			end,
 			player and player:getId(),
@@ -1238,7 +1245,7 @@ function defineSettingStyle(self,mode,menuItem)
 						log:warn("Error checking for CustomClockHelper: " .. tostring(err))
 						log:debug("Falling back to online styles due to LMS error")
 						self:_getOnlineStylesSink(menuItem,mode)
-					else
+					elseif chunk and chunk.data then
 						if licensed and tonumber(chunk.data._can) == 1 then
 							log:info("CustomClockHelper is installed retrieving local styles")
 							server:userRequest(function(chunk,err)
@@ -1246,7 +1253,7 @@ function defineSettingStyle(self,mode,menuItem)
 										log:warn("Error fetching styles from LMS: " .. tostring(err))
 										log:debug("Falling back to online styles due to LMS error")
 										self:_getOnlineStylesSink(menuItem,mode)
-									else
+									elseif chunk and chunk.data then
 										self:defineSettingStyleSink(menuItem,mode,chunk.data)
 									end
 								end,
@@ -1257,6 +1264,9 @@ function defineSettingStyle(self,mode,menuItem)
 							log:debug("CustomClockHelper isn't installed retrieving online styles")
 							self:_getOnlineStylesSink(menuItem,mode)
 						end
+					else
+						log:warn("Invalid response checking for CustomClockHelper")
+						self:_getOnlineStylesSink(menuItem,mode)
 					end
 				end,
 				player and player:getId(),
@@ -1321,7 +1331,11 @@ function _getOnlineStylesSink(self,menuItem,mode)
 				self:tieAndShowWindow(window)
 			elseif chunk then
 				chunk = json.decode(chunk)
-				self:defineSettingStyleSink(menuItem,mode,chunk.data)
+				if chunk and chunk.data then
+					self:defineSettingStyleSink(menuItem,mode,chunk.data)
+				else
+					log:warn("Invalid online style response")
+				end
 			end
 		end,
 		'GET', "/clockstyles8.json")
@@ -1943,7 +1957,7 @@ function _updateSDTText(self,widget,id,format,period)
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					self.sdtMacroChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['sdtMacroInstalled'] = true
@@ -1962,7 +1976,7 @@ function _updateSDTText(self,widget,id,format,period)
 			function(chunk, err)
 				if err then
 					log:warn(err)
-				elseif chunk then
+				elseif chunk and chunk.data then
 					local text = chunk.data.macroString
 					-- Lets allow time keywords to be specified as %$M instead of %M
 					if string.find(text,"%%%$") then
@@ -1988,7 +2002,7 @@ function _updateSDTSportItem(self,items)
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					self.sdtSuperDateTimeChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['sdtSuperDateTimeInstalled'] = true
@@ -2007,7 +2021,7 @@ function _updateSDTSportItem(self,items)
 			function(chunk, err)
 				if err then
 					log:warn(err)
-				elseif chunk then
+				elseif chunk and chunk.data then
 					local sportsData = chunk.data.selsports
 					local oldCache = self.sdtcache["sport"]
 					self.sdtcache["sport"] = {}
@@ -2060,7 +2074,7 @@ function _updateSDTWeatherItem(self,items)
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					self.sdtSuperDateTimeChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['sdtSuperDateTimeInstalled'] = true
@@ -2079,7 +2093,7 @@ function _updateSDTWeatherItem(self,items)
 			function(chunk, err)
 				if err then
 					log:warn(err)
-				elseif chunk then
+				elseif chunk and chunk.data then
 					local wetData = chunk.data.wetData
 					self.sdtcache["weather"] = {}
 					for no,item in pairs(items) do
@@ -2115,7 +2129,7 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					self.sdtSuperDateTimeChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['sdtSuperDateTimeInstalled'] = true
@@ -2134,7 +2148,7 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 			function(chunk, err)
 				if err then
 					log:warn(err)
-				elseif chunk then
+				elseif chunk and chunk.data then
 					local miscData = chunk.data.miscData[category]
 					local oldCache = self.sdtcache[category]
 					self.sdtcache[category] = {}
@@ -2189,7 +2203,7 @@ function _updatePluginItem(self,category,items)
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					self.ccPluginItemsChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['ccPluginItemsInstalled'] = true
@@ -2208,7 +2222,7 @@ function _updatePluginItem(self,category,items)
 			function(chunk, err)
 				if err then
 					log:warn(err)
-				elseif chunk then
+				elseif chunk and chunk.data then
 					local itemsData = chunk.data.items[category]
 					local oldCache = self.pluginitemcache[category]
 					self.pluginitemcache[category] = {}
@@ -3103,7 +3117,7 @@ function _updateSDTWeatherMapIcon(self,widget,id,item)
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					self.sdtVersionChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['sdtVersionInstalled'] = true
@@ -3121,7 +3135,7 @@ function _updateSDTWeatherMapIcon(self,widget,id,item)
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					local url = nil
 					if _getString(item.location,nil) and chunk.data.wetmapURL[item.location] and chunk.data.wetmapURL[item.location].URL then
 						url = chunk.data.wetmapURL[item.location].URL
@@ -3146,7 +3160,7 @@ function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowpro
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					self.sdtSongInfoChecked = true
 					if tonumber(chunk.data._can) == 1 then
 						self:getSettings()['sdtSongInfoInstalled'] = true
@@ -3164,7 +3178,7 @@ function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowpro
 		server:userRequest(function(chunk,err)
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data then
 					if chunk.data.item_loop then
 						self.configItems[id].urls = {}
 						for no,item in ipairs(chunk.data.item_loop) do
@@ -3199,7 +3213,7 @@ function _updateGalleryImage(self,widget,id,width,height,favorite)
 					server:userRequest(function(chunk,err)
 							if err then
 								log:warn(err)
-							else
+							elseif chunk and chunk.data then
 								local maxwidth,maxheight = self:_getUsableWallpaperArea()
 								local url = string.gsub(chunk.data.image,"{resizeParams}","_".._getNumber(width,maxwidth).."x".._getNumber(height,maxheight).."_p")
 								local ip,port = server:getIpPort()
