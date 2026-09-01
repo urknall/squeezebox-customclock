@@ -370,7 +370,7 @@ function openScreensaver(self,mode, transition)
 		player:subscribe(
 			'/slim/customclockchangedstyles',
 			function(chunk)
-				if not chunk.data[1] or chunk.data[1] ~= "customclockchangedstyles" then
+				if not chunk or not chunk.data or chunk.data[1] ~= "customclockchangedstyles" or type(chunk.data[2]) ~= 'table' then
 					return
 				end
 				for i,entry in pairs(chunk.data[2]) do
@@ -431,7 +431,7 @@ function openScreensaver(self,mode, transition)
 		player:subscribe(
 			'/slim/SuperDateTimeState/dataRefreshState',
 			function(chunk)
-				if not chunk.data[1] or chunk.data[1] ~= "SuperDateTimeState" or not chunk.data[2] or chunk.data[2] ~= "dataRefreshState" then
+				if not chunk or not chunk.data or chunk.data[1] ~= "SuperDateTimeState" or chunk.data[2] ~= "dataRefreshState" then
 					return
 				end
 				if chunk.data[3] and chunk.data[3]["state"] and (chunk.data[3]["state"] == "Success" or chunk.data[3]["state"] == "Errors") then
@@ -492,7 +492,7 @@ function openScreensaver(self,mode, transition)
 		player:subscribe(
 			'/slim/customclockchangedcustomitems',
 			function(chunk)
-				if not chunk.data[1] or chunk.data[1] ~= "customclockchangedcustomitems" then
+				if not chunk or not chunk.data or chunk.data[1] ~= "customclockchangedcustomitems" or type(chunk.data[2]) ~= 'table' then
 					return
 				end
 				local categories = {}
@@ -530,7 +530,7 @@ function openScreensaver(self,mode, transition)
 		player:subscribe(
 			'/slim/customclocktitleformatsupdated',
 			function(chunk)
-				if not chunk.data[1] or chunk.data[1] ~= "customclocktitleformatsupdated" then
+				if not chunk or not chunk.data or chunk.data[1] ~= "customclocktitleformatsupdated" then
 					return
 				end
 				local player = appletManager:callService("getCurrentPlayer")
