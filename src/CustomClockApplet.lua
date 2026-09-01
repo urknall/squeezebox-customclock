@@ -2489,7 +2489,7 @@ function _updateRSSItem(self,category,items)
 end
 
 function _getPluginItemCacheKey(self,category,item)
-	if string.find(item.itemtype,"text$") and _getString(item.scrolling,"false") == "true" then
+	if string.find(item.itemtype,"text$") and _isTrue(item.scrolling) then
 		return "scrolling".._getString(item.selected,"")
 	else
 		return "switching".._getString(item.selected,"")
@@ -2497,7 +2497,7 @@ function _getPluginItemCacheKey(self,category,item)
 end
 
 function _getRSSItemCacheKey(self,category,item)
-	if string.find(item.itemtype,"text$") and _getString(item.scrolling,"false") == "true" then
+	if string.find(item.itemtype,"text$") and _isTrue(item.scrolling) then
 		return "scrolling".._getString(item.selected,"")
 	else
 		return "switching".._getString(item.selected,"")
@@ -2506,13 +2506,13 @@ end
 
 function _getSDTCacheKey(self,category,item)
 	if category == "sport" then
-		if item.itemtype == "sdtsporttext" and _getString(item.scrolling,"false") == "true" then
+		if item.itemtype == "sdtsporttext" and _isTrue(item.scrolling) then
 			return "scrolling".._getString(item.sport,"all").._getString(item.gamestatus,"")
 		else
 			return _getString(item.sport,"all").._getString(item.gamestatus,"")
 		end
 	elseif category == "stocks" and string.find(item.itemtype,"^sdtstock") then
-		if item.itemtype == "sdtstocktext" and _getString(item.scrolling,"false") == "true" then
+		if item.itemtype == "sdtstocktext" and _isTrue(item.scrolling) then
 			return "scrolling".._getString(item.stock,"")
 		else
 			return "switching".._getString(item.stock,"")
@@ -2520,7 +2520,7 @@ function _getSDTCacheKey(self,category,item)
 	elseif category == "weather" then
 		return "weather".._getString(item.period,"")
 	else
-		if string.find(item.itemtype,"text$") and _getString(item.scrolling,"false") == "true" then
+		if string.find(item.itemtype,"text$") and _isTrue(item.scrolling) then
 			return "scrolling".._getString(item.selected,"")
 		else
 			return "switching".._getString(item.selected,"")
@@ -2812,7 +2812,7 @@ function _getNextSDTItem(self,category,item)
 	local currentResult = self:_getSDTCacheIndex(category,item)
 	if currentResult then
 		local length = _getNumber(item.noofrows,1)
-		if length == 1 and string.find(item.itemtype,category..'text$') and _getString(item.scrolling,"false") == "true" then
+		if length == 1 and string.find(item.itemtype,category..'text$') and _isTrue(item.scrolling) then
 			length = #results
 		end
 		if #results > (currentResult+length+_getNumber(item.step,1)-2) then
@@ -2832,7 +2832,7 @@ function _getNextPluginItem(self,category,item)
 	local currentResult = self:_getPluginItemCacheIndex(category,item)
 	if currentResult then
 		local length = _getNumber(item.noofrows,1)
-		if length == 1 and string.find(item.itemtype,category..'text$') and _getString(item.scrolling,"false") == "true" then
+		if length == 1 and string.find(item.itemtype,category..'text$') and _isTrue(item.scrolling) then
 			length = #results
 		end
 		if #results > (currentResult+length+_getNumber(item.step,1)-2) then
@@ -2853,7 +2853,7 @@ function _getNextRSSItem(self,category,item)
 	local currentResult = self:_getRSSItemCacheIndex(category,item)
 	if currentResult then
 		local length = _getNumber(item.noofrows,1)
-		if length == 1 and string.find(item.itemtype,category..'text$') and _getString(item.scrolling,"false") == "true" then
+		if length == 1 and string.find(item.itemtype,category..'text$') and _isTrue(item.scrolling) then
 			length = #results
 		end
 		if #results > (currentResult+length+_getNumber(item.step,1)-2) then
@@ -3035,7 +3035,7 @@ function _getResultString(self,item,results,attribute)
 	local result = ""
 	local length = _getNumber(item.noofrows,1)
 	local offset = 0
-	if length == 1 and _getString(item.scrolling,"false") == "true" then
+	if length == 1 and _isTrue(item.scrolling) then
 		length = #results
 		item.currentResult = 1
 	else
@@ -3045,7 +3045,7 @@ function _getResultString(self,item,results,attribute)
 		local first = item.currentResult+offset
 		for i=first,(first+length-1) do
 			if #results>=i then
-				if i>first and (_getString(item.scrolling,"false") == "false" or tonumber(_getNumber(item.noofrows,1))>1 or tonumber(_getNumber(item.linelength,0))>0) then
+				if i>first and (not _isTrue(item.scrolling) or tonumber(_getNumber(item.noofrows,1))>1 or tonumber(_getNumber(item.linelength,0))>0) then
 					if _getString(item.separator,nil) then
 						local separator = _getString(item.separator,nil)
 						separator = string.gsub(separator,"\\n","\n")
@@ -3075,7 +3075,7 @@ function _getResultString(self,item,results,attribute)
 				if _getString(item.decodehtml,"false") == "true" then
 					tmp = _html2txt(tmp)
 				end
-				if _getString(item.scrolling,"false") == "false" and tonumber(_getNumber(item.linelength,0))>0 and string.len(tmp)>tonumber(_getNumber(item.linelength,0)) then
+				if not _isTrue(item.scrolling) and tonumber(_getNumber(item.linelength,0))>0 and string.len(tmp)>tonumber(_getNumber(item.linelength,0)) then
 					tmp = _wordwrap(tmp,tonumber(_getNumber(item.linelength,0)))
 				end
 				tmp = string.gsub(tmp,"\\n","\n")
@@ -4697,6 +4697,10 @@ function _getString(value,default)
 	else
 		return default
 	end
+end
+
+function _isTrue(value)
+	return value == true or value == "true"
 end
 
 function _getClockSkin(self,skin)
