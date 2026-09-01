@@ -4545,6 +4545,7 @@ function _imageUpdate(self)
 			for attr,value in pairs(item) do
 				if attr == "url" then
 					if _getString(item.url,nil) then
+						self.referenceimages[self.mode.."item"..no] = no
 						self:_retrieveImage(item.url,self.mode.."item"..no,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.width,nil),_getNumber(item.height,nil),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					else
 						self.images[self.mode.."item"..no] = nil
@@ -4552,6 +4553,7 @@ function _imageUpdate(self)
 				elseif string.find(attr,"^url%.") then
 					local id = string.gsub(attr,"^url%.","")
 					if _getString(value,nil) then
+						self.referenceimages[self.mode.."item"..no.."."..id] = no
 						self:_retrieveImage(value,self.mode.."item"..no.."."..id,_getString(item.allowproxy,"true"),item.dynamic,_getNumber(item.width,nil),_getNumber(item.height,nil),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					else
 						self.images[self.mode.."item"..no.."."..id] = nil
