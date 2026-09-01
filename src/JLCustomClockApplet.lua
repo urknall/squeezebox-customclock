@@ -2507,7 +2507,7 @@ function _updateRSSItem(self,category,items)
 end
 
 function _getPluginItemCacheKey(self,category,item)
-	if string.find(item.itemtype,"text$") and item.scrolling then
+	if string.find(item.itemtype,"text$") and _getString(item.scrolling,"false") == "true" then
 		return "scrolling".._getString(item.selected,"")
 	else
 		return "switching".._getString(item.selected,"")
@@ -2515,7 +2515,7 @@ function _getPluginItemCacheKey(self,category,item)
 end
 
 function _getRSSItemCacheKey(self,category,item)
-	if string.find(item.itemtype,"text$") and item.scrolling then
+	if string.find(item.itemtype,"text$") and _getString(item.scrolling,"false") == "true" then
 		return "scrolling".._getString(item.selected,"")
 	else
 		return "switching".._getString(item.selected,"")
@@ -2524,13 +2524,13 @@ end
 
 function _getSDTCacheKey(self,category,item)
 	if category == "sport" then
-		if item.itemtype == "sdtsporttext" and item.scrolling then
+		if item.itemtype == "sdtsporttext" and _getString(item.scrolling,"false") == "true" then
 			return "scrolling".._getString(item.sport,"all").._getString(item.gamestatus,"")
 		else
 			return _getString(item.sport,"all").._getString(item.gamestatus,"")
 		end
 	elseif category == "stocks" and string.find(item.itemtype,"^sdtstock") then
-		if item.itemtype == "sdtstocktext" and item.scrolling then
+		if item.itemtype == "sdtstocktext" and _getString(item.scrolling,"false") == "true" then
 			return "scrolling".._getString(item.stock,"")
 		else
 			return "switching".._getString(item.stock,"")
@@ -2538,7 +2538,7 @@ function _getSDTCacheKey(self,category,item)
 	elseif category == "weather" then
 		return "weather".._getString(item.period,"")
 	else
-		if string.find(item.itemtype,"text$") and item.scrolling then
+		if string.find(item.itemtype,"text$") and _getString(item.scrolling,"false") == "true" then
 			return "scrolling".._getString(item.selected,"")
 		else
 			return "switching".._getString(item.selected,"")
