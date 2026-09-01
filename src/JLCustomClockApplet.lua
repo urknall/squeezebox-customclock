@@ -2855,9 +2855,9 @@ function _changeSDTItem(self,category,item,widget,id,dynamic)
 				local width = _getNumber(item.width,nil)
 				local height = _getNumber(item.height,nil)
 				if width and height then
-					url = string.gsub(url,".png$","_"..width.."x"..height.."_p.png")
-					url = string.gsub(url,".jpg$","_"..width.."x"..height.."_p.jpg")
-					url = string.gsub(url,".jpeg$","_"..width.."x"..height.."_p.jpeg")
+					url = string.gsub(url,"%.png$","_"..width.."x"..height.."_p.png")
+					url = string.gsub(url,"%.jpg$","_"..width.."x"..height.."_p.jpg")
+					url = string.gsub(url,"%.jpeg$","_"..width.."x"..height.."_p.jpeg")
 				end
 			end
 			if url then
@@ -2907,9 +2907,9 @@ function _changePluginItem(self,category,item,widget,id,dynamic)
 				local width = _getNumber(item.width,nil)
 				local height = _getNumber(item.height,nil)
 				if width and height then
-					url = string.gsub(url,".png","_"..width.."x"..height.."_p.png")
-					url = string.gsub(url,".jpg","_"..width.."x"..height.."_p.jpg")
-					url = string.gsub(url,".jpeg","_"..width.."x"..height.."_p.jpeg")
+					url = string.gsub(url,"%.png$","_"..width.."x"..height.."_p.png")
+					url = string.gsub(url,"%.jpg$","_"..width.."x"..height.."_p.jpg")
+					url = string.gsub(url,"%.jpeg$","_"..width.."x"..height.."_p.jpeg")
 				end
 			end
 			if url then
@@ -2959,9 +2959,9 @@ function _changeRSSItem(self,category,item,widget,id,dynamic)
 				local width = _getNumber(item.width,nil)
 				local height = _getNumber(item.height,nil)
 				if width and height then
-					url = string.gsub(url,".png","_"..width.."x"..height.."_p.png")
-					url = string.gsub(url,".jpg","_"..width.."x"..height.."_p.jpg")
-					url = string.gsub(url,".jpeg","_"..width.."x"..height.."_p.jpeg")
+					url = string.gsub(url,"%.png$","_"..width.."x"..height.."_p.png")
+					url = string.gsub(url,"%.jpg$","_"..width.."x"..height.."_p.jpg")
+					url = string.gsub(url,"%.jpeg$","_"..width.."x"..height.."_p.jpeg")
 				end
 			end
 			if url then
