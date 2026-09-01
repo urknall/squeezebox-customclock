@@ -369,7 +369,7 @@ MONTH_07
 	SV	juli
 
 MONTH_08
-	CS	Říjen
+	CS	Srpen
 	DA	august
 	DE	August
 	EN	August
@@ -549,7 +549,7 @@ MONTH_SHORT_07
 	SV	jul
 
 MONTH_SHORT_08
-	CS	Říj
+	CS	Srp
 	DA	aug
 	DE	Aug
 	EN	Aug
