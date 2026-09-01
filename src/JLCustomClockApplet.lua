@@ -799,7 +799,7 @@ function addCustomClockImageType(self,itemType,applet,method,data)
 		method = method
 	}
 	self:getSettings()["customitemtypes"] = self.customItemTypes
-	--We don't need to call self:storeSettings() it will just wast flash write cycles
+	--We don't need to call self:storeSettings() it will just waste flash write cycles
 end
 
 function _storeSettingsWithoutCache(self)
@@ -822,7 +822,7 @@ function addCustomClockTextType(self,itemType,applet,method,data)
 		method = method
 	}
 	self:getSettings()["customitemtypes"] = self.customItemTypes
-	--We don't need to call self:storeSettings() it will just wast flash write cycles
+	--We don't need to call self:storeSettings() it will just waste flash write cycles
 end
 
 function _recalculateVisibilityTimes(self,items)
@@ -1298,7 +1298,7 @@ function defineSettingStyle(self,mode,menuItem)
 				{'can','customclock','styles','?'}
 			)
 	
-			-- create animiation to show while we get data from the server
+			-- create animation to show while we get data from the server
 			local popup = Popup("waiting_popup")
 			local icon  = Icon("icon_connecting")
 			local label = Label("text", self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_FETCHING"))
@@ -1319,7 +1319,7 @@ end
 
 function _getOnlineStylesSink(self,menuItem,mode)
 	if not self.popup then
-		-- create animiation to show while we get data from the server
+		-- create animation to show while we get data from the server
 		local popup = Popup("waiting_popup")
 		local icon  = Icon("icon_connecting")
 		local label = Label("text", self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_FETCHING"))
@@ -1375,7 +1375,7 @@ function _uses(parent, value)
         setmetatable(style, { __index = parent })
         for k,v in pairs(value or {}) do
                 if type(v) == "table" and type(parent[k]) == "table" then
-                        -- recursively inherrit from parent style
+						-- recursively inherit from parent style
                         style[k] = _uses(parent[k], v)
                 else
                         style[k] = v
@@ -2022,7 +2022,7 @@ function _updateSDTText(self,widget,id,format,period)
 					log:warn(err)
 				elseif chunk and chunk.data then
 					local text = chunk.data.macroString
-					-- Lets allow time keywords to be specified as %$M instead of %M
+					-- Let's allow time keywords to be specified as %$M instead of %M
 					if string.find(text,"%%%$") then
 						text = string.gsub(text,"%%%$","%%")
 						text = self:_getLocalizedDateInfo(nil,_getString(text,""))
