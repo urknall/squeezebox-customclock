@@ -53,6 +53,9 @@ SCREENSAVER_CUSTOMCLOCK_SETTINGS_FETCHING
 	EN	Fetching clock styles...
 	IT	Raccolta stili...
 
+SCREENSAVER_CUSTOMCLOCK_NO_STYLES_CONFIGURED
+	EN	No styles configured
+
 WEEKDAY_0
 	CS	Neděle
 	DA	Søndag
@@ -624,7 +627,7 @@ MONTH_SHORT_12
 	SV	dec
 
 SCREENSAVER_CUSTOMCLOCK_SETTINGS_UNLICENSED
-	EN	Use License Manager plugin in Squeezebox Server or goto http://license.isaksson.info to get license to get full functionality
+	EN	Use License Manager plugin in Squeezebox Server or go to http://license.isaksson.info to get a license to get full functionality
 	
 SCREENSAVER_CUSTOMCLOCK_NEEDS_LICENSE
 	EN	Requires license, see License Manager applet, installed through Settings/Advanced/Applet Installer
