@@ -903,8 +903,11 @@ function _updateVisibilityGroups(self)
 				end
 				if group.current>#group.items then
 					group.current = 1
-					while (group.items[group.current].delay == 0 and previousCurrent!=group.current) do
+					while group.current<=#group.items and group.items[group.current].delay == 0 and previousCurrent!=group.current do
 						group.current = group.current + 1
+					end
+					if group.current>#group.items then
+						group.current = 1
 					end
 					self:_recalculateVisibilityTimes(group.items)
 					group.items = self:_resortItems(group.items)
