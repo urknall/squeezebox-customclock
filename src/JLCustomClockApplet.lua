@@ -3120,10 +3120,11 @@ function _html2txt(s)
 		c = string.lower(c)
 		return html_coded[c] or ("["..c.."]")
 	end)
-	s = string.gsub(s,"&#(%d-);", function(c)
+	s = string.gsub(s,"&#(%d+);", function(c)
 --	  log.dbg("html2txt &#(%d-); substitution: "..tostring(c))
-      	  if tonumber(c) < 256 then
-	    return string.char(tonumber(c))
+	  local value = tonumber(c)
+	  if value and value < 256 then
+	    return string.char(value)
 	  end
 	  return html_coded_numeric[c] or "?"
 	end)
