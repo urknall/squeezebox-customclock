@@ -350,6 +350,7 @@ function openScreensaver(self,mode, transition)
 	local player = appletManager:callService("getCurrentPlayer")
 	local oldMode = self.mode
 	self.mode = mode
+	self.screenGeneration = (self.screenGeneration or 0) + 1
 	self:_getLMSInfo()
 	local licensed = true
 	if ((oldMode and self.mode != oldMode) or self.licensed~=licensed) and self.window then
@@ -879,6 +880,7 @@ end
 
 function closeScreensaver(self)
 	self:_unsubscribePlayerEvents()
+	self.screenGeneration = (self.screenGeneration or 0) + 1
 	if self.window then
 		self.window:hide()
 		self.window = nil
@@ -1159,11 +1161,15 @@ function _checkAndUpdateTitleFormatInfo(self,player)
 end
 
 function _updateCustomTitleFormatInfo(self,player)
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 	if server then
 		local licensed = true
 		if not self:getSettings()['customClockHelperInstalled'] then
 			server:userRequest(function(chunk,err)
+					if screenGeneration ~= self.screenGeneration then
+						return
+					end
 					if err then
 						log:warn(err)
 					elseif chunk and chunk.data then
@@ -1182,6 +1188,9 @@ function _updateCustomTitleFormatInfo(self,player)
 			)
 		else
 				server:userRequest(function(chunk,err)
+						if screenGeneration ~= self.screenGeneration then
+							return
+						end
 						if err then
 							log:warn(err)
 						elseif chunk and chunk.data then
@@ -1204,9 +1213,13 @@ function _updateCustomTitleFormatInfo(self,player)
 end
 
 function _updateTitleFormatInfo(self,player)
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 	if server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -1957,10 +1970,14 @@ end
 
 function _updateSDTText(self,widget,id,format,period)
 	local player = appletManager:callService("getCurrentPlayer")
+	local screenGeneration = self.screenGeneration
 	period = _getString(period,nil) or "-1" 
 	local server = player and player:getSlimServer()
 	if not self.sdtMacroChecked and not self:getSettings()['sdtMacroInstalled'] and server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -1980,6 +1997,9 @@ function _updateSDTText(self,widget,id,format,period)
 	elseif self:getSettings()['sdtMacroInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -2002,10 +2022,14 @@ end
 
 function _updateSDTSportItem(self,items)
 	local player = appletManager:callService("getCurrentPlayer")
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 
 	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -2025,6 +2049,9 @@ function _updateSDTSportItem(self,items)
 	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -2074,10 +2101,14 @@ end
 
 function _updateSDTWeatherItem(self,items)
 	local player = appletManager:callService("getCurrentPlayer")
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 
 	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -2097,6 +2128,9 @@ function _updateSDTWeatherItem(self,items)
 	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -2129,10 +2163,14 @@ end
 
 function _updateSDTMiscItem(self,category,items,selectionattribute)
 	local player = appletManager:callService("getCurrentPlayer")
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 
 	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -2152,6 +2190,9 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -2203,10 +2244,14 @@ end
 
 function _updatePluginItem(self,category,items)
 	local player = appletManager:callService("getCurrentPlayer")
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 
 	if not self.ccPluginItemsChecked and not self:getSettings()['ccPluginItemsInstalled'] and server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -2226,6 +2271,9 @@ function _updatePluginItem(self,category,items)
 	elseif self:getSettings()['ccPluginItemsInstalled'] and server then
 		server:userRequest(
 			function(chunk, err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -2277,10 +2325,14 @@ end
 
 function _updateRSSItem(self,category,items)
 	local player = appletManager:callService("getCurrentPlayer")
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 	local licensed = true
 
 	local req = RequestHttp(function(chunk, err)
+			if screenGeneration ~= self.screenGeneration then
+				return
+			end
 			if err then
 				log:warn(err)
 			elseif chunk then
@@ -3118,9 +3170,13 @@ end
 
 function _updateSDTWeatherMapIcon(self,widget,id,item)
 	local player = appletManager:callService("getCurrentPlayer")
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 	if not self.sdtVersionChecked and not self:getSettings()['sdtVersionInstalled'] and server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -3139,6 +3195,9 @@ function _updateSDTWeatherMapIcon(self,widget,id,item)
 		)
 	elseif self:getSettings()['sdtVersionInstalled'] and server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -3161,9 +3220,13 @@ end
 
 function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowproxy)
 	local player = appletManager:callService("getCurrentPlayer")
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 	if not self.sdtSongInfoChecked and not self:getSettings()['sdtSongInfoInstalled'] and server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -3182,6 +3245,9 @@ function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowpro
 		)
 	elseif self:getSettings()['sdtSongInfoInstalled'] and _getString(module,nil) and server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				elseif chunk and chunk.data then
@@ -3206,9 +3272,13 @@ end
 
 function _updateGalleryImage(self,widget,id,width,height,favorite)
 	local player = appletManager:callService("getCurrentPlayer")
+	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 	if server then
 		server:userRequest(function(chunk,err)
+				if screenGeneration ~= self.screenGeneration then
+					return
+				end
 				if err then
 					log:warn(err)
 				else
@@ -3217,6 +3287,9 @@ function _updateGalleryImage(self,widget,id,width,height,favorite)
 						cmd = {'gallery','random','favid:'.._getNumber(favorite,nil)}
 					end
 					server:userRequest(function(chunk,err)
+							if screenGeneration ~= self.screenGeneration then
+								return
+							end
 							if err then
 								log:warn(err)
 							elseif chunk and chunk.data then
@@ -4254,6 +4327,7 @@ end
 
 
 function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX,clipY,clipWidth,clipHeight)
+	local screenGeneration = self.screenGeneration
 	local imagehost = ""
 	local imageport = tonumber("80")
 	local imagepath = ""
@@ -4320,6 +4394,9 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 			log:debug("Image not found in cache, getting from source: "..url)
 			local http = SocketHttp(jnt, imagehost, imageport)
 			local req = RequestHttp(function(chunk, err)
+					if screenGeneration ~= self.screenGeneration then
+						return
+					end
 					if chunk then
 						if _getString(dynamic,"false") == "false" then
 							lfs.mkdir(appletdir.."CustomClock/images")
