@@ -1691,7 +1691,10 @@ function _retrieveFont(self,fonturl,fontfile,fontSize)
 end
 
 function _refreshAfterFontDownload(self)
-	if not self.fontRefreshPending or next(self.fontDownloadsInFlight or {}) then
+	if not self.fontRefreshPending then
+		return
+	end
+	for _ in pairs(self.fontDownloadsInFlight or {}) do
 		return
 	end
 	self.fontRefreshPending = false
