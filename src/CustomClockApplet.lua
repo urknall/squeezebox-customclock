@@ -1105,7 +1105,17 @@ function _startClockTimer(self,timerWindow,timerGeneration)
 	end
 	self.clockTimerCallback = onTimerFired
 	self.clockTimer = Timer(1000, onTimerFired, false)
-	self.clockTimer:start()
+	-- Align the first fire to the next real wall-clock second boundary
+	-- (socket.gettime() has sub-second resolution, Framework:getTicks()
+	-- doesn't) so displayed seconds don't visibly lag by up to ~1s. The
+	-- timer's own repeat interval stays a plain 1000ms via _insertTimer's
+	-- normal next=expires+interval reinsertion (see jive.ui.Timer), so
+	-- every fire after this first one stays aligned too, with no change
+	-- to the freeze-fix mechanism above.
+	local msIntoSecond = math.floor((socket.gettime() % 1) * 1000)
+	local delayToNextSecond = 1000 - msIntoSecond
+	if delayToNextSecond <= 0 then delayToNextSecond = 1000 end
+	self.clockTimer:_insertTimer(Framework:getTicks() + delayToNextSecond)
 end
 
 function _updateVisibilityGroups(self)
