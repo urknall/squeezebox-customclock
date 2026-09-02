@@ -1256,59 +1256,68 @@ function _updateTitleFormatInfo(self,player)
 end
 
 function defineSettingStyle(self,mode,menuItem)
-	
 	local player = appletManager:callService("getCurrentPlayer")
 	local licensed = true
-	if player then
-		local server = player:getSlimServer()
-		if server then
-			if self._helperStyleCheckInFlight then
-				log:debug("CustomClockHelper style check already in flight; skipping duplicate LMS request")
+	local server = player and player:getSlimServer()
+	if not server then
+		log:debug("Player or server not available retrieving online styles")
+		self:_getOnlineStylesSink(menuItem,mode)
+		return
+	end
+	if self._helperStyleCheckInFlight then
+		log:debug("CustomClockHelper style check already in flight; skipping duplicate LMS request")
+		return
+	end
+
+	self._helperStyleCheckInFlight = true
+	server:userRequest(function(chunk,err)
+			self._helperStyleCheckInFlight = false
+			if err then
+				log:warn("Error checking for CustomClockHelper: " .. tostring(err))
 				return
 			end
-			self._helperStyleCheckInFlight = true
-			server:userRequest(function(chunk,err)
-					self._helperStyleCheckInFlight = false
-					if err then
-						log:warn("Error checking for CustomClockHelper: " .. tostring(err))
-						return
-					end
-					if not chunk or not chunk.data then
-						log:warn("Invalid response checking for CustomClockHelper")
-						return
-					end
-					if licensed and tonumber(chunk.data._can) == 1 then
-						log:info("CustomClockHelper is installed retrieving local styles")
-						if self._localStylesFetchInFlight then
-							log:debug("CustomClockHelper local styles fetch already in flight; skipping duplicate LMS request")
+			if not chunk or not chunk.data then
+				log:warn("Invalid response checking for CustomClockHelper")
+				return
+			end
+			if licensed and tonumber(chunk.data._can) == 1 then
+				log:info("CustomClockHelper is installed retrieving local styles")
+				if self._localStylesFetchInFlight then
+					log:debug("CustomClockHelper local styles fetch already in flight; skipping duplicate LMS request")
+					return
+				end
+				self._localStylesFetchInFlight = true
+				server:userRequest(function(localChunk,localErr)
+						self._localStylesFetchInFlight = false
+						if localErr then
+							log:warn("Error fetching styles from LMS: " .. tostring(localErr))
 							return
 						end
-						self._localStylesFetchInFlight = true
-						server:userRequest(function(localChunk,localErr)
-							self._localStylesFetchInFlight = false
-							if localErr then
-								log:warn("Error fetching styles from LMS: " .. tostring(localErr))
-								return
-							end
-							if not localChunk or not localChunk.data then
-								log:warn("Invalid CustomClockHelper style response")
-								return
-							end
-							self:defineSettingStyleSink(menuItem,mode,localChunk.data)
-						end,
-						player and player:getId(),
-						{'customclock','styles'}
-						)
-					else
-						log:debug("CustomClockHelper isn't installed retrieving online styles")
-		else
-			log:debug("Server not available retrieving online styles")
-			self:_getOnlineStylesSink(menuItem,mode)
-		end
-	else
-		log:debug("Player not selected retrieving online styles")
-		self:_getOnlineStylesSink(menuItem,mode)
-	end
+						if not localChunk or not localChunk.data then
+							log:warn("Invalid CustomClockHelper style response")
+							return
+						end
+						self:defineSettingStyleSink(menuItem,mode,localChunk.data)
+					end,
+					player:getId(),
+					{'customclock','styles'}
+				)
+			else
+				log:debug("CustomClockHelper isn't installed retrieving online styles")
+				self:_getOnlineStylesSink(menuItem,mode)
+			end
+		end,
+		player:getId(),
+		{'can','customclock','styles','?'}
+	)
+
+	local popup = Popup("waiting_popup")
+	local icon = Icon("icon_connecting")
+	local label = Label("text", self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_FETCHING"))
+	popup:addWidget(icon)
+	popup:addWidget(label)
+	self:tieAndShowWindow(popup)
+	self.popup = popup
 end
 
 function _getOnlineStylesSink(self,menuItem,mode)
@@ -4439,7 +4448,7 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 		end
 		if not cachedImage then
 			log:debug("Image not found in cache, getting from source: "..url)
-			local http = SocketHttp(jnt, imagehost, imageport)
+			local http = SocketHttp(jnt, imagehost, imageport, imagehost)
 			local req = RequestHttp(function(chunk, err)
 					if screenGeneration ~= self.screenGeneration then
 						return
