@@ -1617,6 +1617,55 @@ function _getMode(self)
 	end
 end
 
+-- Style/font data arrives over unauthenticated HTTP (JiveLite has no TLS),
+-- so a style-controlled font filename must never be allowed to escape the
+-- fonts cache directory.
+function _isSafeFontFilename(name)
+	if type(name) ~= "string" or name == "" then
+		return false
+	end
+	if name == "." or name == ".." then
+		return false
+	end
+	if string.find(name,"[/\\]") then
+		return false
+	end
+	return true
+end
+
+-- Normalizes a zip member path against `root`, rejecting absolute paths and
+-- any ".." component that would escape `root`. Returns nil if unsafe,
+-- otherwise the safe filesystem path to use (preserving a trailing "/" for
+-- directory entries, since legitimate archives use subdirectories).
+function _sanitizeZipEntryPath(root,entryName)
+	if type(entryName) ~= "string" or entryName == "" then
+		return nil
+	end
+	if string.sub(entryName,1,1) == "/" or string.sub(entryName,1,1) == "\\" or string.find(entryName,"^%a:[/\\]") then
+		return nil
+	end
+	local isDir = string.sub(entryName,-1) == "/" or string.sub(entryName,-1) == "\\"
+	local stack = {}
+	for part in string.gmatch(entryName,"[^/\\]+") do
+		if part == ".." then
+			if #stack == 0 then
+				return nil
+			end
+			table.remove(stack)
+		elseif part ~= "." then
+			table.insert(stack,part)
+		end
+	end
+	if #stack == 0 then
+		return nil
+	end
+	local safePath = root..table.concat(stack,"/")
+	if isDir then
+		safePath = safePath.."/"
+	end
+	return safePath
+end
+
 function _getAppletDir()
 	local appletdir = nil
 	if lfs.attributes("/usr/share/jive/applets") ~= nil then
@@ -1668,6 +1717,11 @@ function _retrieveFont(self,fonturl,fontfile,fontSize)
 		if not _getString(fontfile,nil) then
 			local name = string.sub(fonturl,string.find(fonturl,"/[^/]+$"))
 			fontfile = string.gsub(name,"^/","")
+		end
+
+		if not _isSafeFontFilename(fontfile) then
+			log:warn("Rejecting unsafe font filename: "..tostring(fontfile))
+			return nil
 		end
 
 		local luadir = _getLuaDir()
@@ -1740,8 +1794,10 @@ function _downloadFontZipFile(self, dir, fonturl)
 		                fh:close()
 			end
                         fh = nil
-                        local filename = dir .. chunk.filename
-                        if string.sub(filename, -1) == "/" then
+                        local filename = _sanitizeZipEntryPath(dir, chunk.filename)
+                        if not filename then
+                                log:warn("Ignoring unsafe zip entry: "..tostring(chunk.filename))
+                        elseif string.sub(filename, -1) == "/" then
                                 log:debug("creating directory: " .. filename)
                                 lfs.mkdir(filename)
                                 fh = 'DIR'
