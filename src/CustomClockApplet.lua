@@ -1927,14 +1927,14 @@ end
 function _extractTrackInfo(_track, _itemType)
         if _track.track then
 		if _itemType == 1 then
-			return _track.artist
+			return _track.artist or ""
 		elseif _itemType == 2 then
-			return _track.album
+			return _track.album or ""
 		else 
-			return _track.track
+			return _track.track or ""
 		end
         else
-                return _track.text
+                return _track.text or ""
         end
 end
 
@@ -2092,9 +2092,9 @@ end
 
 function _replaceTitleKeywords(self,_track, text, replaceNoneTracks)
 	if _track.track then
-		text = string.gsub(text,"(%w+)", function(w) if w=="ARTIST" then return _track.artist else return w end end)
-		text = string.gsub(text,"(%w+)", function(w) if w=="ALBUM" then return _track.album else return w end end)
-		text = string.gsub(text,"(%w+)", function(w) if w=="TITLE" then return _track.track else return w end end)
+		text = string.gsub(text,"(%w+)", function(w) if w=="ARTIST" then return _track.artist or "" else return w end end)
+		text = string.gsub(text,"(%w+)", function(w) if w=="ALBUM" then return _track.album or "" else return w end end)
+		text = string.gsub(text,"(%w+)", function(w) if w=="TITLE" then return _track.track or "" else return w end end)
 	elseif replaceNoneTracks then
 		text = _track.text
 	else
@@ -2105,9 +2105,9 @@ end
 
 function _replaceNextTitleKeywords(self,_track, text)
 	if _track and _track.track then
-		text = string.gsub(text,"(%w+)", function(w) if w=="NEXTARTIST" then return _track.artist else return w end end)
-		text = string.gsub(text,"(%w+)", function(w) if w=="NEXTALBUM" then return _track.album else return w end end)
-		text = string.gsub(text,"(%w+)", function(w) if w=="NEXTTITLE" then return _track.track else return w end end)
+		text = string.gsub(text,"(%w+)", function(w) if w=="NEXTARTIST" then return _track.artist or "" else return w end end)
+		text = string.gsub(text,"(%w+)", function(w) if w=="NEXTALBUM" then return _track.album or "" else return w end end)
+		text = string.gsub(text,"(%w+)", function(w) if w=="NEXTTITLE" then return _track.track or "" else return w end end)
 	else
 		text = string.gsub(text,"(%w+)", function(w) if w=="NEXTARTIST" then return "" else return w end end)
 		text = string.gsub(text,"(%w+)", function(w) if w=="NEXTALBUM" then return "" else return w end end)
