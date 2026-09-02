@@ -1193,7 +1193,7 @@ function _updateCustomTitleFormatInfo(self,player)
 					end
 				end)
 		else
-				server:userRequest(function(chunk,err)
+				self:_userRequest(server,player and player:getId(),{'customclock','titleformats'},function(chunk,err)
 						if screenGeneration ~= self.screenGeneration then
 							return
 						end
@@ -1210,10 +1210,7 @@ function _updateCustomTitleFormatInfo(self,player)
 						else
 							log:warn("Invalid CustomClockHelper title format response")
 						end
-					end,
-					player and player:getId(),
-					{'customclock','titleformats'}
-				)
+					end)
 		end
 	end
 end
@@ -1222,7 +1219,7 @@ function _updateTitleFormatInfo(self,player)
 	local screenGeneration = self.screenGeneration
 	local server = player and player:getSlimServer()
 	if server then
-		server:userRequest(function(chunk,err)
+		self:_userRequest(server,player and player:getId(),{'status','0','100','tags:AtiqR'},function(chunk,err)
 				if screenGeneration ~= self.screenGeneration then
 					return
 				end
@@ -1248,10 +1245,7 @@ function _updateTitleFormatInfo(self,player)
 					log:warn("Invalid player status response")
 					self.titleformats = {}
 				end
-			end,
-			player and player:getId(),
-			{'status','0','100','tags:AtiqR'}
-		)
+			end)
 	end
 end
 
@@ -1270,7 +1264,7 @@ function defineSettingStyle(self,mode,menuItem)
 	end
 
 	self._helperStyleCheckInFlight = true
-	server:userRequest(function(chunk,err)
+	self:_userRequest(server,player:getId(),{'can','customclock','styles','?'},function(chunk,err)
 			self._helperStyleCheckInFlight = false
 			if err then
 				log:warn("Error checking for CustomClockHelper: " .. tostring(err))
@@ -1287,7 +1281,7 @@ function defineSettingStyle(self,mode,menuItem)
 					return
 				end
 				self._localStylesFetchInFlight = true
-				server:userRequest(function(localChunk,localErr)
+				self:_userRequest(server,player:getId(),{'customclock','styles'},function(localChunk,localErr)
 						self._localStylesFetchInFlight = false
 						if localErr then
 							log:warn("Error fetching styles from LMS: " .. tostring(localErr))
@@ -1298,18 +1292,12 @@ function defineSettingStyle(self,mode,menuItem)
 							return
 						end
 						self:defineSettingStyleSink(menuItem,mode,localChunk.data)
-					end,
-					player:getId(),
-					{'customclock','styles'}
-				)
+					end)
 			else
 				log:debug("CustomClockHelper isn't installed retrieving online styles")
 				self:_getOnlineStylesSink(menuItem,mode)
 			end
-		end,
-		player:getId(),
-		{'can','customclock','styles','?'}
-	)
+		end)
 
 	local popup = Popup("waiting_popup")
 	local icon = Icon("icon_connecting")
@@ -2012,12 +2000,25 @@ function _requestCapability(self,key,server,playerId,command,callback)
 
 	callbacks = { callback }
 	self.capabilityRequests[key] = callbacks
-	server:userRequest(function(chunk,err)
+	self:_userRequest(server,playerId,command,function(chunk,err)
 			local pendingCallbacks = self.capabilityRequests[key] or {}
 			self.capabilityRequests[key] = nil
 			for _,pendingCallback in ipairs(pendingCallbacks) do
 				pendingCallback(chunk,err)
 			end
+		end)
+end
+
+function _userRequest(self,server,playerId,command,callback)
+	local commandParts = {}
+	for _,value in ipairs(command) do
+		table.insert(commandParts,tostring(value))
+	end
+	local commandName = table.concat(commandParts," ")
+	log:warn("CUSTOMCLOCK_REQUEST start: "..commandName)
+	server:userRequest(function(chunk,err)
+			log:warn("CUSTOMCLOCK_REQUEST complete: "..commandName.." error="..tostring(err))
+			callback(chunk,err)
 		end,
 		playerId,
 		command
@@ -2048,8 +2049,7 @@ function _updateSDTText(self,widget,id,format,period)
 				end
 			end)
 	elseif self:getSettings()['sdtMacroInstalled'] and server then
-		server:userRequest(
-			function(chunk, err)
+		self:_userRequest(server,player and player:getId(),{ 'sdtMacroString', 'format:'..format, 'period:'..tostring(period)},function(chunk, err)
 				if screenGeneration ~= self.screenGeneration then
 					return
 				end
@@ -2066,10 +2066,7 @@ function _updateSDTText(self,widget,id,format,period)
 					self:_storeInCache(id,text)
 					log:debug("Result from macroString: "..text)
 				end
-			end,
-			player and player:getId(),
-			{ 'sdtMacroString', 'format:'..format, 'period:'..tostring(period)}
-		)
+			end)
 	end
 end
 
@@ -2097,8 +2094,7 @@ function _updateSDTSportItem(self,items)
 				end
 			end)
 	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
-		server:userRequest(
-			function(chunk, err)
+		self:_userRequest(server,player and player:getId(),{ 'SuperDateTime', 'selsports'},function(chunk, err)
 				if screenGeneration ~= self.screenGeneration then
 					return
 				end
@@ -2142,10 +2138,7 @@ function _updateSDTSportItem(self,items)
 						self:_changeSDTItem("sport",item,self.items[no],no,"false")
 					end
 				end
-			end,
-			player and player:getId(),
-			{ 'SuperDateTime', 'selsports'}
-		)
+			end)
 	end
 end
 
@@ -2173,8 +2166,7 @@ function _updateSDTWeatherItem(self,items)
 				end
 			end)
 	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
-		server:userRequest(
-			function(chunk, err)
+		self:_userRequest(server,player and player:getId(),{ 'SuperDateTime', 'weather'},function(chunk, err)
 				if screenGeneration ~= self.screenGeneration then
 					return
 				end
@@ -2201,10 +2193,7 @@ function _updateSDTWeatherItem(self,items)
 						self:_changeSDTItem("weather",item,self.items[no],no,"false")
 					end
 				end
-			end,
-			player and player:getId(),
-			{ 'SuperDateTime', 'weather'}
-		)
+			end)
 	end
 end
 
@@ -2232,8 +2221,7 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 				end
 			end)
 	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
-		server:userRequest(
-			function(chunk, err)
+		self:_userRequest(server,player and player:getId(),{ 'SuperDateTime', 'misc'},function(chunk, err)
 				if screenGeneration ~= self.screenGeneration then
 					return
 				end
@@ -2279,10 +2267,7 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 						end
 					end
 				end
-			end,
-			player and player:getId(),
-			{ 'SuperDateTime', 'misc'}
-		)
+			end)
 	end
 end
 
@@ -2310,8 +2295,7 @@ function _updatePluginItem(self,category,items)
 				end
 			end)
 	elseif self:getSettings()['ccPluginItemsInstalled'] and server then
-		server:userRequest(
-			function(chunk, err)
+		self:_userRequest(server,player and player:getId(),{ 'customclock', 'customitems','category:'..category},function(chunk, err)
 				if screenGeneration ~= self.screenGeneration then
 					return
 				end
@@ -2357,10 +2341,7 @@ function _updatePluginItem(self,category,items)
 						end
 					end
 				end
-			end,
-			player and player:getId(),
-			{ 'customclock', 'customitems','category:'..category}
-		)
+			end)
 	end
 end
 
@@ -3233,7 +3214,7 @@ function _updateSDTWeatherMapIcon(self,widget,id,item)
 				end
 			end)
 	elseif self:getSettings()['sdtVersionInstalled'] and server then
-		server:userRequest(function(chunk,err)
+		self:_userRequest(server,player and player:getId(),{'SuperDateTime','wetmapURL'},function(chunk,err)
 				if screenGeneration ~= self.screenGeneration then
 					return
 				end
@@ -3250,10 +3231,7 @@ function _updateSDTWeatherMapIcon(self,widget,id,item)
 						self:_retrieveImage(url,self.mode.."item"..id,_getString(item.allowproxy,"true"),"true",_getNumber(item.width,nil),_getNumber(item.height,nil),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 					end
 				end
-			end,
-			player and player:getId(),
-			{'SuperDateTime','wetmapURL'}
-		)
+			end)
 	end
 end
 
@@ -3280,7 +3258,7 @@ function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowpro
 				end
 			end)
 	elseif self:getSettings()['sdtSongInfoInstalled'] and _getString(module,nil) and server then
-		server:userRequest(function(chunk,err)
+		self:_userRequest(server,player and player:getId(),{'songinfoitems','0','100','module:'..module},function(chunk,err)
 				if screenGeneration ~= self.screenGeneration then
 					return
 				end
@@ -3299,10 +3277,7 @@ function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowpro
 						self.configItems[id].urls = nil
 					end
 				end
-			end,
-			player and player:getId(),
-			{'songinfoitems','0','100','module:'..module}
-		)
+			end)
 	end
 end
 
@@ -3322,7 +3297,7 @@ function _updateGalleryImage(self,widget,id,width,height,favorite)
 					if _getNumber(favorite,nil) then
 						cmd = {'gallery','random','favid:'.._getNumber(favorite,nil)}
 					end
-					server:userRequest(function(chunk,err)
+					self:_userRequest(server,nil,cmd,function(chunk,err)
 							if screenGeneration ~= self.screenGeneration then
 								return
 							end
@@ -3339,10 +3314,7 @@ function _updateGalleryImage(self,widget,id,width,height,favorite)
 								self.referenceimages[self.mode.."item"..id] = id
 								self:_retrieveImage(url,self.mode.."item"..id,"false","true")
 							end
-						end,
-						nil,
-						cmd
-					)
+						end)
 				end
 			end)
 	end
