@@ -1882,7 +1882,7 @@ function _updateNowPlaying(self,itemType,widget,id,mode,free)
 	if player then
 		local playerStatus = self:_getPlayerStatus(player)
 		if not mode or (mode == 'play' and playerStatus.mode == 'play') or (mode != 'play' and playerStatus.mode != 'play') then
-			if playerStatus.item_loop then
+			if playerStatus.item_loop and playerStatus.item_loop[1] then
 				local trackInfo = _extractTrackInfo(playerStatus.item_loop[1],itemType)
 				if (licensed or free) and trackInfo != "" then
 					widget:setWidgetValue(id,trackInfo)
@@ -1906,7 +1906,7 @@ function _updateStaticNowPlaying(self,widget,id,format,mode,free)
 	if player then
 		local playerStatus = self:_getPlayerStatus(player)
 		if not mode or (mode == 'play' and playerStatus.mode == 'play') or (mode != 'play' and playerStatus.mode != 'play') then
-			if playerStatus.item_loop then
+			if playerStatus.item_loop and playerStatus.item_loop[1] then
 				local text
 				if playerStatus.item_loop[2] and playerStatus.item_loop[2].track then
 					text = self:_replaceNextTitleKeywords(playerStatus.item_loop[2], format)
@@ -3373,9 +3373,13 @@ function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowpro
 						for no,item in ipairs(chunk.data.item_loop) do
 							self.configItems[id].urls[no] = item.url
 						end
-						local imageNo = math.random(1,#self.configItems[id].urls)
-						self.referenceimages[self.mode.."item"..id] = id
-						self:_retrieveImage(self.configItems[id].urls[imageNo],self.mode.."item"..id,allowproxy,dynamic,_getNumber(width,nil),_getNumber(height,nil))
+						if #self.configItems[id].urls == 0 then
+							self.configItems[id].urls = nil
+						else
+							local imageNo = math.random(1,#self.configItems[id].urls)
+							self.referenceimages[self.mode.."item"..id] = id
+							self:_retrieveImage(self.configItems[id].urls[imageNo],self.mode.."item"..id,allowproxy,dynamic,_getNumber(width,nil),_getNumber(height,nil))
+						end
 					else
 						self.configItems[id].urls = nil
 					end
