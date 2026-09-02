@@ -603,7 +603,14 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 			end
 		end
 	end
-	self._lastStyleEntries = currentEntriesByIdentity
+	-- Upsert rather than replace: an incomplete snapshot (online fetch
+	-- failed) simply omits online entries, it doesn't mean they're gone --
+	-- replacing the whole cache would forget their last-known content and
+	-- make them look changed again on the next complete snapshot.
+	self._lastStyleEntries = self._lastStyleEntries or {}
+	for identity,entry in pairs(currentEntriesByIdentity) do
+		self._lastStyleEntries[identity] = entry
+	end
 
 
 	if complete then
