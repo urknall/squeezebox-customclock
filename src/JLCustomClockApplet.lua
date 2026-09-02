@@ -656,10 +656,22 @@ end
 -- point where a mode's configured items enter the render path, instead of
 -- guarding every call site individually.
 function _sanitizeConfigItems(items)
+	items = items or {}
+	-- items is normally a dense JSON-decoded array (1..n), but legacy/
+	-- hand-edited settings could be a sparse numeric-keyed table; collect
+	-- and sort the numeric keys explicitly rather than relying on pairs()
+	-- (unordered) or ipairs() (stops at the first missing key).
+	local numericKeys = {}
+	for key in pairs(items) do
+		if type(key) == "number" and key == math.floor(key) then
+			table.insert(numericKeys, key)
+		end
+	end
+	table.sort(numericKeys)
+
 	local sanitized = {}
-	-- items always comes from a JSON-decoded array (dense, 1..n); ipairs
-	-- guarantees traversal order, unlike pairs() which doesn't for any table.
-	for _,item in ipairs(items or {}) do
+	for _,key in ipairs(numericKeys) do
+		local item = items[key]
 		if type(item) == "table" and type(item.itemtype) == "string" and item.itemtype ~= "" then
 			table.insert(sanitized, item)
 		else
