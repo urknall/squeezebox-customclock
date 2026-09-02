@@ -345,6 +345,143 @@ function _unsubscribePlayerEvents(self)
 	end
 end
 
+-- Unsubscribes from whatever player we were previously bound to, then (if a
+-- player is given) subscribes these same events on it. Shared by
+-- openScreensaver (initial bind) and notify_playerCurrent (rebind when the
+-- current player changes while the screen stays open), so both stay in sync.
+function _subscribePlayerEvents(self,player,mode)
+	self:_unsubscribePlayerEvents()
+	if not player then
+		return
+	end
+	player:subscribe(
+		'/slim/customclockchangedstyles',
+		function(chunk)
+			if not chunk or not chunk.data or chunk.data[1] ~= "customclockchangedstyles" or type(chunk.data[2]) ~= 'table' then
+				return
+			end
+			self:_reconcileStyleConfigAfterChange(chunk.data[2], mode, tonumber(chunk.data[3]) == 1)
+		end,
+		player:getId(),
+		{'customclockchangedstyles'}
+	)
+	player:subscribe(
+		'/slim/SuperDateTimeState/dataRefreshState',
+		function(chunk)
+			if not chunk or not chunk.data or chunk.data[1] ~= "SuperDateTimeState" or chunk.data[2] ~= "dataRefreshState" then
+				return
+			end
+			if chunk.data[3] and chunk.data[3]["state"] and (chunk.data[3]["state"] == "Success" or chunk.data[3]["state"] == "Errors") then
+				local updatesdtitems = {}
+				local no = 1
+				for _,item in pairs(self.configItems) do
+					local category = nil
+					local selectionattribute = nil
+					if string.find(item.itemtype,"^sdtsport") then
+						category = "sport"
+						selectionattribute = category
+					elseif string.find(item.itemtype,"^sdtstock") then
+						category = "stocks"
+						selectionattribute = "stock"
+					elseif string.find(item.itemtype,"^sdtmisc") and _getString(item.infotype,nil) then
+						category = item.infotype
+						selectionattribute = "selected"
+					elseif string.find(item.itemtype,"^sdtweathericon") or string.find(item.itemtype,"^sdtweathertext") or item.itemtype == "sdticon" then
+						category = "weather"
+						selectionattribute = "period"
+					elseif item.itemtype == "sdttext" then
+						log:debug("Refreshing sdttext:".._getString(item.period,"-1")..",".._getString(item.sdtformat,""))
+						self:_updateSDTText(self.items[no],no,item.sdtformat,item.period)
+					end
+
+					if category then
+						if not updatesdtitems[category] then
+							updatesdtitems[category] = {
+								attribute = selectionattribute,
+								items = {}
+							}
+						end
+						updatesdtitems[category].items[no] = item
+					end
+					no = no + 1
+				end
+				for category,data in pairs(updatesdtitems) do
+					log:debug("Refreshing sdt item for category:"..category)
+					if category == "sport" then
+						self:_updateSDTSportItem(data.items)
+					elseif category == "weather" then
+						self:_updateSDTWeatherItem(data.items)
+					else
+						self:_updateSDTMiscItem(category,data.items,data.attribute)
+					end
+				end
+			elseif chunk.data[3] and chunk.data[3]["state"] and chunk.data[3]["state"] == "MapRefreshSuccess" then
+				log:debug("Ignoring SuperDateTime map refresh event="..tostring(chunk.data[3]["state"]))
+			elseif chunk.data[3] and chunk.data[3]["state"] and chunk.data[3]["state"] == "Refreshing" then
+				log:debug("Ignoring SuperDateTime refresh start event")
+			else
+				log:warn("Unknown SuperDateTime event state="..tostring(chunk.data[3]["state"]))
+			end
+		end,
+		player:getId(),
+		{'SuperDateTimeState','dataRefreshState'}
+	)
+	player:subscribe(
+		'/slim/customclockchangedcustomitems',
+		function(chunk)
+			if not chunk or not chunk.data or chunk.data[1] ~= "customclockchangedcustomitems" or type(chunk.data[2]) ~= 'table' then
+				return
+			end
+			local categories = {}
+			for _,item in ipairs(chunk.data[2]) do
+				categories[item] = item
+			end
+			if categories then
+				local updatepluginitems = {}
+				local no = 1
+				for _,item in pairs(self.configItems) do
+					local category = nil
+					if string.find(item.itemtype,"^plugin") and item.infotype and categories[item.infotype] then
+						category = item.infotype
+					end
+
+					if category then
+						if not updatepluginitems[category] then
+							updatepluginitems[category] = {
+								items = {}
+							}
+						end
+						updatepluginitems[category].items[no] = item
+					end
+					no = no + 1
+				end
+				for category,data in pairs(updatepluginitems) do
+					log:debug("Refreshing plugin item for category:"..category)
+					self:_updatePluginItem(category,data.items)
+				end
+			end
+		end,
+		player:getId(),
+		{'customclockchangedcustomitems'}
+	)
+	player:subscribe(
+		'/slim/customclocktitleformatsupdated',
+		function(chunk)
+			if not chunk or not chunk.data or chunk.data[1] ~= "customclocktitleformatsupdated" then
+				return
+			end
+			local player = appletManager:callService("getCurrentPlayer")
+			if player then
+				self:_checkAndUpdateTitleFormatInfo(player)
+				self:_updateCustomTitleFormatInfo(player)
+			end
+		end,
+		player:getId(),
+		{'customclocktitleformatsupdated'}
+	)
+	self.subscribedPlayer = player
+end
+
 -- Clears every setting/image whose key starts with `config` (except the
 -- style-name field itself, `attribute`), returning that config prefix.
 function _clearStyleConfigSlot(self,attribute)
@@ -484,135 +621,7 @@ function openScreensaver(self,mode, transition)
 	end
 	self.titleformats = {}
 	self.customtitleformats = {}
-	self:_unsubscribePlayerEvents()
-	if player then
-		player:subscribe(
-			'/slim/customclockchangedstyles',
-			function(chunk)
-				if not chunk or not chunk.data or chunk.data[1] ~= "customclockchangedstyles" or type(chunk.data[2]) ~= 'table' then
-					return
-				end
-				self:_reconcileStyleConfigAfterChange(chunk.data[2], mode, tonumber(chunk.data[3]) == 1)
-			end,
-			player:getId(),
-			{'customclockchangedstyles'}
-		)
-		player:subscribe(
-			'/slim/SuperDateTimeState/dataRefreshState',
-			function(chunk)
-				if not chunk or not chunk.data or chunk.data[1] ~= "SuperDateTimeState" or chunk.data[2] ~= "dataRefreshState" then
-					return
-				end
-				if chunk.data[3] and chunk.data[3]["state"] and (chunk.data[3]["state"] == "Success" or chunk.data[3]["state"] == "Errors") then
-					local updatesdtitems = {}
-					local no = 1
-					for _,item in pairs(self.configItems) do
-						local category = nil
-						local selectionattribute = nil
-						if string.find(item.itemtype,"^sdtsport") then
-							category = "sport"
-							selectionattribute = category
-						elseif string.find(item.itemtype,"^sdtstock") then
-							category = "stocks"
-							selectionattribute = "stock"
-						elseif string.find(item.itemtype,"^sdtmisc") and _getString(item.infotype,nil) then
-							category = item.infotype
-							selectionattribute = "selected"
-						elseif string.find(item.itemtype,"^sdtweathericon") or string.find(item.itemtype,"^sdtweathertext") or item.itemtype == "sdticon" then
-							category = "weather"
-							selectionattribute = "period"
-						elseif item.itemtype == "sdttext" then
-							log:debug("Refreshing sdttext:".._getString(item.period,"-1")..",".._getString(item.sdtformat,""))
-							self:_updateSDTText(self.items[no],no,item.sdtformat,item.period)
-						end
-	
-						if category then
-							if not updatesdtitems[category] then
-								updatesdtitems[category] = {
-									attribute = selectionattribute,
-									items = {}
-								}
-							end
-							updatesdtitems[category].items[no] = item
-						end
-						no = no + 1
-					end
-					for category,data in pairs(updatesdtitems) do
-						log:debug("Refreshing sdt item for category:"..category)
-						if category == "sport" then
-							self:_updateSDTSportItem(data.items)
-						elseif category == "weather" then
-							self:_updateSDTWeatherItem(data.items)
-						else
-							self:_updateSDTMiscItem(category,data.items,data.attribute)
-						end
-					end
-				elseif chunk.data[3] and chunk.data[3]["state"] and chunk.data[3]["state"] == "MapRefreshSuccess" then
-					log:debug("Ignoring SuperDateTime map refresh event="..tostring(chunk.data[3]["state"]))
-				elseif chunk.data[3] and chunk.data[3]["state"] and chunk.data[3]["state"] == "Refreshing" then
-					log:debug("Ignoring SuperDateTime refresh start event")
-				else
-					log:warn("Unknown SuperDateTime event state="..tostring(chunk.data[3]["state"]))
-				end 
-			end,
-			player:getId(),
-			{'SuperDateTimeState','dataRefreshState'}
-		)
-		player:subscribe(
-			'/slim/customclockchangedcustomitems',
-			function(chunk)
-				if not chunk or not chunk.data or chunk.data[1] ~= "customclockchangedcustomitems" or type(chunk.data[2]) ~= 'table' then
-					return
-				end
-				local categories = {}
-				for _,item in ipairs(chunk.data[2]) do
-					categories[item] = item
-				end
-				if categories then
-					local updatepluginitems = {}
-					local no = 1
-					for _,item in pairs(self.configItems) do
-						local category = nil
-						if string.find(item.itemtype,"^plugin") and item.infotype and categories[item.infotype] then
-							category = item.infotype
-						end
-	
-						if category then
-							if not updatepluginitems[category] then
-								updatepluginitems[category] = {
-									items = {}
-								}
-							end
-							updatepluginitems[category].items[no] = item
-						end
-						no = no + 1
-					end
-					for category,data in pairs(updatepluginitems) do
-						log:debug("Refreshing plugin item for category:"..category)
-						self:_updatePluginItem(category,data.items)
-					end
-				end 
-			end,
-			player:getId(),
-			{'customclockchangedcustomitems'}
-		)
-		player:subscribe(
-			'/slim/customclocktitleformatsupdated',
-			function(chunk)
-				if not chunk or not chunk.data or chunk.data[1] ~= "customclocktitleformatsupdated" then
-					return
-				end
-				local player = appletManager:callService("getCurrentPlayer")
-				if player then
-					self:_checkAndUpdateTitleFormatInfo(player)
-					self:_updateCustomTitleFormatInfo(player)
-				end
-			end,
-			player:getId(),
-			{'customclocktitleformatsupdated'}
-		)
-		self.subscribedPlayer = player
-	end
+	self:_subscribePlayerEvents(player, mode)
         -- Create the main window if it doesn't already exist
 	if not self.window then
 		log:debug("Recreating screensaver window")
@@ -1244,6 +1253,13 @@ end
 function notify_playerCurrent(self,player)
 	if self:getSettings()["confignowplayingstyle"] then
 		self:_installCustomNowPlaying()
+	end
+	if self.window and player ~= self.subscribedPlayer then
+		self:_subscribePlayerEvents(player, self.mode)
+		if player then
+			self:_checkAndUpdateTitleFormatInfo(player)
+			self:_updateCustomTitleFormatInfo(player)
+		end
 	end
 end
 
