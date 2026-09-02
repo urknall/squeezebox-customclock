@@ -772,6 +772,12 @@ function openScreensaver(self,mode, transition)
 		self.images = {}
 		self.vumeterimages = {}
 		self.referenceimages = {}
+	else
+		-- screenGeneration already changed above even though the window is
+		-- being reused (e.g. re-entering an already-active screensaver
+		-- slot); restart the timer so it isn't left tagged with the now-
+		-- stale generation, which would make it silently stop ticking.
+		self:_startClockTimer(self.window, self.screenGeneration)
 	end
 	if player then
 		self:_checkAndUpdateTitleFormatInfo(player)
@@ -941,7 +947,16 @@ function _startClockTimer(self,timerWindow,timerGeneration)
 			if self.clockTimer ~= timer or self.window ~= timerWindow or self.screenGeneration ~= timerGeneration then
 				return
 			end
-			self:_tick()
+			-- This timer is one-shot: unlike the previous repeating timer
+			-- (which was already reinserted before its callback ran), an
+			-- uncaught error here would leave no future timer at all.
+			-- Always reschedule, even if the tick itself failed.
+			local ok, err = pcall(function()
+				self:_tick()
+			end)
+			if not ok then
+				log:warn("Clock tick failed: "..tostring(err))
+			end
 			self:_startClockTimer(timerWindow,timerGeneration)
 		end,true)
 	self.clockTimer = timer
