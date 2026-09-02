@@ -1309,6 +1309,11 @@ function defineSettingStyle(self,mode,menuItem)
 end
 
 function _getOnlineStylesSink(self,menuItem,mode)
+	if self.onlineStylesRequestInFlight then
+		log:debug("Online style request already in flight; skipping duplicate fetch")
+		return
+	end
+	self.onlineStylesRequestInFlight = true
 	if not self.popup then
 		-- create animation to show while we get data from the server
 		local popup = Popup("waiting_popup")
@@ -1322,6 +1327,7 @@ function _getOnlineStylesSink(self,menuItem,mode)
 	end
 	local http = SocketHttp(jnt, "lms.hashsum.org", 80)
 	local req = RequestHttp(function(chunk, err)
+			self.onlineStylesRequestInFlight = false
 			if err then
 				log:warn("Error fetching styles from online server: " .. tostring(err))
 				-- Close the waiting popup
@@ -1352,6 +1358,8 @@ function _getOnlineStylesSink(self,menuItem,mode)
 				else
 					log:warn("Invalid online style response: "..tostring(styleData))
 				end
+			else
+				log:debug("Online style fetch completed without payload")
 			end
 		end,
 		'GET', "/clockstyles8.json")
