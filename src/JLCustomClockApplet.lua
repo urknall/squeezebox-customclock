@@ -2205,13 +2205,15 @@ function _updateSDTSportItem(self,items)
 							if oldCache and oldCache[key] and oldCache[key].current then
 								if oldCache[key].data[oldCache[key].current].uniqueID then
 									local oldItemNo = 1
+									local found = false
 									for _,item in ipairs(self.sdtcache["sport"][key].data) do
 										if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
+											found = true
 											break
 										end
 										oldItemNo = oldItemNo + 1
 									end
-									if self.sdtcache["sport"][key].data[oldItemNo].uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
+									if found then
 										self.sdtcache["sport"][key].current = oldItemNo
 									end
 								end
@@ -2333,13 +2335,15 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 								if oldCache and oldCache[key] and oldCache[key].current then
 									if oldCache[key].data[oldCache[key].current].uniqueID then
 										local oldItemNo = 1
+										local found = false
 										for _,item in ipairs(self.sdtcache[category][key].data) do
 											if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
+												found = true
 												break
 											end
 											oldItemNo = oldItemNo + 1
 										end
-										if self.sdtcache[category][key].data[oldItemNo].uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
+										if found then
 											self.sdtcache[category][key].current = oldItemNo
 										end
 									end
@@ -2407,13 +2411,15 @@ function _updatePluginItem(self,category,items)
 								if oldCache and oldCache[key] and oldCache[key].current then
 									if oldCache[key].data[oldCache[key].current].uniqueID then
 										local oldItemNo = 1
+										local found = false
 										for _,item in ipairs(self.pluginitemcache[category][key].data) do
 											if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
+												found = true
 												break
 											end
 											oldItemNo = oldItemNo + 1
 										end
-										if self.pluginitemcache[category][key].data[oldItemNo].uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
+										if found then
 											self.pluginitemcache[category][key].current = oldItemNo
 										end
 									end
@@ -2565,13 +2571,15 @@ function _updateRSSItem(self,category,items)
 						if oldCache and oldCache[key] and oldCache[key].current then
 							if oldCache[key].data[oldCache[key].current].uniqueID then
 								local oldItemNo = 1
+								local found = false
 								for _,item in ipairs(self.rssitemcache[category][key].data) do
 									if item.uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
+										found = true
 										break
 									end
 									oldItemNo = oldItemNo + 1
 								end
-								if self.rssitemcache[category][key].data[oldItemNo].uniqueID == oldCache[key].data[oldCache[key].current].uniqueID then
+								if found then
 									self.rssitemcache[category][key].current = oldItemNo
 								end
 							end
