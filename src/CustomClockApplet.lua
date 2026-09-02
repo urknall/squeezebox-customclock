@@ -19,7 +19,7 @@ following methods:
 
 
 -- stuff we use
-local pairs, ipairs, tostring, tonumber, setmetatable, package, type = pairs, ipairs, tostring, tonumber, setmetatable, package, type
+local pairs, ipairs, tostring, tonumber, setmetatable, package, type, pcall = pairs, ipairs, tostring, tonumber, setmetatable, package, type, pcall
 
 local oo               = require("loop.simple")
 local os               = require("os")
@@ -1075,47 +1075,37 @@ function _startClockTimer(self,timerWindow,timerGeneration)
 		self.clockTimer:stop()
 	end
 
-	local now = socket.gettime()
-	local delay = math.ceil((1 - (now - math.floor(now))) * 1000)
-	if delay < 1 then
-		delay = 1
-	end
-
-	local timer
+	-- A plain repeating timer, like the original pre-refactor design:
+	-- JiveLite's own Timer framework re-fires this every second on its
+	-- own, with no Lua-side recreation of a new Timer+closure per tick.
+	-- A live device showed the previous one-shot self-rescheduling design
+	-- (a new Timer+closure created recursively on every single tick)
+	-- freezing permanently after the very first fire, and that persisted
+	-- across two different targeted fixes (reschedule-before-tick, and
+	-- keeping a strong reference to the callback) -- pointing at some
+	-- deeper platform-specific unreliability in that pattern rather than
+	-- either of those specific causes. A long-lived repeating timer has a
+	-- single closure, created once, that only needs to stay alive for as
+	-- long as the screen itself is open (self.clockTimer already anchors
+	-- that), removing the recursive-recreation machinery entirely.
 	local function onTimerFired()
-			if self.clockTimer ~= timer or self.window ~= timerWindow or self.screenGeneration ~= timerGeneration then
-				return
+		if self.window ~= timerWindow or self.screenGeneration ~= timerGeneration then
+			if self.clockTimer then
+				self.clockTimer:stop()
+				self.clockTimer = nil
 			end
-			-- Reschedule FIRST, before running _tick() at all: a live device
-			-- report showed the whole clock freezing forever after the very
-			-- first tick, with an uncaught "attempt to call upvalue 'self'"
-			-- surfacing from the platform's own timer error handler rather
-			-- than being caught by our pcall below -- i.e. this platform's
-			-- pcall cannot be trusted to protect this call. Scheduling the
-			-- next timer up front means ticking keeps going even if
-			-- everything below throws in a way nothing here can catch. This
-			-- can create one harmless extra timer if _tick() itself closes
-			-- the screen (the new timer's own stale-guard above catches
-			-- that on its next fire) -- an acceptable tradeoff for never
-			-- freezing.
-			self:_startClockTimer(timerWindow,timerGeneration)
-			local ok, err = pcall(function()
-				self:_tick()
-			end)
-			if not ok then
-				log:warn("Clock tick failed: "..tostring(err))
-			end
+			return
+		end
+		local ok, err = pcall(function()
+			self:_tick()
+		end)
+		if not ok then
+			log:warn("Clock tick failed: "..tostring(err))
+		end
 	end
-	-- Keep a strong Lua-side reference to the callback closure (and
-	-- therefore its "self" upvalue) on the long-lived applet instance
-	-- itself, not just inside the Timer object: if the platform's Timer
-	-- binding doesn't hold its own strong reference to the callback, the
-	-- closure (and everything it captures, including "self") can be
-	-- garbage-collected before a one-shot timer actually fires.
 	self.clockTimerCallback = onTimerFired
-	timer = Timer(delay, onTimerFired, true)
-	self.clockTimer = timer
-	timer:start()
+	self.clockTimer = Timer(1000, onTimerFired, false)
+	self.clockTimer:start()
 end
 
 function _updateVisibilityGroups(self)
