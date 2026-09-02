@@ -3797,9 +3797,9 @@ function _tick(self,forcedUpdate)
 				self:_updateRatingIcon(self.items[no],"item"..no,"stop",item.free)
 			end
 		elseif item.itemtype == "switchingtrackplayingtext" then
-			self:_updateNowPlaying(self.nowPlaying,self.items[no],"itemno","stop",item.free)
-		elseif item.itemtype == "switchingtrackstoppedtext" then
 			self:_updateNowPlaying(self.nowPlaying,self.items[no],"itemno","play",item.free)
+		elseif item.itemtype == "switchingtrackstoppedtext" then
+			self:_updateNowPlaying(self.nowPlaying,self.items[no],"itemno","stop",item.free)
 		elseif item.itemtype == "switchingtracktext" then
 			self:_updateNowPlaying(self.nowPlaying,self.items[no],"itemno",nil,item.free)
 		elseif item.itemtype == "tracktext" then
