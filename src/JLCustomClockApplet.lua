@@ -4675,6 +4675,10 @@ end
 function _retrieveImageData(self,url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
 	local width,height = self:_getUsableWallpaperArea()
 	local image = Surface:loadImageData(chunk, #chunk)
+	if not image then
+		log:warn("Unable to decode downloaded image for "..imageType..", ignoring")
+		return
+	end
 	if clipWidth and clipHeight and clipX and clipY then
 		local newImg = Surface:newRGBA(clipWidth, clipHeight)
         newImg:filledRectangle(0, 0, clipWidth, clipHeight, 0x000000FF)
