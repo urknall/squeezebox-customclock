@@ -642,6 +642,24 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 	return changed
 end
 
+-- The catalog (imported locally or fetched directly from the online style
+-- server) can carry items whose itemtype is missing or not a string; every
+-- render call site does `string.find(item.itemtype, ...)` unguarded, which
+-- errors on anything else. Drop such items here, once, at the single choke
+-- point where a mode's configured items enter the render path, instead of
+-- guarding every call site individually.
+function _sanitizeConfigItems(items)
+	local sanitized = {}
+	for _,item in pairs(items or {}) do
+		if type(item) == "table" and type(item.itemtype) == "string" and item.itemtype ~= "" then
+			table.insert(sanitized, item)
+		else
+			log:warn("Skipping malformed style item (missing/invalid itemtype)")
+		end
+	end
+	return sanitized
+end
+
 function openScreensaver(self,mode, transition)
 
 	log:debug("Open screensaver "..tostring(mode))
@@ -691,6 +709,7 @@ function openScreensaver(self,mode, transition)
 				}
 			}
 		end
+		self.configItems = _sanitizeConfigItems(self.configItems)
 		self.window:setSkin(self:_getClockSkin(jiveMain:getSelectedSkin()))
 		self.window:reSkin()
 		self.window:setShowFrameworkWidgets(false)
@@ -1567,6 +1586,29 @@ function _uses(parent, value)
         return style
 end
 
+-- The direct online style catalog is fetched over plain HTTP and rendered
+-- without going through Plugin.pm's import validation at all, so this is
+-- its own validation boundary: entry.name must be a usable string, and
+-- entry.models (when present at all) must be an iterable table, not just
+-- present/truthy.
+function _isCompliantOnlineStyleEntry(entry,model)
+	if type(entry) ~= "table" or type(entry.name) ~= "string" or entry.name == "" then
+		return false
+	end
+	if entry.models == nil then
+		return true
+	end
+	if type(entry.models) ~= "table" then
+		return false
+	end
+	for _,entryModel in pairs(entry.models) do
+		if entryModel == model then
+			return true
+		end
+	end
+	return false
+end
+
 function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 	if self.popup then
 		self.popup:hide()
@@ -1675,19 +1717,7 @@ function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 
 	if data.item_loop then
 		for _,entry in pairs(data.item_loop) do
-			local isCompliant = true
-			if entry.models then
-				isCompliant = false
-				for _,model in pairs(entry.models) do
-					if model == self.model then
-						isCompliant = true
-					end
-				end
-			else
-				log:debug("Supported on all models")
-			end 
-	
-			if isCompliant and entry.name then
+			if _isCompliantOnlineStyleEntry(entry,self.model) then
 				local name = entry.name.."\n"
 				if _getString(entry.contributors,nil) then
 					name = name.."("..entry.contributors..")"
@@ -1742,10 +1772,10 @@ function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 						style == entry.name
 					),
 				})
-			elseif entry.name then
+			elseif type(entry) == "table" and type(entry.name) == "string" and entry.name ~= "" then
 				log:debug("Skipping "..entry.name..", isn't supported on "..self.model)
 			else
-				log:warn("Skipping style without name, styles without names aren't permitted")
+				log:warn("Skipping malformed online style entry")
 			end
 		end
 	end
