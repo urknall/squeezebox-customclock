@@ -345,6 +345,90 @@ function _unsubscribePlayerEvents(self)
 	end
 end
 
+-- Clears every setting/image whose key starts with `config` (except the
+-- style-name field itself, `attribute`), returning that config prefix.
+function _clearStyleConfigSlot(self,attribute)
+	local config = string.gsub(attribute,"style$","")
+	for otherAttribute,_ in pairs(self:getSettings()) do
+		if string.find(otherAttribute,"^"..config) and otherAttribute != config.."style" then
+			self:getSettings()[otherAttribute] = nil
+		end
+	end
+	if self.images then
+		for imageAttribute,_ in pairs(self.images) do
+			if string.find(imageAttribute,"^"..config) then
+				self.images[imageAttribute] = nil
+			end
+		end
+	end
+	return config
+end
+
+-- Plugin.pm sends the *complete* remaining style catalog on every
+-- create/edit/delete/rename, not a delta. Reconcile against that full
+-- snapshot: refresh any configured style that's still present, and clear
+-- any configured style that is no longer present (deleted, or renamed away
+-- from this name) instead of silently retaining a stale/nonexistent config.
+function _reconcileStyleConfigAfterChange(self,entries,mode)
+	entries = entries or {}
+	local currentStyleNames = {}
+	for _,entry in pairs(entries) do
+		if type(entry) == "table" and entry.name then
+			currentStyleNames[entry.name] = true
+		end
+	end
+
+	local changed = false
+	local changedModes = {}
+
+	for _,entry in pairs(entries) do
+		local correctModel = false
+		if type(entry) == "table" and type(entry.models) == "table" then
+			for _,model in ipairs(entry.models) do
+				if model == self.model then
+					correctModel = true
+					break
+				end
+			end
+		end
+		if correctModel then
+			for attribute,value in pairs(self:getSettings()) do
+				if string.find(attribute,"style$") and value == entry.name then
+					log:debug("Updating "..attribute.."="..tostring(entry.name))
+					local config = self:_clearStyleConfigSlot(attribute)
+					for entryAttribute,entryValue in pairs(entry) do
+						self:getSettings()[config..entryAttribute] = entryValue
+					end
+					changed = true
+					changedModes[config] = true
+				end
+			end
+		end
+	end
+
+	for attribute,value in pairs(self:getSettings()) do
+		if string.find(attribute,"style$") and value and value ~= "" and not currentStyleNames[value] then
+			log:debug("Clearing deleted/renamed style config: "..attribute)
+			local config = self:_clearStyleConfigSlot(attribute)
+			self:getSettings()[attribute] = nil
+			changed = true
+			changedModes[config] = true
+		end
+	end
+
+	if changed then
+		log:debug("Storing modified styles")
+		self:_storeSettingsWithoutCache()
+		if changedModes[mode] and self.window then
+			log:debug("Reopening screen saver with mode: "..mode)
+			self.window:hide()
+			self.window = nil
+			self:openScreensaver(mode)
+		end
+	end
+	return changed
+end
+
 function openScreensaver(self,mode, transition)
 
 	log:debug("Open screensaver "..tostring(mode))
@@ -373,57 +457,7 @@ function openScreensaver(self,mode, transition)
 				if not chunk or not chunk.data or chunk.data[1] ~= "customclockchangedstyles" or type(chunk.data[2]) ~= 'table' then
 					return
 				end
-				for i,entry in pairs(chunk.data[2]) do
-					local updateStyle = false
-					local updatedModes = {}
-					for attribute,value in pairs(self:getSettings()) do
-						local correctModel = false
-						for attribute,value in pairs(entry) do
-							if attribute == "models" then
-								for _,model in ipairs(value) do
-									if model == self.model then
-										correctModel = true
-										break
-									end
-								end
-							end
-						end
-						if correctModel and string.find(attribute,"style$") and self:getSettings()[attribute] == entry.name then
-							log:debug("Updating "..attribute.."="..tostring(value))
-							local config = string.gsub(attribute,"style$","")
-							updatedModes[config]=true
-							for attribute,value in pairs(self:getSettings()) do
-								if string.find(attribute,"^"..config) and attribute != config.."style" then
-									self:getSettings()[attribute] = nil
-								end
-							end
-							for attribute,value in pairs(entry) do
-								self:getSettings()[config..attribute] = value
-							end
-							if self.images then
-								for attribute,value in pairs(self.images) do
-									if string.find(attribute,"^"..config) then
-										self.images[attribute] = nil
-									end
-								end
-							end
-							updateStyle = true
-						else
-							log:debug("Ignoring "..attribute.."="..tostring(value))
-						end
-					end
-					if updateStyle then
-						log:debug("Storing modified styles")
-						self:_storeSettingsWithoutCache()
-						if updatedModes[mode] and self.window then
-							log:debug("Reopening screen saver with mode: "..mode)
-							self.window:hide()
-							self.window=nil
-							self:openScreensaver(mode)
-						end
-					end
-				end
-
+				self:_reconcileStyleConfigAfterChange(chunk.data[2], mode)
 			end,
 			player:getId(),
 			{'customclockchangedstyles'}
