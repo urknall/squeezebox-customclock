@@ -2025,6 +2025,45 @@ function _userRequest(self,server,playerId,command,callback)
 	)
 end
 
+function _processSDTMacroRequestQueue(self)
+	if self.sdtMacroRequestInFlight or not self.sdtMacroRequestQueue or #self.sdtMacroRequestQueue == 0 then
+		return
+	end
+
+	local request = table.remove(self.sdtMacroRequestQueue,1)
+	self.sdtMacroRequestInFlight = true
+	self:_userRequest(request.server,request.playerId,request.command,function(chunk,err)
+			self.sdtMacroRequests[request.key] = nil
+			self.sdtMacroRequestInFlight = false
+			for _,callback in ipairs(request.callbacks) do
+				callback(chunk,err)
+			end
+			self:_processSDTMacroRequestQueue()
+		end)
+end
+
+function _requestSDTMacroString(self,server,playerId,command,callback)
+	local key = table.concat(command,"\0")
+	self.sdtMacroRequests = self.sdtMacroRequests or {}
+	local request = self.sdtMacroRequests[key]
+	if request then
+		table.insert(request.callbacks,callback)
+		return
+	end
+
+	request = {
+		key = key,
+		server = server,
+		playerId = playerId,
+		command = command,
+		callbacks = { callback },
+	}
+	self.sdtMacroRequests[key] = request
+	self.sdtMacroRequestQueue = self.sdtMacroRequestQueue or {}
+	table.insert(self.sdtMacroRequestQueue,request)
+	self:_processSDTMacroRequestQueue()
+end
+
 function _updateSDTText(self,widget,id,format,period)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
@@ -2049,7 +2088,7 @@ function _updateSDTText(self,widget,id,format,period)
 				end
 			end)
 	elseif self:getSettings()['sdtMacroInstalled'] and server then
-		self:_userRequest(server,player and player:getId(),{ 'sdtMacroString', 'format:'..format, 'period:'..tostring(period)},function(chunk, err)
+		self:_requestSDTMacroString(server,player and player:getId(),{ 'sdtMacroString', 'format:'..format, 'period:'..tostring(period)},function(chunk, err)
 				if screenGeneration ~= self.screenGeneration then
 					return
 				end
