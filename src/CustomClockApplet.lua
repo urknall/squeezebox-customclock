@@ -3014,7 +3014,7 @@ function _getNextSDTItem(self,category,item)
 	local currentResult = self:_getSDTCacheIndex(category,item)
 	if currentResult then
 		local length = _getNumber(item.noofrows,1)
-		if length == 1 and string.find(item.itemtype,category..'text$') and _isTrue(item.scrolling) then
+		if length == 1 and string.find(item.itemtype,'text$') and _isTrue(item.scrolling) then
 			length = #results
 		end
 		if #results > (currentResult+length+_getNumber(item.step,1)-2) then
@@ -3034,7 +3034,7 @@ function _getNextPluginItem(self,category,item)
 	local currentResult = self:_getPluginItemCacheIndex(category,item)
 	if currentResult then
 		local length = _getNumber(item.noofrows,1)
-		if length == 1 and string.find(item.itemtype,category..'text$') and _isTrue(item.scrolling) then
+		if length == 1 and string.find(item.itemtype,'text$') and _isTrue(item.scrolling) then
 			length = #results
 		end
 		if #results > (currentResult+length+_getNumber(item.step,1)-2) then
@@ -3055,7 +3055,7 @@ function _getNextRSSItem(self,category,item)
 	local currentResult = self:_getRSSItemCacheIndex(category,item)
 	if currentResult then
 		local length = _getNumber(item.noofrows,1)
-		if length == 1 and string.find(item.itemtype,category..'text$') and _isTrue(item.scrolling) then
+		if length == 1 and string.find(item.itemtype,'text$') and _isTrue(item.scrolling) then
 			length = #results
 		end
 		if #results > (currentResult+length+_getNumber(item.step,1)-2) then
