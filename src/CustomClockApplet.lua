@@ -992,7 +992,13 @@ function _startClockTimer(self,timerWindow,timerGeneration)
 			if not ok then
 				log:warn("Clock tick failed: "..tostring(err))
 			end
-			self:_startClockTimer(timerWindow,timerGeneration)
+			-- _tick() may itself have closed the screen (closeScreensaver
+			-- nils self.window and bumps self.screenGeneration); don't
+			-- schedule an unnecessary follow-up timer for a screen that's
+			-- already gone.
+			if self.window == timerWindow and self.screenGeneration == timerGeneration then
+				self:_startClockTimer(timerWindow,timerGeneration)
+			end
 		end,true)
 	self.clockTimer = timer
 	timer:start()
