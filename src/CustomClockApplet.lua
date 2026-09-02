@@ -4620,8 +4620,12 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 				local chunk = fh:read("*all")
 				fh:close()
 				if chunk and #chunk > 0 then
-					self:_retrieveImageData(url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
-					cachedImage = true
+					if self:_retrieveImageData(url,imageType,chunk,clipX,clipY,clipWidth,clipHeight) then
+						cachedImage = true
+					else
+						log:warn("Removing corrupt cached image "..cachePath)
+						os.remove(cachePath)
+					end
 				else
 					log:warn("Unable to read cached image "..cachePath)
 				end
@@ -4637,7 +4641,7 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 						return
 					end
 					if chunk then
-						if _getString(dynamic,"false") == "false" then
+						if self:_retrieveImageData(url,imageType,chunk,clipX,clipY,clipWidth,clipHeight) and _getString(dynamic,"false") == "false" then
 							lfs.mkdir(appletdir.."CustomClock/images")
 							local cachePath = appletdir.."CustomClock/images/"..cacheName
 							local fh, openError = io.open(cachePath, "wb")
@@ -4648,7 +4652,6 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 								log:warn("Unable to cache image "..cachePath..": "..tostring(openError))
 							end
 						end
-						self:_retrieveImageData(url,imageType,chunk,clipX,clipY,clipWidth,clipHeight)
 					elseif err then
 						log:warn("error loading picture " .. url)
 					end
@@ -4679,7 +4682,7 @@ function _retrieveImageData(self,url,imageType,chunk,clipX,clipY,clipWidth,clipH
 	local image = Surface:loadImageData(chunk, #chunk)
 	if not image then
 		log:warn("Unable to decode downloaded image for "..imageType..", ignoring")
-		return
+		return false
 	end
 	if clipWidth and clipHeight and clipX and clipY then
 		local newImg = Surface:newRGBA(clipWidth, clipHeight)
@@ -4716,6 +4719,7 @@ function _retrieveImageData(self,url,imageType,chunk,clipX,clipY,clipWidth,clipH
 		self:_storeInCache(self.referenceimages[imageType],image)
 	end
 	log:debug("image ready")
+	return true
 end
 
 function _removeFromCache(self,id)
