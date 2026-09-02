@@ -1087,28 +1087,38 @@ function _startClockTimer(self,timerWindow,timerGeneration)
 	end
 
 	local timer
-	timer = Timer(delay,function()
+	local function onTimerFired()
 			if self.clockTimer ~= timer or self.window ~= timerWindow or self.screenGeneration ~= timerGeneration then
 				return
 			end
-			-- This timer is one-shot: unlike the previous repeating timer
-			-- (which was already reinserted before its callback ran), an
-			-- uncaught error here would leave no future timer at all.
-			-- Always reschedule, even if the tick itself failed.
+			-- Reschedule FIRST, before running _tick() at all: a live device
+			-- report showed the whole clock freezing forever after the very
+			-- first tick, with an uncaught "attempt to call upvalue 'self'"
+			-- surfacing from the platform's own timer error handler rather
+			-- than being caught by our pcall below -- i.e. this platform's
+			-- pcall cannot be trusted to protect this call. Scheduling the
+			-- next timer up front means ticking keeps going even if
+			-- everything below throws in a way nothing here can catch. This
+			-- can create one harmless extra timer if _tick() itself closes
+			-- the screen (the new timer's own stale-guard above catches
+			-- that on its next fire) -- an acceptable tradeoff for never
+			-- freezing.
+			self:_startClockTimer(timerWindow,timerGeneration)
 			local ok, err = pcall(function()
 				self:_tick()
 			end)
 			if not ok then
 				log:warn("Clock tick failed: "..tostring(err))
 			end
-			-- _tick() may itself have closed the screen (closeScreensaver
-			-- nils self.window and bumps self.screenGeneration); don't
-			-- schedule an unnecessary follow-up timer for a screen that's
-			-- already gone.
-			if self.window == timerWindow and self.screenGeneration == timerGeneration then
-				self:_startClockTimer(timerWindow,timerGeneration)
-			end
-		end,true)
+	end
+	-- Keep a strong Lua-side reference to the callback closure (and
+	-- therefore its "self" upvalue) on the long-lived applet instance
+	-- itself, not just inside the Timer object: if the platform's Timer
+	-- binding doesn't hold its own strong reference to the callback, the
+	-- closure (and everything it captures, including "self") can be
+	-- garbage-collected before a one-shot timer actually fires.
+	self.clockTimerCallback = onTimerFired
+	timer = Timer(delay, onTimerFired, true)
 	self.clockTimer = timer
 	timer:start()
 end
