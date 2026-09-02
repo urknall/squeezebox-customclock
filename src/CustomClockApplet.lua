@@ -364,16 +364,29 @@ function _clearStyleConfigSlot(self,attribute)
 end
 
 -- Plugin.pm sends the *complete* remaining style catalog on every
--- create/edit/delete/rename, not a delta. Reconcile against that full
--- snapshot: refresh any configured style that's still present, and clear
--- any configured style that is no longer present (deleted, or renamed away
--- from this name) instead of silently retaining a stale/nonexistent config.
-function _reconcileStyleConfigAfterChange(self,entries,mode)
+-- create/edit/delete/rename, not a delta -- except online styles vanish
+-- from that catalog whenever its remote fetch fails, so `complete` tells us
+-- whether this snapshot is actually authoritative enough to treat a missing
+-- style as deleted (default true, for backward compatibility with any
+-- caller that doesn't know about this yet).
+-- Styles are identified by `styleid` (name+models, matching Plugin.pm's
+-- getStyleKey()) when the configured slot has one; otherwise falls back to
+-- matching by bare name for configs saved before styleid existed.
+function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 	entries = entries or {}
+	if complete == nil then
+		complete = true
+	end
+	local currentStyleIds = {}
 	local currentStyleNames = {}
 	for _,entry in pairs(entries) do
-		if type(entry) == "table" and entry.name then
-			currentStyleNames[entry.name] = true
+		if type(entry) == "table" then
+			if entry.styleid then
+				currentStyleIds[entry.styleid] = true
+			end
+			if entry.name then
+				currentStyleNames[entry.name] = true
+			end
 		end
 	end
 
@@ -392,26 +405,48 @@ function _reconcileStyleConfigAfterChange(self,entries,mode)
 		end
 		if correctModel then
 			for attribute,value in pairs(self:getSettings()) do
-				if string.find(attribute,"style$") and value == entry.name then
-					log:debug("Updating "..attribute.."="..tostring(entry.name))
-					local config = self:_clearStyleConfigSlot(attribute)
-					for entryAttribute,entryValue in pairs(entry) do
-						self:getSettings()[config..entryAttribute] = entryValue
+				if string.find(attribute,"style$") then
+					local config = string.gsub(attribute,"style$","")
+					local configuredId = self:getSettings()[config.."styleid"]
+					local matches
+					if configuredId then
+						matches = (configuredId == entry.styleid)
+					else
+						matches = (value == entry.name)
 					end
-					changed = true
-					changedModes[config] = true
+					if matches then
+						log:debug("Updating "..attribute.."="..tostring(entry.name))
+						self:_clearStyleConfigSlot(attribute)
+						for entryAttribute,entryValue in pairs(entry) do
+							self:getSettings()[config..entryAttribute] = entryValue
+						end
+						changed = true
+						changedModes[config] = true
+					end
 				end
 			end
 		end
 	end
 
-	for attribute,value in pairs(self:getSettings()) do
-		if string.find(attribute,"style$") and value and value ~= "" and not currentStyleNames[value] then
-			log:debug("Clearing deleted/renamed style config: "..attribute)
-			local config = self:_clearStyleConfigSlot(attribute)
-			self:getSettings()[attribute] = nil
-			changed = true
-			changedModes[config] = true
+	if complete then
+		for attribute,value in pairs(self:getSettings()) do
+			if string.find(attribute,"style$") and value and value ~= "" then
+				local config = string.gsub(attribute,"style$","")
+				local configuredId = self:getSettings()[config.."styleid"]
+				local stillExists
+				if configuredId then
+					stillExists = currentStyleIds[configuredId]
+				else
+					stillExists = currentStyleNames[value]
+				end
+				if not stillExists then
+					log:debug("Clearing deleted/renamed style config: "..attribute)
+					self:_clearStyleConfigSlot(attribute)
+					self:getSettings()[attribute] = nil
+					changed = true
+					changedModes[config] = true
+				end
+			end
 		end
 	end
 
@@ -456,7 +491,7 @@ function openScreensaver(self,mode, transition)
 				if not chunk or not chunk.data or chunk.data[1] ~= "customclockchangedstyles" or type(chunk.data[2]) ~= 'table' then
 					return
 				end
-				self:_reconcileStyleConfigAfterChange(chunk.data[2], mode)
+				self:_reconcileStyleConfigAfterChange(chunk.data[2], mode, tonumber(chunk.data[3]) == 1)
 			end,
 			player:getId(),
 			{'customclockchangedstyles'}
