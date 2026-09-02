@@ -1268,10 +1268,12 @@ function defineSettingStyle(self,mode,menuItem)
 			self._helperStyleCheckInFlight = false
 			if err then
 				log:warn("Error checking for CustomClockHelper: " .. tostring(err))
+				self:_closeStyleFetchPopup()
 				return
 			end
 			if not chunk or not chunk.data then
 				log:warn("Invalid response checking for CustomClockHelper")
+				self:_closeStyleFetchPopup()
 				return
 			end
 			if licensed and tonumber(chunk.data._can) == 1 then
@@ -1285,10 +1287,12 @@ function defineSettingStyle(self,mode,menuItem)
 						self._localStylesFetchInFlight = false
 						if localErr then
 							log:warn("Error fetching styles from LMS: " .. tostring(localErr))
+							self:_closeStyleFetchPopup()
 							return
 						end
 						if not localChunk or not localChunk.data then
 							log:warn("Invalid CustomClockHelper style response")
+							self:_closeStyleFetchPopup()
 							return
 						end
 						self:defineSettingStyleSink(menuItem,mode,localChunk.data)
@@ -1306,6 +1310,13 @@ function defineSettingStyle(self,mode,menuItem)
 	popup:addWidget(label)
 	self:tieAndShowWindow(popup)
 	self.popup = popup
+end
+
+function _closeStyleFetchPopup(self)
+	if self.popup then
+		self.popup:hide()
+		self.popup = nil
+	end
 end
 
 function _getOnlineStylesSink(self,menuItem,mode)
@@ -1330,11 +1341,7 @@ function _getOnlineStylesSink(self,menuItem,mode)
 			self.onlineStylesRequestInFlight = false
 			if err then
 				log:warn("Error fetching styles from online server: " .. tostring(err))
-				-- Close the waiting popup
-				if self.popup then
-					self.popup:hide()
-					self.popup = nil
-				end
+				self:_closeStyleFetchPopup()
 				-- Show error message to user
 				local window = Window("text_list", self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS"), 'settingstitle')
 				local menu = SimpleMenu("menu")
@@ -2015,9 +2022,9 @@ function _userRequest(self,server,playerId,command,callback)
 		table.insert(commandParts,tostring(value))
 	end
 	local commandName = table.concat(commandParts," ")
-	log:warn("CUSTOMCLOCK_REQUEST start: "..commandName)
+	log:debug("CUSTOMCLOCK_REQUEST start: "..commandName)
 	server:userRequest(function(chunk,err)
-			log:warn("CUSTOMCLOCK_REQUEST complete: "..commandName.." error="..tostring(err))
+			log:debug("CUSTOMCLOCK_REQUEST complete: "..commandName.." error="..tostring(err))
 			callback(chunk,err)
 		end,
 		playerId,
