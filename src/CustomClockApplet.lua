@@ -3500,7 +3500,7 @@ function _updateGalleryImage(self,widget,id,width,height,favorite)
 				end
 				if err then
 					log:warn(err)
-				else
+				elseif chunk and chunk.data and tonumber(chunk.data._can) == 1 then
 					local cmd = {'gallery','random'}
 					if _getNumber(favorite,nil) then
 						cmd = {'gallery','random','favid:'.._getNumber(favorite,nil)}
@@ -3511,7 +3511,7 @@ function _updateGalleryImage(self,widget,id,width,height,favorite)
 							end
 							if err then
 								log:warn(err)
-							elseif chunk and chunk.data then
+							elseif chunk and chunk.data and type(chunk.data.image) == "string" then
 								local maxwidth,maxheight = self:_getUsableWallpaperArea()
 								local url = string.gsub(chunk.data.image,"{resizeParams}","_".._getNumber(width,maxwidth).."x".._getNumber(height,maxheight).."_p")
 								local ip,port = server:getIpPort()
