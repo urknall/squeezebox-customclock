@@ -2452,7 +2452,17 @@ function _updateRSSItem(self,category,items)
 				local index = 0
 				local p = lxp.new({
 					StartElement = function (parser, name, attr)
-						if name == "media:content" and attr.url and (attr.type=="image/jpeg" or attr.type=="image/png" or string.find(attr.url,"jpeg$") or string.find(attr.url,"jpg$") or string.find(attr.url,"png$")) then
+						if name == "item" then
+							-- Reset per-item state so a field missing from
+							-- this item can't inherit the previous item's value.
+							title = ""
+							description = ""
+							guid = ""
+							url = ""
+							pubDate = ""
+							source = ""
+							credit = ""
+						elseif name == "media:content" and attr.url and (attr.type=="image/jpeg" or attr.type=="image/png" or string.find(attr.url,"jpeg$") or string.find(attr.url,"jpg$") or string.find(attr.url,"png$")) then
 							url = attr.url
 						elseif name == "enclosure" and attr.url and (attr.type=="image/jpeg" or attr.type=="image/png" or string.find(attr.url,"jpeg$") or string.find(attr.url,"jpg$") or string.find(attr.url,"png$")) then
 							url = attr.url
