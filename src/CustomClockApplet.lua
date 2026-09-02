@@ -2765,15 +2765,17 @@ function _getSDTMiscData(self,item,selectionattribute,totalResults)
 			end
 		end
 		for selection,value in pairs(totalResults) do
-			results[no] = value
-			results[no][selectionattribute] = selection
-			results[no].uniqueID=selection
-			for key,icon in pairs(icons) do
-				if not results[no][key] then
-					results[no][key] = icon
+			if type(value) == "table" then
+				results[no] = value
+				results[no][selectionattribute] = selection
+				results[no].uniqueID=selection
+				for key,icon in pairs(icons) do
+					if not results[no][key] then
+						results[no][key] = icon
+					end
 				end
+				no = no + 1
 			end
-			no = no + 1
 		end
 	end
 	return results
@@ -2801,9 +2803,11 @@ function _getPluginItemData(self,item,totalResults)
 		end
 	else
 		for selection,value in pairs(totalResults) do
-			results[no] = value
-			results[no].uniqueID=selection
-			no = no + 1
+			if type(value) == "table" then
+				results[no] = value
+				results[no].uniqueID=selection
+				no = no + 1
+			end
 		end
 	end
 	return results
@@ -2831,9 +2835,11 @@ function _getRSSItemData(self,item,totalResults)
 		end
 	else
 		for selection,value in pairs(totalResults) do
-			results[no] = value
-			results[no].uniqueID=selection
-			no = no + 1
+			if type(value) == "table" then
+				results[no] = value
+				results[no].uniqueID=selection
+				no = no + 1
+			end
 		end
 	end
 	return results
