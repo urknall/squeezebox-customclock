@@ -3488,13 +3488,16 @@ function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowpro
 					log:warn(err)
 				elseif chunk and chunk.data then
 					if chunk.data.item_loop then
-						self.configItems[id].urls = {}
-						for no,item in ipairs(chunk.data.item_loop) do
-							self.configItems[id].urls[no] = item.url
+						local urls = {}
+						for _,item in ipairs(chunk.data.item_loop) do
+							if _getString(item.url,nil) then
+								table.insert(urls,item.url)
+							end
 						end
-						if #self.configItems[id].urls == 0 then
+						if #urls == 0 then
 							self.configItems[id].urls = nil
 						else
+							self.configItems[id].urls = urls
 							local imageNo = math.random(1,#self.configItems[id].urls)
 							self.referenceimages[self.mode.."item"..id] = id
 							self:_retrieveImage(self.configItems[id].urls[imageNo],self.mode.."item"..id,allowproxy,dynamic,_getNumber(width,nil),_getNumber(height,nil))
