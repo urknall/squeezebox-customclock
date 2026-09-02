@@ -1265,48 +1265,45 @@ function defineSettingStyle(self,mode,menuItem)
 	if player then
 		local server = player:getSlimServer()
 		if server then
+			if self._helperStyleCheckInFlight then
+				log:debug("CustomClockHelper style check already in flight; skipping duplicate LMS request")
+				return
+			end
+			self._helperStyleCheckInFlight = true
 			server:userRequest(function(chunk,err)
+					self._helperStyleCheckInFlight = false
 					if err then
 						log:warn("Error checking for CustomClockHelper: " .. tostring(err))
-						log:debug("Falling back to online styles due to LMS error")
-						self:_getOnlineStylesSink(menuItem,mode)
-					elseif chunk and chunk.data then
-						if licensed and tonumber(chunk.data._can) == 1 then
-							log:info("CustomClockHelper is installed retrieving local styles")
-							server:userRequest(function(chunk,err)
-									if err then
-										log:warn("Error fetching styles from LMS: " .. tostring(err))
-										log:debug("Falling back to online styles due to LMS error")
-										self:_getOnlineStylesSink(menuItem,mode)
-									elseif chunk and chunk.data then
-										self:defineSettingStyleSink(menuItem,mode,chunk.data)
-									end
-								end,
-								player and player:getId(),
-								{'customclock','styles'}
-							)
-						else
-							log:debug("CustomClockHelper isn't installed retrieving online styles")
-							self:_getOnlineStylesSink(menuItem,mode)
-						end
-					else
-						log:warn("Invalid response checking for CustomClockHelper")
-						self:_getOnlineStylesSink(menuItem,mode)
+						return
 					end
-				end,
-				player and player:getId(),
-				{'can','customclock','styles','?'}
-			)
-	
-			-- create animation to show while we get data from the server
-			local popup = Popup("waiting_popup")
-			local icon  = Icon("icon_connecting")
-			local label = Label("text", self:string("SCREENSAVER_CUSTOMCLOCK_SETTINGS_FETCHING"))
-			popup:addWidget(icon)
-			popup:addWidget(label)
-			self:tieAndShowWindow(popup)
-
-			self.popup = popup
+					if not chunk or not chunk.data then
+						log:warn("Invalid response checking for CustomClockHelper")
+						return
+					end
+					if licensed and tonumber(chunk.data._can) == 1 then
+						log:info("CustomClockHelper is installed retrieving local styles")
+						if self._localStylesFetchInFlight then
+							log:debug("CustomClockHelper local styles fetch already in flight; skipping duplicate LMS request")
+							return
+						end
+						self._localStylesFetchInFlight = true
+						server:userRequest(function(localChunk,localErr)
+							self._localStylesFetchInFlight = false
+							if localErr then
+								log:warn("Error fetching styles from LMS: " .. tostring(localErr))
+								return
+							end
+							if not localChunk or not localChunk.data then
+								log:warn("Invalid CustomClockHelper style response")
+								return
+							end
+							self:defineSettingStyleSink(menuItem,mode,localChunk.data)
+						end,
+						player and player:getId(),
+						{'customclock','styles'}
+						)
+					else
+						log:debug("CustomClockHelper isn't installed retrieving online styles")
 		else
 			log:debug("Server not available retrieving online styles")
 			self:_getOnlineStylesSink(menuItem,mode)
