@@ -2339,23 +2339,14 @@ function _userRequest(self,server,playerId,command,callback)
 	)
 end
 
-function _processSDTMacroRequestQueue(self)
-	if self.sdtMacroRequestInFlight or not self.sdtMacroRequestQueue or #self.sdtMacroRequestQueue == 0 then
-		return
-	end
-
-	local request = table.remove(self.sdtMacroRequestQueue,1)
-	self.sdtMacroRequestInFlight = true
-	self:_userRequest(request.server,request.playerId,request.command,function(chunk,err)
-			self.sdtMacroRequests[request.key] = nil
-			self.sdtMacroRequestInFlight = false
-			for _,callback in ipairs(request.callbacks) do
-				callback(chunk,err)
-			end
-			self:_processSDTMacroRequestQueue()
-		end)
-end
-
+-- Distinct SDT macro-string requests (different keys) are fired concurrently
+-- rather than queued one-at-a-time: the real comet transport already
+-- batches multiple in-flight userRequests into a single round-trip
+-- (jive.net.Comet:request() queues into self.pending_reqs and sends them
+-- together), so serializing them here bought nothing but added latency
+-- when several different macro strings were needed at once. Identical
+-- in-flight requests (same key) still get de-duplicated - a second caller
+-- just piggybacks its callback onto the one already in flight.
 function _requestSDTMacroString(self,server,playerId,command,callback)
 	local key = table.concat(command,"\0")
 	self.sdtMacroRequests = self.sdtMacroRequests or {}
@@ -2367,15 +2358,15 @@ function _requestSDTMacroString(self,server,playerId,command,callback)
 
 	request = {
 		key = key,
-		server = server,
-		playerId = playerId,
-		command = command,
 		callbacks = { callback },
 	}
 	self.sdtMacroRequests[key] = request
-	self.sdtMacroRequestQueue = self.sdtMacroRequestQueue or {}
-	table.insert(self.sdtMacroRequestQueue,request)
-	self:_processSDTMacroRequestQueue()
+	self:_userRequest(server,playerId,command,function(chunk,err)
+			self.sdtMacroRequests[key] = nil
+			for _,cb in ipairs(request.callbacks) do
+				cb(chunk,err)
+			end
+		end)
 end
 
 function _updateSDTText(self,widget,id,format,period)
