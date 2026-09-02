@@ -1878,14 +1878,16 @@ function _downloadFontFile(self,dir,filename,fonturl)
 
         return function(chunk)
                 if chunk == nil then
-				self.fontDownloadsInFlight[fonturl] = nil
-                        if fh and fh ~= 'DIR' then
-                                fh:close()
-                                fh = nil
+			if fh and fh ~= 'DIR' then
+				fh:close()
+				fh = nil
 				log:debug("Downloaded "..dir..filename)
-				self:_refreshAfterFontDownload()
-                                return nil
-                        end
+			else
+				log:debug("Font download finished without a usable file: "..dir..filename)
+			end
+			self.fontDownloadsInFlight[fonturl] = nil
+			self:_refreshAfterFontDownload()
+			return nil
 
                 else
 			if fh == nil and not openFailed then
