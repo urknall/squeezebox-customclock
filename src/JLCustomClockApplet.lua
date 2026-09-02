@@ -1665,13 +1665,19 @@ function _retrieveFont(self,fonturl,fontfile,fontSize)
 		elseif lfs.attributes(luadir.."fonts/"..fontfile) ~= nil then
 			return self:_loadFont("fonts/"..fontfile,fontSize)
 		else
+			self.fontDownloadsInFlight = self.fontDownloadsInFlight or {}
+			self.fontRefreshPending = true
+			if self.fontDownloadsInFlight[fonturl] then
+				return nil
+			end
+			self.fontDownloadsInFlight[fonturl] = true
 			local req = nil
 			log:debug("Getting "..fonturl)
 			if not string.find(fonturl,"%.ttf$") and not string.find(fonturl,"%.TTF$")then
-				local sink = ltn12.sink.chain(zip.filter(),self:_downloadFontZipFile(appletdir.."JLCustomClock/fonts/"))
+				local sink = ltn12.sink.chain(zip.filter(),self:_downloadFontZipFile(appletdir.."JLCustomClock/fonts/",fonturl))
 				req = RequestHttp(sink, 'GET', fonturl, {stream = true, headers = { Connection = "close" }})
 			else
-				req = RequestHttp(self:_downloadFontFile(appletdir.."JLCustomClock/fonts/",fontfile), 'GET', fonturl, {stream = true, headers = { Connection = "close" }})
+				req = RequestHttp(self:_downloadFontFile(appletdir.."JLCustomClock/fonts/",fontfile,fonturl), 'GET', fonturl, {stream = true, headers = { Connection = "close" }})
 			end
 			local uri = req:getURI()
 
@@ -1684,7 +1690,20 @@ function _retrieveFont(self,fonturl,fontfile,fontSize)
 	end
 end
 
-function _downloadFontZipFile(self, dir)
+function _refreshAfterFontDownload(self)
+	if not self.fontRefreshPending or next(self.fontDownloadsInFlight or {}) then
+		return
+	end
+	self.fontRefreshPending = false
+	if self.window and self.mode then
+		log:debug("Reopening screen saver after font download")
+		self.window:hide()
+		self.window = nil
+		self:openScreensaver(self.mode,Window.transitionNone)
+	end
+end
+
+function _downloadFontZipFile(self, dir, fonturl)
         local fh = nil
 
         return function(chunk)
@@ -1694,12 +1713,9 @@ function _downloadFontZipFile(self, dir)
                                 fh:close()
                         end
                         fh = nil
+						self.fontDownloadsInFlight[fonturl] = nil
 			log:debug("Downloaded fonts in "..dir)
-			if self.window then
-				log:debug("Refreshing skin")
-				self.window:setSkin(self:_getClockSkin(jiveMain:getSelectedSkin()))
-				self.window:reSkin()
-			end
+					self:_refreshAfterFontDownload()
                         return nil
 
                 elseif type(chunk) == "table" then
@@ -1734,21 +1750,18 @@ function _downloadFontZipFile(self, dir)
         end
 end
 
-function _downloadFontFile(self,dir,filename)
+function _downloadFontFile(self,dir,filename,fonturl)
         local fh = nil
 	local openFailed = false
 
         return function(chunk)
                 if chunk == nil then
+				self.fontDownloadsInFlight[fonturl] = nil
                         if fh and fh ~= 'DIR' then
                                 fh:close()
                                 fh = nil
 				log:debug("Downloaded "..dir..filename)
-				if self.window then
-					log:debug("Refreshing skin")
-					self.window:setSkin(self:_getClockSkin(jiveMain:getSelectedSkin()))
-					self.window:reSkin()
-				end
+				self:_refreshAfterFontDownload()
                                 return nil
                         end
 
