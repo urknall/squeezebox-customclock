@@ -500,6 +500,29 @@ function _clearStyleConfigSlot(self,attribute)
 	return config
 end
 
+-- Recursively compares two values for structural equality. Used to tell
+-- whether a style catalog entry actually changed, vs. just being present
+-- again in another full-catalog snapshot unrelated to it.
+function _deepEqual(a,b)
+	if a == b then
+		return true
+	end
+	if type(a) ~= "table" or type(b) ~= "table" then
+		return false
+	end
+	for k,v in pairs(a) do
+		if not _deepEqual(v,b[k]) then
+			return false
+		end
+	end
+	for k in pairs(b) do
+		if a[k] == nil then
+			return false
+		end
+	end
+	return true
+end
+
 -- Plugin.pm sends the *complete* remaining style catalog on every
 -- create/edit/delete/rename, not a delta -- except online styles vanish
 -- from that catalog whenever its remote fetch fails, so `complete` tells us
@@ -516,6 +539,10 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 	end
 	local currentStyleIds = {}
 	local currentStyleNames = {}
+	-- Snapshot of every entry seen this call, keyed by identity, so the
+	-- NEXT call can tell which entries actually changed rather than
+	-- treating every entry present in the (always-full) catalog as changed.
+	local currentEntriesByIdentity = {}
 	for _,entry in pairs(entries) do
 		if type(entry) == "table" then
 			if entry.styleid then
@@ -524,8 +551,13 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 			if entry.name then
 				currentStyleNames[entry.name] = true
 			end
+			local identity = entry.styleid or entry.name
+			if identity then
+				currentEntriesByIdentity[identity] = entry
+			end
 		end
 	end
+	local previousEntriesByIdentity = self._lastStyleEntries or {}
 
 	local changed = false
 	local changedModes = {}
@@ -541,6 +573,11 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 			end
 		end
 		if correctModel then
+			local identity = entry.styleid or entry.name
+			local entryChanged = true
+			if identity then
+				entryChanged = not _deepEqual(entry, previousEntriesByIdentity[identity])
+			end
 			for attribute,value in pairs(self:getSettings()) do
 				if string.find(attribute,"style$") then
 					local config = string.gsub(attribute,"style$","")
@@ -551,7 +588,7 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 					else
 						matches = (value == entry.name)
 					end
-					if matches then
+					if matches and entryChanged then
 						log:debug("Updating "..attribute.."="..tostring(entry.name))
 						self:_clearStyleConfigSlot(attribute)
 						for entryAttribute,entryValue in pairs(entry) do
@@ -559,11 +596,15 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 						end
 						changed = true
 						changedModes[config] = true
+					elseif matches then
+						log:debug("Skipping unchanged style for "..attribute)
 					end
 				end
 			end
 		end
 	end
+	self._lastStyleEntries = currentEntriesByIdentity
+
 
 	if complete then
 		for attribute,value in pairs(self:getSettings()) do
