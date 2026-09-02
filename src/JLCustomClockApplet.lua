@@ -3719,7 +3719,7 @@ function _tick(self,forcedUpdate)
 					}
 				end
 				updatesdtitems["weather"].items[no] = item
-			elseif second % _getNumber(item.interval,3) == 0 then
+			elseif second % _getPositiveNumber(item.interval,3) == 0 then
 				local results = self:_getSDTCacheData("weather",item)
 				if results and #results>0 then
 					if not changesdtitems["weather"] then
@@ -3744,7 +3744,7 @@ function _tick(self,forcedUpdate)
 					}
 				end
 				updatesdtitems["sport"].items[no] = item
-			elseif second % _getNumber(item.interval,3) == 0 then
+			elseif second % _getPositiveNumber(item.interval,3) == 0 then
 				local results = self:_getSDTCacheData("sport",item)
 				if results and #results>0 then
 					if not changesdtitems["sport"] then
@@ -3769,7 +3769,7 @@ function _tick(self,forcedUpdate)
 					}
 				end
 				updatesdtitems["stocks"].items[no] = item
-			elseif second % _getNumber(item.interval,3) == 0 then
+			elseif second % _getPositiveNumber(item.interval,3) == 0 then
 				local results = self:_getSDTCacheData("stocks",item)
 				if results and #results>0 then
 					if not changesdtitems["stocks"] then
@@ -3795,7 +3795,7 @@ function _tick(self,forcedUpdate)
 					}
 				end
 				updatesdtitems[infotype].items[no] = item
-			elseif second % _getNumber(item.interval,3) == 0 then
+			elseif second % _getPositiveNumber(item.interval,3) == 0 then
 				local results = self:_getSDTCacheData(infotype,item)
 				if results and #results>0 then
 					if not changesdtitems[infotype] then
@@ -3821,7 +3821,7 @@ function _tick(self,forcedUpdate)
 					}
 				end
 				updatepluginitems[infotype].items[no] = item
-			elseif second % _getNumber(item.interval,3) == 0 then
+			elseif second % _getPositiveNumber(item.interval,3) == 0 then
 				local results = self:_getPluginItemCacheData(infotype,item)
 				if results and #results>0 then
 					if not changepluginitems[infotype] then
@@ -3838,7 +3838,7 @@ function _tick(self,forcedUpdate)
 			end
 		elseif item.itemtype == "rsstext" or item.itemtype == "rssicon" then
 			local url = _getString(item.url,"default")
-			if forcedUpdate or (self.lastminute!=minute  and minute % _getNumber(item.refreshinterval,30) == 0) then
+			if forcedUpdate or (self.lastminute!=minute  and minute % _getPositiveNumber(item.refreshinterval,30) == 0) then
 				self:_updateFromCache(no)		
 				if not updaterssitems[url] then
 					updaterssitems[url] = {
@@ -3847,7 +3847,7 @@ function _tick(self,forcedUpdate)
 					}
 				end
 				updaterssitems[url].items[no] = item
-			elseif (self.secondoffset+second) % _getNumber(item.interval,3) == 0 then
+			elseif (self.secondoffset+second) % _getPositiveNumber(item.interval,3) == 0 then
 				local results = self:_getRSSItemCacheData(url,item)
 				if results and #results>0 then
 					if not changerssitems[url] then
@@ -3881,7 +3881,7 @@ function _tick(self,forcedUpdate)
 		elseif item.itemtype == "covernextstoppedicon" then
 			self:_updateAlbumCover(self.items[no],"itemno",item.size,"stop",2,item.free)
 		elseif item.itemtype == "galleryicon" then
-			if forcedUpdate or self.lastminute!=minute or (_getNumber(item.interval,nil) and second % tonumber(item.interval) == 0) then
+			if forcedUpdate or self.lastminute!=minute or (_getPositiveNumber(item.interval,nil) and second % tonumber(item.interval) == 0) then
 				self:_updateFromCache(no)		
 				self:_updateGalleryImage(self.items[no],no,item.width,item.height,item.favorite)
 			end
@@ -3900,7 +3900,7 @@ function _tick(self,forcedUpdate)
 			if forcedUpdate then
 				self:_updateFromCache(no)		
 				self:_updateSDTWeatherMapIcon(self.items[no],no,item)
-			elseif self.lastminute!=minute and (not item.url or (minute % 15 == 0 and not _getNumber(item.interval,nil)) or (_getNumber(item.interval,nil) and minute % tonumber(item.interval)==0)) then
+			elseif self.lastminute!=minute and (not item.url or (minute % 15 == 0 and not _getPositiveNumber(item.interval,nil)) or (_getPositiveNumber(item.interval,nil) and minute % tonumber(item.interval)==0)) then
 				if item.url then
 					self.referenceimages[self.mode.."item"..no] = no
 					self:_retrieveImage(item.url,self.mode.."item"..no,_getString(item.allowproxy,"true"),"true",item.width,item.height,_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
@@ -3913,21 +3913,21 @@ function _tick(self,forcedUpdate)
 				self:_updateFromCache(no)		
 				local width,height = Framework.getScreenSize()
 				self:_updateSongInfoIcon(self.items[no],no,_getNumber(item.width,width),_getNumber(item.height,height),item.songinfomodule,"true",_getString(item.allowproxy,"true"))
-			elseif second % _getNumber(item.interval,10) == 0 and item.urls and #item.urls>0 then
+			elseif second % _getPositiveNumber(item.interval,10) == 0 and item.urls and #item.urls>0 then
 				local width,height = Framework.getScreenSize()
 				local imageNo = math.random(1,#item.urls)
 				self.referenceimages[self.mode.."item"..no] = no
 				self:_retrieveImage(item.urls[imageNo],self.mode.."item"..no,_getString(item.allowproxy,"true"),"true",_getNumber(item.width,width),_getNumber(item.height,height))
 			end
 		elseif item.itemtype == "imageicon" and _getString(item.url,nil) then
-			if forcedUpdate or (minute % _getNumber(item.interval,30) == 0 and self.lastminute!=minute) then
+			if forcedUpdate or (minute % _getPositiveNumber(item.interval,30) == 0 and self.lastminute!=minute) then
 				self:_updateFromCache(no)		
 				self.referenceimages[self.mode.."item"..no] = no
 				self:_retrieveImage(item.url,self.mode.."item"..no,_getString(item.allowproxy,"true"),_getString(item.dynamic,"true"),_getNumber(item.width,nil),_getNumber(item.height,nil),_getNumber(item.clipx,nil),_getNumber(item.clipy,nil),_getNumber(item.clipwidth,nil),_getNumber(item.clipheight,nil))
 			end
 		elseif item.itemtype == "appleticon" then
 			if self.customItemTypes and _getString(item.icontype,nil) and self.customItemTypes[item.icontype.."icon"] then
-				if forcedUpdate or (refreshCustomItemTypes and refreshCustomItemTypes[item.icontype.."icon"]) or (_getString(item.interval,nil) and second % item.interval == 0) or self.lastminute!=minute then
+				if forcedUpdate or (refreshCustomItemTypes and refreshCustomItemTypes[item.icontype.."icon"]) or (_getPositiveNumber(item.interval,nil) and second % item.interval == 0) or self.lastminute!=minute then
 					local instance = appletManager:loadApplet(self.customItemTypes[item.icontype.."icon"].applet)
 					if instance and instance[self.customItemTypes[item.icontype.."icon"].method] then
 						log:debug("Getting image for appleticon of type: "..item.icontype.. " and image: "..tostring(item.image))
@@ -3943,7 +3943,7 @@ function _tick(self,forcedUpdate)
 			end
 		elseif item.itemtype == "applettext" then
 			if self.customItemTypes and _getString(item.texttype,nil) and self.customItemTypes[item.texttype.."text"] then
-				if forcedUpdate or (refreshCustomItemTypes and refreshCustomItemTypes[item.texttype.."text"]) or (_getString(item.interval,nil) and second % item.interval == 0) or self.lastminute!=minute then
+				if forcedUpdate or (refreshCustomItemTypes and refreshCustomItemTypes[item.texttype.."text"]) or (_getPositiveNumber(item.interval,nil) and second % item.interval == 0) or self.lastminute!=minute then
 					local instance = appletManager:loadApplet(self.customItemTypes[item.texttype.."text"].applet)
 					if instance and instance[self.customItemTypes[item.texttype.."text"].method] then
 						log:debug("Getting text for applettext of type: "..item.texttype.. " and text: "..tostring(item.text))
@@ -4782,6 +4782,17 @@ end
 function _getNumber(value,default)
 	value = tonumber(value)
 	if value then
+		return value
+	else
+		return default
+	end
+end
+
+-- Like _getNumber, but rejects zero/negative values too: intended for use
+-- as a modulo divisor, where 0 would silently stall the refresh forever.
+function _getPositiveNumber(value,default)
+	value = tonumber(value)
+	if value and value > 0 then
 		return value
 	else
 		return default
