@@ -649,7 +649,9 @@ end
 -- guarding every call site individually.
 function _sanitizeConfigItems(items)
 	local sanitized = {}
-	for _,item in pairs(items or {}) do
+	-- items always comes from a JSON-decoded array (dense, 1..n); ipairs
+	-- guarantees traversal order, unlike pairs() which doesn't for any table.
+	for _,item in ipairs(items or {}) do
 		if type(item) == "table" and type(item.itemtype) == "string" and item.itemtype ~= "" then
 			table.insert(sanitized, item)
 		else
