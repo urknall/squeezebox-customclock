@@ -1416,9 +1416,11 @@ function _getOnlineStylesSink(self,menuItem,mode)
 					self:defineSettingStyleSink(menuItem,mode,styleData.data)
 				else
 					log:warn("Invalid online style response: "..tostring(styleData))
+					self:_closeStyleFetchPopup()
 				end
 			else
 				log:debug("Online style fetch completed without payload")
+				self:_closeStyleFetchPopup()
 			end
 		end,
 		'GET', "/clockstyles8.json", { headers = { Connection = "close" }})
