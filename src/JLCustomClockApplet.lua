@@ -1369,7 +1369,7 @@ function _getOnlineStylesSink(self,menuItem,mode)
 				log:debug("Online style fetch completed without payload")
 			end
 		end,
-		'GET', "/clockstyles8.json")
+		'GET', "/clockstyles8.json", { headers = { Connection = "close" }})
 	http:fetch(req)
 end
 
@@ -1669,9 +1669,9 @@ function _retrieveFont(self,fonturl,fontfile,fontSize)
 			log:debug("Getting "..fonturl)
 			if not string.find(fonturl,"%.ttf$") and not string.find(fonturl,"%.TTF$")then
 				local sink = ltn12.sink.chain(zip.filter(),self:_downloadFontZipFile(appletdir.."JLCustomClock/fonts/"))
-				req = RequestHttp(sink, 'GET', fonturl, {stream = true})
+				req = RequestHttp(sink, 'GET', fonturl, {stream = true, headers = { Connection = "close" }})
 			else
-				req = RequestHttp(self:_downloadFontFile(appletdir.."JLCustomClock/fonts/",fontfile), 'GET', fonturl, {stream = true})
+				req = RequestHttp(self:_downloadFontFile(appletdir.."JLCustomClock/fonts/",fontfile), 'GET', fonturl, {stream = true, headers = { Connection = "close" }})
 			end
 			local uri = req:getURI()
 
@@ -2545,7 +2545,7 @@ function _updateRSSItem(self,category,items)
 				end
 			end
 		end,
-		'GET', category)
+		'GET', category, { headers = { Connection = "close" }})
 	local uri = req:getURI()
 	local http = SocketHttp(jnt, uri.host, uri.port, uri.host)
 	http:fetch(req)
@@ -4488,7 +4488,7 @@ function _retrieveImage(self,url,imageType,allowProxy,dynamic,width,height,clipX
 						log:warn("error loading picture " .. url .. " (" .. err .. ")")
 					end
 				end,
-				'GET', imagepath)
+				'GET', imagepath, { headers = { Connection = "close" }})
 			http:fetch(req)
 		end
 	else
