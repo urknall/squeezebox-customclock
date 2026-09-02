@@ -529,7 +529,10 @@ end
 -- from that catalog whenever its remote fetch fails, so `complete` tells us
 -- whether this snapshot is actually authoritative enough to treat a missing
 -- style as deleted (default true, for backward compatibility with any
--- caller that doesn't know about this yet).
+-- caller that doesn't know about this yet). Local styles are always fully
+-- enumerated regardless of online-fetch success, so a configured style
+-- last known to be local-sourced (entry.source == "local") is reconciled
+-- as deleted/renamed even when `complete` is false.
 -- Styles are identified by `styleid` (name+models, matching Plugin.pm's
 -- getStyleKey()) when the configured slot has one; otherwise falls back to
 -- matching by bare name for configs saved before styleid existed.
@@ -614,18 +617,29 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 	end
 
 
-	if complete then
-		for attribute,value in pairs(self:getSettings()) do
-			if string.find(attribute,"style$") and value and value ~= "" then
-				local config = string.gsub(attribute,"style$","")
-				local configuredId = self:getSettings()[config.."styleid"]
-				local stillExists
-				if configuredId then
-					stillExists = currentStyleIds[configuredId]
-				else
-					stillExists = currentStyleNames[value]
-				end
-				if not stillExists then
+	-- Local styles are always fully enumerated regardless of online-fetch
+	-- success (Plugin.pm merges them unconditionally, only the online
+	-- portion can go missing on a fetch failure), so a configured style
+	-- last seen tagged as local-sourced can still be reconciled as
+	-- deleted/renamed even when `complete` is false because of an
+	-- unrelated online outage.
+	for attribute,value in pairs(self:getSettings()) do
+		if string.find(attribute,"style$") and value and value ~= "" then
+			local config = string.gsub(attribute,"style$","")
+			local configuredId = self:getSettings()[config.."styleid"]
+			local stillExists
+			if configuredId then
+				stillExists = currentStyleIds[configuredId]
+			else
+				stillExists = currentStyleNames[value]
+			end
+			if not stillExists then
+				-- entry.source (Plugin.pm's "local"/"online" tag) is
+				-- already persisted as config.."source" by the generic
+				-- attribute copy-loops below and in defineSettingStyleSink,
+				-- so it survives restarts unlike an in-memory cache.
+				local knownLocal = self:getSettings()[config.."source"] == "local"
+				if complete or knownLocal then
 					log:debug("Clearing deleted/renamed style config: "..attribute)
 					self:_clearStyleConfigSlot(attribute)
 					self:getSettings()[attribute] = nil
