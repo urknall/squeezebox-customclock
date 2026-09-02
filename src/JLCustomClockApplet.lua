@@ -738,7 +738,7 @@ function openScreensaver(self,mode, transition)
 			end
 		end
 
-		self.window:addTimer(1000, function() self:_tick() end)
+		self:_startClockTimer(self.window, self.screenGeneration)
 		self.offset = math.random(15)
 		self.images = {}
 		self.vumeterimages = {}
@@ -885,11 +885,38 @@ end
 
 function closeScreensaver(self)
 	self:_unsubscribePlayerEvents()
+	if self.clockTimer then
+		self.clockTimer:stop()
+		self.clockTimer = nil
+	end
 	self.screenGeneration = (self.screenGeneration or 0) + 1
 	if self.window then
 		self.window:hide()
 		self.window = nil
 	end
+end
+
+function _startClockTimer(self,timerWindow,timerGeneration)
+	if self.clockTimer then
+		self.clockTimer:stop()
+	end
+
+	local now = socket.gettime()
+	local delay = math.ceil((1 - (now - math.floor(now))) * 1000)
+	if delay < 1 then
+		delay = 1
+	end
+
+	local timer
+	timer = Timer(delay,function()
+			if self.clockTimer ~= timer or self.window ~= timerWindow or self.screenGeneration ~= timerGeneration then
+				return
+			end
+			self:_tick()
+			self:_startClockTimer(timerWindow,timerGeneration)
+		end,true)
+	self.clockTimer = timer
+	timer:start()
 end
 
 function _updateVisibilityGroups(self)
