@@ -1741,6 +1741,14 @@ function _isCompliantOnlineStyleEntry(entry,model)
 	if next(entry.models) == nil then
 		return true
 	end
+	-- Reject the whole entry (rather than matching on whatever string
+	-- element happens first) if any model value isn't a string - a mixed
+	-- array would otherwise later crash _computeStyleId's table.sort().
+	for _,entryModel in pairs(entry.models) do
+		if type(entryModel) ~= "string" then
+			return false
+		end
+	end
 	for _,entryModel in pairs(entry.models) do
 		if entryModel == model then
 			return true
@@ -1762,6 +1770,11 @@ function _computeStyleId(entry)
 	local models = {}
 	if type(entry.models) == "table" then
 		for _,model in ipairs(entry.models) do
+			-- A non-string element would crash table.sort() below (can't
+			-- compare a table/number to a string) - reject the whole entry.
+			if type(model) ~= "string" then
+				return nil
+			end
 			table.insert(models,model)
 		end
 	end
