@@ -1788,14 +1788,19 @@ function _buildOnlineStyleSettings(mode,entry)
 	return result
 end
 
--- Prefers the deterministic styleid (name+sorted-models) when both the
--- stored config and the candidate entry have one, so two variants sharing
--- a display name for the same device aren't ambiguous in the picker.
+-- Prefers the deterministic styleid (name+sorted-models, recomputed
+-- locally rather than trusted from the raw untrusted catalog entry) when
+-- the stored config has one, so two variants sharing a display name for
+-- the same device aren't ambiguous in the picker even when the raw entry
+-- carries no styleid field of its own (or a forged one).
 -- Falls back to bare-name comparison for legacy configs saved before
 -- styleid existed.
 function _isSelectedStyleEntry(entry,style,styleid)
-	if styleid and entry.styleid then
-		return styleid == entry.styleid
+	if styleid then
+		local computedId = _computeStyleId(entry)
+		if computedId then
+			return styleid == computedId
+		end
 	end
 	return style == entry.name
 end
