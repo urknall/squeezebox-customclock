@@ -698,6 +698,10 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 						if _isPreMigrationStyleId(configuredId,entry) then
 							stillExists = true
 							self:getSettings()[config.."styleid"] = entry.styleid
+							-- Content is unchanged (only the id format is stale),
+							-- so persist the repair without reopening/flickering
+							-- the screensaver - just mark changed, not changedModes.
+							changed = true
 							break
 						end
 					end
