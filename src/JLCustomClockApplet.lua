@@ -1093,12 +1093,19 @@ function _startClockTimer(self,timerWindow,timerGeneration)
 	-- single closure, created once, that only needs to stay alive for as
 	-- long as the screen itself is open (self.clockTimer already anchors
 	-- that), removing the recursive-recreation machinery entirely.
+	local timer
 	local function onTimerFired()
+		if self.clockTimer ~= timer then
+			-- self.clockTimer was already replaced by a newer call to
+			-- _startClockTimer before this (stale) callback ran - stop
+			-- only THIS timer, never touch self.clockTimer, which anchors
+			-- a different, still-current timer instance.
+			timer:stop()
+			return
+		end
 		if self.window ~= timerWindow or self.screenGeneration ~= timerGeneration then
-			if self.clockTimer then
-				self.clockTimer:stop()
-				self.clockTimer = nil
-			end
+			self.clockTimer:stop()
+			self.clockTimer = nil
 			return
 		end
 		local ok, err = pcall(function()
@@ -1109,7 +1116,8 @@ function _startClockTimer(self,timerWindow,timerGeneration)
 		end
 	end
 	self.clockTimerCallback = onTimerFired
-	self.clockTimer = Timer(1000, onTimerFired, false)
+	timer = Timer(1000, onTimerFired, false)
+	self.clockTimer = timer
 	-- Align the first fire to the next real wall-clock second boundary
 	-- (socket.gettime() has sub-second resolution, Framework:getTicks()
 	-- doesn't) so displayed seconds don't visibly lag by up to ~1s. The
