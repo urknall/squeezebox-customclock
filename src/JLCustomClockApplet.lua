@@ -653,13 +653,20 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 			end
 		end
 	end
-	-- Upsert rather than replace: an incomplete snapshot (online fetch
-	-- failed) simply omits online entries, it doesn't mean they're gone --
-	-- replacing the whole cache would forget their last-known content and
-	-- make them look changed again on the next complete snapshot.
-	self._lastStyleEntries = self._lastStyleEntries or {}
-	for identity,entry in pairs(currentEntriesByIdentity) do
-		self._lastStyleEntries[identity] = entry
+	-- Upsert on an incomplete snapshot (online fetch failed simply omits
+	-- online entries, it doesn't mean they're gone - replacing the whole
+	-- cache would forget their last-known content and make them look
+	-- changed again on the next complete snapshot). A COMPLETE snapshot is
+	-- authoritative though, so replace outright - otherwise a genuinely
+	-- deleted style's entry lingers in this cache forever (unbounded
+	-- growth over a long-running 24/7 instance).
+	if complete then
+		self._lastStyleEntries = currentEntriesByIdentity
+	else
+		self._lastStyleEntries = self._lastStyleEntries or {}
+		for identity,entry in pairs(currentEntriesByIdentity) do
+			self._lastStyleEntries[identity] = entry
+		end
 	end
 
 
@@ -1127,6 +1134,10 @@ function closeScreensaver(self)
 		self.clockTimer:stop()
 		self.clockTimer = nil
 	end
+	-- Drop the strong closure reference too, not just the timer object -
+	-- otherwise it (and everything it captured, incl. self) stays
+	-- reachable until the next _startClockTimer call overwrites it.
+	self.clockTimerCallback = nil
 	self.screenGeneration = (self.screenGeneration or 0) + 1
 	if self.window then
 		self.window:hide()
