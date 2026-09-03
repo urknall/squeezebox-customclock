@@ -1351,6 +1351,12 @@ function notify_playerCurrent(self,player)
 		self:_installCustomNowPlaying()
 	end
 	if self.window and player ~= self.subscribedPlayer then
+		-- Bumped so any in-flight request started for the OLD player (title
+		-- formats, SDT/plugin/RSS item data, etc.) discards its response
+		-- instead of overwriting state with stale data from a player that's
+		-- no longer current - see the playerGeneration guard in each
+		-- request callback throughout this file.
+		self.playerGeneration = (self.playerGeneration or 0) + 1
 		self:_subscribePlayerEvents(player, self.mode)
 		if player then
 			self:_checkAndUpdateTitleFormatInfo(player)
@@ -1400,12 +1406,13 @@ end
 
 function _updateCustomTitleFormatInfo(self,player)
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 	if server then
 		local licensed = true
 		if not self:getSettings()['customClockHelperInstalled'] then
 			self:_requestCapability('customclockTitleFormats',server,player and player:getId(),{'can','customclock','titleformats','?'},function(chunk,err)
-					if screenGeneration ~= self.screenGeneration then
+					if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 						return
 					end
 					if err then
@@ -1423,7 +1430,7 @@ function _updateCustomTitleFormatInfo(self,player)
 				end)
 		else
 				self:_userRequest(server,player and player:getId(),{'customclock','titleformats'},function(chunk,err)
-						if screenGeneration ~= self.screenGeneration then
+						if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 							return
 						end
 						if err then
@@ -1446,10 +1453,11 @@ end
 
 function _updateTitleFormatInfo(self,player)
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 	if server then
 		self:_userRequest(server,player and player:getId(),{'status','0','100','tags:AtiqR'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2372,11 +2380,12 @@ end
 function _updateSDTText(self,widget,id,format,period)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	period = _getString(period,nil) or "-1" 
 	local server = player and player:getSlimServer()
 	if not self.sdtMacroChecked and not self:getSettings()['sdtMacroInstalled'] and server then
 		self:_requestCapability('sdtMacroString',server,nil,{'can','sdtMacroString', '?'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2394,7 +2403,7 @@ function _updateSDTText(self,widget,id,format,period)
 			end)
 	elseif self:getSettings()['sdtMacroInstalled'] and server then
 		self:_requestSDTMacroString(server,player and player:getId(),{ 'sdtMacroString', 'format:'..format, 'period:'..tostring(period)},function(chunk, err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2417,11 +2426,12 @@ end
 function _updateSDTSportItem(self,items)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 
 	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		self:_requestCapability('SuperDateTime',server,nil,{'can','SuperDateTime', '?'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2439,7 +2449,7 @@ function _updateSDTSportItem(self,items)
 			end)
 	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		self:_userRequest(server,player and player:getId(),{ 'SuperDateTime', 'selsports'},function(chunk, err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2491,11 +2501,12 @@ end
 function _updateSDTWeatherItem(self,items)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 
 	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		self:_requestCapability('SuperDateTime',server,nil,{'can','SuperDateTime', '?'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2513,7 +2524,7 @@ function _updateSDTWeatherItem(self,items)
 			end)
 	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		self:_userRequest(server,player and player:getId(),{ 'SuperDateTime', 'weather'},function(chunk, err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2546,11 +2557,12 @@ end
 function _updateSDTMiscItem(self,category,items,selectionattribute)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 
 	if not self.sdtSuperDateTimeChecked and not self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		self:_requestCapability('SuperDateTime',server,nil,{'can','SuperDateTime', '?'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2568,7 +2580,7 @@ function _updateSDTMiscItem(self,category,items,selectionattribute)
 			end)
 	elseif self:getSettings()['sdtSuperDateTimeInstalled'] and server then
 		self:_userRequest(server,player and player:getId(),{ 'SuperDateTime', 'misc'},function(chunk, err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2622,11 +2634,12 @@ end
 function _updatePluginItem(self,category,items)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 
 	if not self.ccPluginItemsChecked and not self:getSettings()['ccPluginItemsInstalled'] and server then
 		self:_requestCapability('customclockCustomItems',server,nil,{'can','customclock', 'customitems','?'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2644,7 +2657,7 @@ function _updatePluginItem(self,category,items)
 			end)
 	elseif self:getSettings()['ccPluginItemsInstalled'] and server then
 		self:_userRequest(server,player and player:getId(),{ 'customclock', 'customitems','category:'..category},function(chunk, err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -2698,11 +2711,12 @@ end
 function _updateRSSItem(self,category,items)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 	local licensed = true
 
 	local req = RequestHttp(function(chunk, err)
-			if screenGeneration ~= self.screenGeneration then
+			if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 				return
 			end
 			if err then
@@ -3562,10 +3576,11 @@ end
 function _updateSDTWeatherMapIcon(self,widget,id,item)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 	if not self.sdtVersionChecked and not self:getSettings()['sdtVersionInstalled'] and server then
 		self:_requestCapability('sdtVersion',server,nil,{'can','sdtVersion', '?'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -3583,7 +3598,7 @@ function _updateSDTWeatherMapIcon(self,widget,id,item)
 			end)
 	elseif self:getSettings()['sdtVersionInstalled'] and server then
 		self:_userRequest(server,player and player:getId(),{'SuperDateTime','wetmapURL'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -3606,10 +3621,11 @@ end
 function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowproxy)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 	if not self.sdtSongInfoChecked and not self:getSettings()['sdtSongInfoInstalled'] and server then
 		self:_requestCapability('songinfoitems',server,nil,{'can','songinfoitems', '?'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -3627,7 +3643,7 @@ function _updateSongInfoIcon(self,widget,id,width,height,module,dynamic,allowpro
 			end)
 	elseif self:getSettings()['sdtSongInfoInstalled'] and _getString(module,nil) and server then
 		self:_userRequest(server,player and player:getId(),{'songinfoitems','0','100','module:'..module},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -3659,10 +3675,11 @@ end
 function _updateGalleryImage(self,widget,id,width,height,favorite)
 	local player = appletManager:callService("getCurrentPlayer")
 	local screenGeneration = self.screenGeneration
+	local playerGeneration = self.playerGeneration
 	local server = player and player:getSlimServer()
 	if server then
 		self:_requestCapability('galleryRandom',server,nil,{'can','gallery','random','?'},function(chunk,err)
-				if screenGeneration ~= self.screenGeneration then
+				if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 					return
 				end
 				if err then
@@ -3673,7 +3690,7 @@ function _updateGalleryImage(self,widget,id,width,height,favorite)
 						cmd = {'gallery','random','favid:'.._getNumber(favorite,nil)}
 					end
 					self:_userRequest(server,nil,cmd,function(chunk,err)
-							if screenGeneration ~= self.screenGeneration then
+							if screenGeneration ~= self.screenGeneration or playerGeneration ~= self.playerGeneration then
 								return
 							end
 							if err then
