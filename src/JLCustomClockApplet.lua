@@ -524,6 +524,52 @@ function _deepEqual(a,b)
 	return true
 end
 
+-- Detects a styleid persisted before the helper's key-canonicalization
+-- migration (which sorts models alphabetically and omits the " - " suffix
+-- entirely when there are no models). Only true when the OLD id encodes
+-- the exact same set of models as entry.models (order-independent) for the
+-- SAME display name - deliberately NOT a name-only match, since two
+-- genuinely different model-variants sharing a display name (the whole
+-- reason styleid exists) must stay distinguishable.
+function _isPreMigrationStyleId(configuredId,entry)
+	if type(configuredId) ~= "string" or type(entry) ~= "table" or type(entry.name) ~= "string" or entry.name == "" then
+		return false
+	end
+	local oldModelsString
+	if configuredId == entry.name then
+		oldModelsString = ""
+	else
+		local prefix = entry.name.." - "
+		if string.sub(configuredId,1,#prefix) ~= prefix then
+			return false
+		end
+		oldModelsString = string.sub(configuredId,#prefix+1)
+	end
+	local oldModels = {}
+	for model in string.gmatch(oldModelsString,"[^,]+") do
+		table.insert(oldModels,model)
+	end
+	table.sort(oldModels)
+
+	local newModels = {}
+	if type(entry.models) == "table" then
+		for _,model in ipairs(entry.models) do
+			table.insert(newModels,model)
+		end
+	end
+	table.sort(newModels)
+
+	if #oldModels ~= #newModels then
+		return false
+	end
+	for i,model in ipairs(oldModels) do
+		if model ~= newModels[i] then
+			return false
+		end
+	end
+	return true
+end
+
 -- Plugin.pm sends the *complete* remaining style catalog on every
 -- create/edit/delete/rename, not a delta -- except online styles vanish
 -- from that catalog whenever its remote fetch fails, so `complete` tells us
@@ -588,7 +634,7 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 					local configuredId = self:getSettings()[config.."styleid"]
 					local matches
 					if configuredId then
-						matches = (configuredId == entry.styleid)
+						matches = (configuredId == entry.styleid) or _isPreMigrationStyleId(configuredId,entry)
 					else
 						matches = (value == entry.name)
 					end
@@ -630,6 +676,19 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 			local stillExists
 			if configuredId then
 				stillExists = currentStyleIds[configuredId]
+				if not stillExists then
+					-- Same migration fallback as the update loop above, for the
+					-- case entryChanged was false there (so that loop never ran
+					-- and rewrote the id) - self-heal the stored id here too
+					-- instead of treating a still-existing style as deleted.
+					for _,entry in pairs(currentEntriesByIdentity) do
+						if _isPreMigrationStyleId(configuredId,entry) then
+							stillExists = true
+							self:getSettings()[config.."styleid"] = entry.styleid
+							break
+						end
+					end
+				end
 			else
 				stillExists = currentStyleNames[value]
 			end
