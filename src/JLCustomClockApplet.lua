@@ -1742,6 +1742,27 @@ function _uses(parent, value)
         return style
 end
 
+-- A models array must be a genuine dense 1..n array of strings - the same
+-- shape _computeStyleId's ipairs() actually consumes. A hash-keyed table
+-- (e.g. {target="jivelite800x480"}) would otherwise pass a pairs()-based
+-- check here while ipairs() sees zero models there, letting a malformed
+-- entry collide with a genuinely unrestricted same-name style's id.
+function _isValidModelsArray(models)
+	if type(models) ~= "table" then
+		return false
+	end
+	local count = 0
+	for _ in pairs(models) do
+		count = count + 1
+	end
+	for i = 1,count do
+		if type(models[i]) ~= "string" then
+			return false
+		end
+	end
+	return true
+end
+
 -- The direct online style catalog is fetched over plain HTTP and rendered
 -- without going through Plugin.pm's import validation at all, so this is
 -- its own validation boundary: entry.name must be a usable string, and
@@ -1765,15 +1786,10 @@ function _isCompliantOnlineStyleEntry(entry,model)
 	if next(entry.models) == nil then
 		return true
 	end
-	-- Reject the whole entry (rather than matching on whatever string
-	-- element happens first) if any model value isn't a string - a mixed
-	-- array would otherwise later crash _computeStyleId's table.sort().
-	for _,entryModel in pairs(entry.models) do
-		if type(entryModel) ~= "string" then
-			return false
-		end
+	if not _isValidModelsArray(entry.models) then
+		return false
 	end
-	for _,entryModel in pairs(entry.models) do
+	for _,entryModel in ipairs(entry.models) do
 		if entryModel == model then
 			return true
 		end
