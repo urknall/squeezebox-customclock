@@ -747,6 +747,10 @@ end
 -- guarding every call site individually.
 function _sanitizeConfigItems(items)
 	items = items or {}
+	if type(items) ~= "table" then
+		log:warn("Skipping malformed style items container (not a table)")
+		return {}
+	end
 	-- items is normally a dense JSON-decoded array (1..n), but legacy/
 	-- hand-edited settings could be a sparse numeric-keyed table; collect
 	-- and sort the numeric keys explicitly rather than relying on pairs()
@@ -1739,6 +1743,11 @@ end
 -- present/truthy.
 function _isCompliantOnlineStyleEntry(entry,model)
 	if type(entry) ~= "table" or type(entry.name) ~= "string" or entry.name == "" then
+		return false
+	end
+	-- items is stored verbatim into config settings and later crashes
+	-- _sanitizeConfigItems's pairs() if it isn't a table at all.
+	if entry.items ~= nil and type(entry.items) ~= "table" then
 		return false
 	end
 	if entry.models == nil then
