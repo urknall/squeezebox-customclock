@@ -1374,6 +1374,11 @@ function notify_playerCurrent(self,player)
 		-- no longer current - see the playerGeneration guard in each
 		-- request callback throughout this file.
 		self.playerGeneration = (self.playerGeneration or 0) + 1
+		-- Re-cache LMS IP/port/name/version for the NEW player - if it's on
+		-- a different LMS server than the old one, self.lmsIP etc (used by
+		-- the image proxy logic) would otherwise keep pointing at the old
+		-- server until the screensaver was closed and reopened.
+		self:_getLMSInfo()
 		self:_subscribePlayerEvents(player, self.mode)
 		if player then
 			self:_checkAndUpdateTitleFormatInfo(player)
@@ -2352,19 +2357,31 @@ function _getCoverSize(self,size)
 end
 
 function _requestCapability(self,key,server,playerId,command,callback)
+	-- The dedup key must include server+player identity, not just the
+	-- capability name: two different players (or the same player after a
+	-- switch to a different LMS server) asking about the SAME capability
+	-- would otherwise piggyback on each other's in-flight request and a
+	-- callback could receive a response that actually came from a
+	-- different player/server's request.
+	key = key.."\0"..tostring(server).."\0"..tostring(playerId)
 	self.capabilityRequests = self.capabilityRequests or {}
-	local callbacks = self.capabilityRequests[key]
-	if callbacks then
-		table.insert(callbacks,callback)
+	local request = self.capabilityRequests[key]
+	if request then
+		table.insert(request.callbacks,callback)
 		return
 	end
 
-	callbacks = { callback }
-	self.capabilityRequests[key] = callbacks
+	request = { callbacks = { callback } }
+	self.capabilityRequests[key] = request
 	self:_userRequest(server,playerId,command,function(chunk,err)
-			local pendingCallbacks = self.capabilityRequests[key] or {}
+			-- A request already completed under this exact key (or the whole
+			-- table was reset) may have already been replaced by a newer one
+			-- - only this specific request's own completion may clear/dispatch it.
+			if self.capabilityRequests[key] ~= request then
+				return
+			end
 			self.capabilityRequests[key] = nil
-			for _,pendingCallback in ipairs(pendingCallbacks) do
+			for _,pendingCallback in ipairs(request.callbacks) do
 				pendingCallback(chunk,err)
 			end
 		end)
@@ -2395,7 +2412,10 @@ end
 -- in-flight requests (same key) still get de-duplicated - a second caller
 -- just piggybacks its callback onto the one already in flight.
 function _requestSDTMacroString(self,server,playerId,command,callback)
-	local key = table.concat(command,"\0")
+	-- Include server+player identity in the key for the same reason as
+	-- _requestCapability above - the command alone isn't enough to tell
+	-- two different players'/servers' identical-looking requests apart.
+	local key = table.concat(command,"\0").."\0"..tostring(server).."\0"..tostring(playerId)
 	self.sdtMacroRequests = self.sdtMacroRequests or {}
 	local request = self.sdtMacroRequests[key]
 	if request then
@@ -2409,6 +2429,9 @@ function _requestSDTMacroString(self,server,playerId,command,callback)
 	}
 	self.sdtMacroRequests[key] = request
 	self:_userRequest(server,playerId,command,function(chunk,err)
+			if self.sdtMacroRequests[key] ~= request then
+				return
+			end
 			self.sdtMacroRequests[key] = nil
 			for _,cb in ipairs(request.callbacks) do
 				cb(chunk,err)
