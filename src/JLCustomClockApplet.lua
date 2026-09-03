@@ -554,6 +554,12 @@ function _isPreMigrationStyleId(configuredId,entry)
 	local newModels = {}
 	if type(entry.models) == "table" then
 		for _,model in ipairs(entry.models) do
+			-- A non-string element would crash table.sort() below (can't
+			-- compare a table/number to a string) - defense in depth,
+			-- independent of whatever the helper itself accepts.
+			if type(model) ~= "string" then
+				return false
+			end
 			table.insert(newModels,model)
 		end
 	end
