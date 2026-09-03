@@ -1678,7 +1678,7 @@ function _getOnlineStylesSink(self,menuItem,mode)
 				self:tieAndShowWindow(window)
 			elseif chunk then
 				local decoded, styleData = pcall(json.decode, chunk)
-				if decoded and styleData and styleData.data then
+				if decoded and type(styleData) == "table" and type(styleData.data) == "table" then
 					self:defineSettingStyleSink(menuItem,mode,styleData.data)
 				else
 					log:warn("Invalid online style response: "..tostring(styleData))
@@ -1732,6 +1732,45 @@ function _isCompliantOnlineStyleEntry(entry,model)
 		end
 	end
 	return false
+end
+
+-- Mirrors Plugin.pm's getStyleKey() (sorted models, bare name when there
+-- are none) so the direct/untrusted online catalog gets the same
+-- disambiguation benefit as helper-provided styles - computed LOCALLY from
+-- entry.name/entry.models rather than ever trusting a styleid the raw
+-- (plain-HTTP, unauthenticated) response might itself contain, since that
+-- field is otherwise only ever set server-side by the trusted helper.
+function _computeStyleId(entry)
+	if type(entry) ~= "table" or type(entry.name) ~= "string" or entry.name == "" then
+		return nil
+	end
+	local models = {}
+	if type(entry.models) == "table" then
+		for _,model in ipairs(entry.models) do
+			table.insert(models,model)
+		end
+	end
+	table.sort(models)
+	if #models == 0 then
+		return entry.name
+	end
+	return entry.name.." - "..table.concat(models,",")
+end
+
+-- Builds the settings to write for a selected direct/untrusted online
+-- catalog entry - excludes styleid/source from the raw entry (protocol-
+-- reserved, only ever legitimately set server-side by the trusted helper)
+-- and substitutes our own locally-computed/known-safe values instead.
+function _buildOnlineStyleSettings(mode,entry)
+	local result = {}
+	for attribute,value in pairs(entry) do
+		if attribute ~= "styleid" and attribute ~= "source" then
+			result[mode..attribute] = value
+		end
+	end
+	result[mode.."styleid"] = _computeStyleId(entry)
+	result[mode.."source"] = "online"
+	return result
 end
 
 -- Prefers the deterministic styleid (name+sorted-models) when both the
@@ -1853,7 +1892,7 @@ function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 		})
 	end
 
-	if data.item_loop then
+	if type(data.item_loop) == "table" then
 		for _,entry in pairs(data.item_loop) do
 			if _isCompliantOnlineStyleEntry(entry,self.model) then
 				local name = entry.name.."\n"
@@ -1874,8 +1913,13 @@ function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 								end
 							end
 							self:getSettings()[mode.."style"] = entry.name
-							for attribute,value in pairs(entry) do
-								self:getSettings()[mode..attribute] = value
+							-- styleid/source are protocol-reserved metadata normally only
+							-- ever set server-side by the trusted helper - this direct
+							-- catalog is plain, unauthenticated HTTP (JiveLite has no TLS),
+							-- so never trust these fields even if the raw entry happens
+							-- to contain them; compute/assign our own instead.
+							for attribute,value in pairs(_buildOnlineStyleSettings(mode,entry)) do
+								self:getSettings()[attribute] = value
 							end
 							if self.images then
 								for attribute,value in pairs(self.images) do
