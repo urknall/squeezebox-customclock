@@ -19,7 +19,7 @@ following methods:
 
 
 -- stuff we use
-local pairs, ipairs, tostring, tonumber, setmetatable, package, type, pcall = pairs, ipairs, tostring, tonumber, setmetatable, package, type, pcall
+local pairs, ipairs, tostring, tonumber, setmetatable, package, type, pcall, next = pairs, ipairs, tostring, tonumber, setmetatable, package, type, pcall, next
 
 local oo               = require("loop.simple")
 local os               = require("os")
@@ -613,11 +613,17 @@ function _reconcileStyleConfigAfterChange(self,entries,mode,complete)
 
 	for _,entry in pairs(entries) do
 		local correctModel = false
-		if type(entry) == "table" and type(entry.models) == "table" then
-			for _,model in ipairs(entry.models) do
-				if model == self.model then
-					correctModel = true
-					break
+		if type(entry) == "table" then
+			-- No models (nil) or an explicitly empty models array both mean
+			-- "unrestricted", matching _isCompliantOnlineStyleEntry/getStyleKey.
+			if entry.models == nil or (type(entry.models) == "table" and next(entry.models) == nil) then
+				correctModel = true
+			elseif type(entry.models) == "table" then
+				for _,model in ipairs(entry.models) do
+					if model == self.model then
+						correctModel = true
+						break
+					end
 				end
 			end
 		end
@@ -1727,6 +1733,9 @@ function _isCompliantOnlineStyleEntry(entry,model)
 	end
 	if type(entry.models) ~= "table" then
 		return false
+	end
+	if next(entry.models) == nil then
+		return true
 	end
 	for _,entryModel in pairs(entry.models) do
 		if entryModel == model then
