@@ -1644,7 +1644,7 @@ function defineSettingStyle(self,mode,menuItem)
 							self:_closeStyleFetchPopup()
 							return
 						end
-						self:defineSettingStyleSink(menuItem,mode,localChunk.data)
+						self:defineSettingStyleSink(menuItem,mode,localChunk.data,false)
 					end)
 			else
 				log:debug("CustomClockHelper isn't installed retrieving online styles")
@@ -1710,7 +1710,7 @@ function _getOnlineStylesSink(self,menuItem,mode)
 			elseif chunk then
 				local decoded, styleData = pcall(json.decode, chunk)
 				if decoded and type(styleData) == "table" and type(styleData.data) == "table" then
-					self:defineSettingStyleSink(menuItem,mode,styleData.data)
+					self:defineSettingStyleSink(menuItem,mode,styleData.data,true)
 				else
 					log:warn("Invalid online style response: "..tostring(styleData))
 					self:_closeStyleFetchPopup()
@@ -1825,6 +1825,25 @@ function _computeStyleId(entry)
 	return entry.name.." - "..table.concat(models,",")
 end
 
+-- Builds the settings to write for a selected helper-provided style entry -
+-- from an authenticated LMS request, not the untrusted direct HTTP catalog,
+-- so entry.styleid/entry.name/entry.models are already trustworthy
+-- (Plugin.pm's _withStyleId computes styleid the same way _computeStyleId
+-- does). Still guards source against an old/corrupted helper response
+-- tagging something other than "local"/"online", storing nil rather than
+-- propagating an unexpected value.
+function _buildHelperStyleSettings(mode,entry)
+	local result = {}
+	for attribute,value in pairs(entry) do
+		result[mode..attribute] = value
+	end
+	local source = result[mode.."source"]
+	if source ~= "local" and source ~= "online" then
+		result[mode.."source"] = nil
+	end
+	return result
+end
+
 -- Builds the settings to write for a selected direct/untrusted online
 -- catalog entry - excludes styleid/source from the raw entry (protocol-
 -- reserved, only ever legitimately set server-side by the trusted helper)
@@ -1858,7 +1877,7 @@ function _isSelectedStyleEntry(entry,style,styleid)
 	return style == entry.name
 end
 
-function defineSettingStyleSink(self,settingsMenuItem,mode,data)
+function defineSettingStyleSink(self,settingsMenuItem,mode,data,isDirectOnline)
 	if self.popup then
 		self.popup:hide()
 		self.popup = nil
@@ -1986,12 +2005,14 @@ function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 								end
 							end
 							self:getSettings()[mode.."style"] = entry.name
-							-- styleid/source are protocol-reserved metadata normally only
-							-- ever set server-side by the trusted helper - this direct
-							-- catalog is plain, unauthenticated HTTP (JiveLite has no TLS),
-							-- so never trust these fields even if the raw entry happens
-							-- to contain them; compute/assign our own instead.
-							for attribute,value in pairs(_buildOnlineStyleSettings(mode,entry)) do
+							-- styleid/source are protocol-reserved metadata - only trust
+							-- them from entry when this data came from the authenticated
+							-- helper request; the direct catalog is plain, unauthenticated
+							-- HTTP (JiveLite has no TLS), so never trust these fields even
+							-- if the raw entry happens to contain them; compute/assign our
+							-- own instead.
+							local settingsToApply = isDirectOnline and _buildOnlineStyleSettings(mode,entry) or _buildHelperStyleSettings(mode,entry)
+							for attribute,value in pairs(settingsToApply) do
 								self:getSettings()[attribute] = value
 							end
 							if self.images then
