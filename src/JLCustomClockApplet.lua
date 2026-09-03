@@ -4749,9 +4749,18 @@ function _reDrawAnalog(self,screen)
 end
 
 function _getLMSInfo(self)
+    local oldIP, oldPort = self.lmsIP, self.lmsPort
     local player = appletManager:callService("getCurrentPlayer")
     local server = player and player.getSlimServer and player:getSlimServer()
-    self.lmsIP, self.lmsPort = server and server.getIpPort and server:getIpPort()
+    -- Not `self.lmsIP, self.lmsPort = server and server.getIpPort and
+    -- server:getIpPort()` - Lua's `and` only ever yields ONE value, even
+    -- when the last operand is a multi-return call, so that form silently
+    -- discarded the port and always fell back to the hardcoded default
+    -- below (invisible on the common case where the real port already
+    -- happens to be 9000).
+    if server and server.getIpPort then
+        self.lmsIP, self.lmsPort = server:getIpPort()
+    end
     self.lmsIP = self.lmsIP or "127.0.0.1"
     self.lmsPort = tonumber(self.lmsPort) or 9000
     self.lmsName = server and server.getName and server:getName() or "unknown"
@@ -4760,6 +4769,30 @@ function _getLMSInfo(self)
 	log:debug("LMS Port: " .. tostring(self.lmsPort))
 	log:debug("LMS Name: " .. tostring(self.lmsName))
 	log:debug("LMS version: " .. tostring(self.lmsVersion))
+	-- oldIP being nil means this is the first call for this applet
+	-- instance (nothing to invalidate yet), not an actual server change.
+	if oldIP and (oldIP ~= self.lmsIP or oldPort ~= self.lmsPort) then
+		self:_resetCapabilityCache()
+	end
+end
+
+-- Capability/install-state flags (is CustomClockHelper/SDT/song-info/etc
+-- installed on THIS server) were persisted as flat settings keys with no
+-- server identity attached, so switching to a different LMS server kept
+-- the old server's result and skipped re-probing the new one. Called
+-- whenever _getLMSInfo detects the LMS server identity actually changed.
+function _resetCapabilityCache(self)
+	self:getSettings()['customClockHelperInstalled'] = nil
+	self:getSettings()['sdtMacroInstalled'] = nil
+	self:getSettings()['sdtSuperDateTimeInstalled'] = nil
+	self:getSettings()['ccPluginItemsInstalled'] = nil
+	self:getSettings()['sdtVersionInstalled'] = nil
+	self:getSettings()['sdtSongInfoInstalled'] = nil
+	self.sdtSuperDateTimeChecked = false
+	self.sdtMacroChecked = false
+	self.sdtVersionChecked = false
+	self.sdtSongInfoChecked = false
+	self.ccPluginItemsChecked = false
 end
 
 local function _chooseProxyExt(srcUrl)
