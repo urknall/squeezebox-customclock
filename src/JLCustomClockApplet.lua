@@ -1763,6 +1763,28 @@ function _isValidModelsArray(models)
 	return true
 end
 
+-- Same dense-array shape requirement as _isValidModelsArray (values must be
+-- tables, not strings) - a missing, hash-shaped or sparse items container
+-- doesn't crash (_sanitizeConfigItems only ever consumes the numeric keys
+-- it finds), but silently leaves the user with an empty/partially rendered
+-- style, matching Plugin.pm's validateStyle() (which requires a proper
+-- items array too) for the direct/untrusted catalog path.
+function _isValidItemsArray(items)
+	if type(items) ~= "table" then
+		return false
+	end
+	local count = 0
+	for _ in pairs(items) do
+		count = count + 1
+	end
+	for i = 1,count do
+		if type(items[i]) ~= "table" then
+			return false
+		end
+	end
+	return true
+end
+
 -- The direct online style catalog is fetched over plain HTTP and rendered
 -- without going through Plugin.pm's import validation at all, so this is
 -- its own validation boundary: entry.name must be a usable string, and
@@ -1772,9 +1794,7 @@ function _isCompliantOnlineStyleEntry(entry,model)
 	if type(entry) ~= "table" or type(entry.name) ~= "string" or entry.name == "" then
 		return false
 	end
-	-- items is stored verbatim into config settings and later crashes
-	-- _sanitizeConfigItems's pairs() if it isn't a table at all.
-	if entry.items ~= nil and type(entry.items) ~= "table" then
+	if not _isValidItemsArray(entry.items) then
 		return false
 	end
 	if entry.models == nil then
