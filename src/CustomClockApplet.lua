@@ -1653,6 +1653,18 @@ function _isCompliantOnlineStyleEntry(entry,model)
 	return false
 end
 
+-- Prefers the deterministic styleid (name+sorted-models) when both the
+-- stored config and the candidate entry have one, so two variants sharing
+-- a display name for the same device aren't ambiguous in the picker.
+-- Falls back to bare-name comparison for legacy configs saved before
+-- styleid existed.
+function _isSelectedStyleEntry(entry,style,styleid)
+	if styleid and entry.styleid then
+		return styleid == entry.styleid
+	end
+	return style == entry.name
+end
+
 function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 	if self.popup then
 		self.popup:hide()
@@ -1662,6 +1674,7 @@ function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 	local title = (settingsMenuItem and settingsMenuItem.text) or ""
 	
 	local style = self:getSettings()[mode.."style"]
+	local styleid = self:getSettings()[mode.."styleid"]
 	jive.ui.style.item_no_icon = _uses(jive.ui.style.item, {
 		order = { 'text', 'check' },
 	})
@@ -1813,7 +1826,7 @@ function defineSettingStyleSink(self,settingsMenuItem,mode,data)
 									"closeScreensaver")
 							end
 						end,
-						style == entry.name
+						self:_isSelectedStyleEntry(entry,style,styleid)
 					),
 				})
 			elseif type(entry) == "table" and type(entry.name) == "string" and entry.name ~= "" then
