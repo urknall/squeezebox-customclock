@@ -1851,7 +1851,9 @@ end
 -- (Plugin.pm's _withStyleId computes styleid the same way _computeStyleId
 -- does). Still guards source against an old/corrupted helper response
 -- tagging something other than "local"/"online", storing nil rather than
--- propagating an unexpected value.
+-- propagating an unexpected value. Also computes styleid locally when an
+-- old helper (predating styleid support) omits it entirely, so same-named
+-- model variants stay disambiguated even in a mixed-version deployment.
 function _buildHelperStyleSettings(mode,entry)
 	local result = {}
 	for attribute,value in pairs(entry) do
@@ -1860,6 +1862,9 @@ function _buildHelperStyleSettings(mode,entry)
 	local source = result[mode.."source"]
 	if source ~= "local" and source ~= "online" then
 		result[mode.."source"] = nil
+	end
+	if entry.styleid == nil then
+		result[mode.."styleid"] = _computeStyleId(entry)
 	end
 	return result
 end
